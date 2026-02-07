@@ -43,7 +43,6 @@ export async function saveProductService({ productDoc, fields, files, readFile }
 export const createProductController = async (req, res) => {
   try {
     const productDoc = new productModel();
-
     const result = await saveProductService({
       productDoc,
       fields: req.fields,
@@ -52,14 +51,13 @@ export const createProductController = async (req, res) => {
     });
 
     if (!result.ok) return res.status(result.status).send({ error: result.error });
-
     return res.status(201).send({
       success: true,
       message: "Product Created Successfully",
       products: result.product,
     });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     return res.status(500).send({
       success: false,
       error,
@@ -141,7 +139,7 @@ export const deleteProductController = async (req, res) => {
       message: "Product Deleted successfully",
     });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     res.status(500).send({
       success: false,
       message: "Error while deleting product",
@@ -171,11 +169,11 @@ export const updateProductController = async (req, res) => {
       products: result.product,
     });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     return res.status(500).send({
       success: false,
       error,
-      message: "Error in Updating product",
+      message: "Error in updating product",
     });
   }
 };
@@ -294,7 +292,7 @@ export const realtedProductController = async (req, res) => {
   }
 };
 
-// get prdocyst by catgory
+// get products by category
 export const productCategoryController = async (req, res) => {
   try {
     const category = await categoryModel.findOne({ slug: req.params.slug });
