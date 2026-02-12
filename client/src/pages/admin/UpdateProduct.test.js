@@ -1,3 +1,4 @@
+// Trinh Hoai Song Thu, A0266248W
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
@@ -107,9 +108,13 @@ describe("UpdateProduct Component", () => {
 
     await waitFor(() => {
       expect(screen.getByPlaceholderText("write a name")).toBeInTheDocument();
-      expect(screen.getByPlaceholderText("write a description")).toBeInTheDocument();
+      expect(
+        screen.getByPlaceholderText("write a description"),
+      ).toBeInTheDocument();
       expect(screen.getByPlaceholderText("write a Price")).toBeInTheDocument();
-      expect(screen.getByPlaceholderText("write a quantity")).toBeInTheDocument();
+      expect(
+        screen.getByPlaceholderText("write a quantity"),
+      ).toBeInTheDocument();
       expect(screen.getAllByRole("combobox").length).toBe(2);
       expect(screen.getByText("UPDATE PRODUCT")).toBeInTheDocument();
       expect(screen.getByText("DELETE PRODUCT")).toBeInTheDocument();
@@ -119,7 +124,9 @@ describe("UpdateProduct Component", () => {
   test("should fetch and display product details", async () => {
     axios.get
       .mockResolvedValueOnce({ data: { product: mockProduct } })
-      .mockResolvedValueOnce({ data: { success: true, category: mockCategories } });
+      .mockResolvedValueOnce({
+        data: { success: true, category: mockCategories },
+      });
 
     renderComponent();
 
@@ -137,14 +144,18 @@ describe("UpdateProduct Component", () => {
     renderComponent();
 
     await waitFor(() => {
-      expect(toast.error).toHaveBeenCalledWith("Something wwent wrong in getting catgeory");
+      expect(toast.error).toHaveBeenCalledWith(
+        "Something wwent wrong in getting catgeory",
+      );
     });
   });
 
   test("should handle update product form submission", async () => {
     axios.get
       .mockResolvedValueOnce({ data: { product: mockProduct } })
-      .mockResolvedValueOnce({ data: { success: true, category: mockCategories } });
+      .mockResolvedValueOnce({
+        data: { success: true, category: mockCategories },
+      });
 
     axios.put.mockResolvedValueOnce({
       data: { success: true, message: "Product updated successfully" },
@@ -181,13 +192,18 @@ describe("UpdateProduct Component", () => {
 
     await waitFor(() => {
       expect(appendMock).toHaveBeenCalledWith("name", "Updated Shirt");
-      expect(appendMock).toHaveBeenCalledWith("description", "Updated Test Shirt");
+      expect(appendMock).toHaveBeenCalledWith(
+        "description",
+        "Updated Test Shirt",
+      );
       expect(appendMock).toHaveBeenCalledWith("price", "150");
       expect(appendMock).toHaveBeenCalledWith("quantity", "20");
       expect(appendMock).toHaveBeenCalledWith("category", "2");
       expect(appendMock).toHaveBeenCalledWith("shipping", true);
       expect(axios.put).toHaveBeenCalled();
-      expect(toast.success).toHaveBeenCalledWith("Product Updated Successfully");
+      expect(toast.success).toHaveBeenCalledWith(
+        "Product Updated Successfully",
+      );
       expect(mockNavigate).toHaveBeenCalledWith("/dashboard/admin/products");
     });
   });
@@ -195,7 +211,9 @@ describe("UpdateProduct Component", () => {
   test("should handle product deletion", async () => {
     axios.get
       .mockResolvedValueOnce({ data: { product: mockProduct } })
-      .mockResolvedValueOnce({ data: { success: true, category: mockCategories } });
+      .mockResolvedValueOnce({
+        data: { success: true, category: mockCategories },
+      });
 
     axios.delete.mockResolvedValueOnce({ data: { success: true } });
     const promptSpy = jest.spyOn(window, "prompt").mockReturnValue("Yes");
@@ -210,7 +228,9 @@ describe("UpdateProduct Component", () => {
 
     await waitFor(() => {
       expect(axios.delete).toHaveBeenCalled();
-      expect(toast.success).toHaveBeenCalledWith("Product Deleted Successfully");
+      expect(toast.success).toHaveBeenCalledWith(
+        "Product Deleted Successfully",
+      );
       expect(mockNavigate).toHaveBeenCalledWith("/dashboard/admin/products");
     });
 
@@ -220,7 +240,9 @@ describe("UpdateProduct Component", () => {
   test("shows error toast on delete cancellation", async () => {
     axios.get
       .mockResolvedValueOnce({ data: { product: mockProduct } })
-      .mockResolvedValueOnce({ data: { success: true, category: mockCategories } });
+      .mockResolvedValueOnce({
+        data: { success: true, category: mockCategories },
+      });
 
     const promptSpy = jest.spyOn(window, "prompt").mockReturnValue("No");
 
@@ -254,7 +276,9 @@ describe("UpdateProduct Component", () => {
           },
         },
       })
-      .mockResolvedValueOnce({ data: { success: true, category: mockCategories } });
+      .mockResolvedValueOnce({
+        data: { success: true, category: mockCategories },
+      });
 
     axios.delete.mockRejectedValueOnce(new Error("Delete failed"));
     jest.spyOn(window, "prompt").mockReturnValue("Yes");
@@ -275,7 +299,9 @@ describe("UpdateProduct Component", () => {
   test("shows error toast on update failure exception", async () => {
     axios.get
       .mockResolvedValueOnce({ data: { product: mockProduct } })
-      .mockResolvedValueOnce({ data: { success: true, category: mockCategories } });
+      .mockResolvedValueOnce({
+        data: { success: true, category: mockCategories },
+      });
 
     axios.put.mockRejectedValueOnce(new Error("Update failed"));
 
@@ -295,7 +321,9 @@ describe("UpdateProduct Component", () => {
   test("shows error toast on update failed response", async () => {
     axios.get
       .mockResolvedValueOnce({ data: { product: mockProduct } })
-      .mockResolvedValueOnce({ data: { success: true, category: mockCategories } });
+      .mockResolvedValueOnce({
+        data: { success: true, category: mockCategories },
+      });
 
     axios.put.mockResolvedValueOnce({
       data: { success: false, message: "Update failed" },
@@ -355,7 +383,9 @@ describe("UpdateProduct Component", () => {
   test("updates shipping value based on selected option", async () => {
     axios.get
       .mockResolvedValueOnce({ data: { product: mockProduct } })
-      .mockResolvedValueOnce({ data: { success: true, category: mockCategories } });
+      .mockResolvedValueOnce({
+        data: { success: true, category: mockCategories },
+      });
 
     renderComponent();
 

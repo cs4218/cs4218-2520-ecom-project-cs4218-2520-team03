@@ -28,7 +28,12 @@ export function attachPhotoIfPresent(productDoc, photo, readFile) {
 }
 
 //helper to save product
-export async function saveProductService({ productDoc, fields, files, readFile }) {
+export async function saveProductService({
+  productDoc,
+  fields,
+  files,
+  readFile,
+}) {
   const validation = validateProductFields(fields, files);
   if (validation) return { ok: false, ...validation };
 
@@ -49,7 +54,8 @@ export const createProductController = async (req, res) => {
       readFile: fs.readFileSync,
     });
 
-    if (!result.ok) return res.status(result.status).send({ error: result.error });
+    if (!result.ok)
+      return res.status(result.status).send({ error: result.error });
     return res.status(201).send({
       success: true,
       message: "Product Created Successfully",
@@ -69,11 +75,11 @@ export const createProductController = async (req, res) => {
 export const getProductController = async (req, res) => {
   try {
     const products = await productModel
-        .find({})
-        .populate("category")
-        .select("-photo")
-        .limit(12)
-        .sort({ createdAt: -1 });
+      .find({})
+      .populate("category")
+      .select("-photo")
+      .limit(12)
+      .sort({ createdAt: -1 });
     res.status(200).send({
       success: true,
       countTotal: products.length,
@@ -93,9 +99,9 @@ export const getProductController = async (req, res) => {
 export const getSingleProductController = async (req, res) => {
   try {
     const product = await productModel
-        .findOne({ slug: req.params.slug })
-        .select("-photo")
-        .populate("category");
+      .findOne({ slug: req.params.slug })
+      .select("-photo")
+      .populate("category");
     res.status(200).send({
       success: true,
       message: "Single Product Fetched",
@@ -117,10 +123,10 @@ export const productPhotoController = async (req, res) => {
     const product = await productModel.findById(req.params.pid).select("photo");
     if (!product) {
       return res.status(404).send({
-          success: false,
-          message: "Product not found",
-          });
-      }
+        success: false,
+        message: "Product not found",
+      });
+    }
     if (!product.photo) {
       return res.status(404).send({
         success: false,
@@ -163,7 +169,8 @@ export const deleteProductController = async (req, res) => {
 export const updateProductController = async (req, res) => {
   try {
     const productDoc = await productModel.findById(req.params.pid);
-    if (!productDoc) return res.status(404).send({ error: "Product not found" });
+    if (!productDoc)
+      return res.status(404).send({ error: "Product not found" });
 
     const result = await saveProductService({
       productDoc,
@@ -172,7 +179,8 @@ export const updateProductController = async (req, res) => {
       readFile: fs.readFileSync,
     });
 
-    if (!result.ok) return res.status(result.status).send({ error: result.error });
+    if (!result.ok)
+      return res.status(result.status).send({ error: result.error });
 
     return res.status(200).send({
       success: true,
@@ -235,11 +243,11 @@ export const productListController = async (req, res) => {
     const perPage = 6;
     const page = req.params.page ? req.params.page : 1;
     const products = await productModel
-        .find({})
-        .select("-photo")
-        .skip((page - 1) * perPage)
-        .limit(perPage)
-        .sort({ createdAt: -1 });
+      .find({})
+      .select("-photo")
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .sort({ createdAt: -1 });
     res.status(200).send({
       success: true,
       products,
@@ -259,13 +267,13 @@ export const searchProductController = async (req, res) => {
   try {
     const { keyword } = req.params;
     const resutls = await productModel
-        .find({
-          $or: [
-            { name: { $regex: keyword, $options: "i" } },
-            { description: { $regex: keyword, $options: "i" } },
-          ],
-        })
-        .select("-photo");
+      .find({
+        $or: [
+          { name: { $regex: keyword, $options: "i" } },
+          { description: { $regex: keyword, $options: "i" } },
+        ],
+      })
+      .select("-photo");
     res.json(resutls);
   } catch (error) {
     console.log(error);
@@ -282,13 +290,13 @@ export const realtedProductController = async (req, res) => {
   try {
     const { pid, cid } = req.params;
     const products = await productModel
-        .find({
-          category: cid,
-          _id: { $ne: pid },
-        })
-        .select("-photo")
-        .limit(3)
-        .populate("category");
+      .find({
+        category: cid,
+        _id: { $ne: pid },
+      })
+      .select("-photo")
+      .limit(3)
+      .populate("category");
     res.status(200).send({
       success: true,
       products,
@@ -322,4 +330,3 @@ export const productCategoryController = async (req, res) => {
     });
   }
 };
-

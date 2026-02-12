@@ -1,3 +1,4 @@
+// Trinh Hoai Song Thu, A0266248W
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
@@ -150,7 +151,7 @@ describe("CreateProduct Component", () => {
       expect(descriptionInput.value).toBe("This is a pencil");
       expect(priceInput.value).toBe("18");
       expect(quantityInput.value).toBe("200");
-      
+
       const selects = screen.getAllByRole("combobox");
       const select = selects[0];
       fireEvent.change(select, { target: { value: "2" } });

@@ -30,12 +30,14 @@ const Register = () => {
     e.preventDefault();
     try {
       const res = await axios.post("/api/v1/auth/register", formData);
-      
+
       if (res && res.data.success) {
-        toast.success(res.data.message || "Registered Successfully, please login");
-        
+        toast.success(
+          res.data.message || "Registered Successfully, please login",
+        );
+
         setFormData(initialState);
-        
+
         navigate("/login");
       } else {
         toast.error(res.data.message || "Something went wrong");
@@ -54,7 +56,7 @@ const Register = () => {
           <div className="mb-3">
             <input
               type="text"
-              name="name" 
+              name="name"
               value={name}
               onChange={handleChange}
               className="form-control"
