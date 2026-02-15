@@ -639,152 +639,160 @@ describe("productPhotoController", () => {
 });
 
 describe("deleteProductController", () => {
-  describe("upon successful deletion", () => {
-    let res, req, chain;
-    beforeEach(async () => {
-      req = { params: { pid: "p1" } };
-      res = makeRes();
-      chain = { select: jest.fn().mockResolvedValue({ ok: 1 }) };
-      productModel.findByIdAndDelete.mockReturnValue(chain);
-
-      await deleteProductController(req, res);
-    });
-    test("calls findByIdAndDelete with pid", () => {
-      expect(productModel.findByIdAndDelete).toHaveBeenCalledWith("p1");
-    });
-
-describe("updateProductController", () => {
-    describe("when product not found", () => {
-        let res;
+    describe("upon successful deletion", () => {
+        let res, req, chain;
         beforeEach(async () => {
+            req = {params: {pid: "p1"}};
             res = makeRes();
-            productModel.findById.mockResolvedValue(null);
-            await updateProductController({ params: { pid: "p1" }, fields: {}, files: {} }, res);
-        });
-        test("return status 404", async () => {
-            expect(res.status).toHaveBeenCalledWith(404);
-        });
-        test("error response sent", async () => {
-            expect(res.send).toHaveBeenCalledWith({ error: "Product not found" });
-        });
-    });
-    describe("when updating invalid product", () => {
-        let res;
-        beforeEach(async () => {
-            res = makeRes();
-            const productDoc = { set: jest.fn(), save: jest.fn(), photo: {} };
-            productModel.findById.mockResolvedValue(productDoc);
+            chain = {select: jest.fn().mockResolvedValue({ok: 1})};
+            productModel.findByIdAndDelete.mockReturnValue(chain);
 
-            await updateProductController({ params: { pid: "p1" }, fields: {}, files: {} }, res);
+            await deleteProductController(req, res);
         });
-        test("return status 400", async () => {
-            expect(res.status).toHaveBeenCalledWith(400);
+        test("calls findByIdAndDelete with pid", () => {
+            expect(productModel.findByIdAndDelete).toHaveBeenCalledWith("p1");
         });
-        test("error response", async () => {
-            expect(res.send).toHaveBeenCalledWith({ error: "Name is Required" });
-        });
-    });
-    describe("upon successful product update", () => {
-        let res, req, productDoc;
-        beforeEach(async () => {
-            res = makeRes();
-            productDoc = { set: jest.fn(), save: jest.fn(), photo: {} };
-            productModel.findById.mockResolvedValue(productDoc);
 
-            req = {
-                params: { pid: "p1" },
-                fields: { name: "mockName", description: "mockDesc", price: 1, category: "mockCategory", quantity: 1, shipping: true },
-                files: {},
-            };
-
-            await updateProductController(req, res);
-        });
-        test("return 200 status code", async () => {
-            expect(res.status).toHaveBeenCalledWith(200);
-        });
-        test("success response sent with object containing updated product", async () => {
-            expect(res.send).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    success: true,
-                    message: "Product Updated Successfully",
-                    products: productDoc,
-                })
-            );
-        });
-    });
-    describe("when unexpected error happens", () => {
-        let statusCode, sentBody;
-        beforeAll(async () => {
-            const res = {};
-            res.status = jest.fn((code) => {
-                statusCode = code;
-                return res;
+        describe("updateProductController", () => {
+            describe("when product not found", () => {
+                let res;
+                beforeEach(async () => {
+                    res = makeRes();
+                    productModel.findById.mockResolvedValue(null);
+                    await updateProductController({params: {pid: "p1"}, fields: {}, files: {}}, res);
+                });
+                test("return status 404", async () => {
+                    expect(res.status).toHaveBeenCalledWith(404);
+                });
+                test("error response sent", async () => {
+                    expect(res.send).toHaveBeenCalledWith({error: "Product not found"});
+                });
             });
-            res.send = jest.fn((body) => {
-                sentBody = body;
-                return res;
+            describe("when updating invalid product", () => {
+                let res;
+                beforeEach(async () => {
+                    res = makeRes();
+                    const productDoc = {set: jest.fn(), save: jest.fn(), photo: {}};
+                    productModel.findById.mockResolvedValue(productDoc);
+
+                    await updateProductController({params: {pid: "p1"}, fields: {}, files: {}}, res);
+                });
+                test("return status 400", async () => {
+                    expect(res.status).toHaveBeenCalledWith(400);
+                });
+                test("error response", async () => {
+                    expect(res.send).toHaveBeenCalledWith({error: "Name is Required"});
+                });
             });
-            productModel.findById.mockRejectedValue(new Error("update fail"));
+            describe("upon successful product update", () => {
+                let res, req, productDoc;
+                beforeEach(async () => {
+                    res = makeRes();
+                    productDoc = {set: jest.fn(), save: jest.fn(), photo: {}};
+                    productModel.findById.mockResolvedValue(productDoc);
 
-            await updateProductController(
-                { params: { pid: "p1" }, fields: {}, files: {} },
-                res
-            );
+                    req = {
+                        params: {pid: "p1"},
+                        fields: {
+                            name: "mockName",
+                            description: "mockDesc",
+                            price: 1,
+                            category: "mockCategory",
+                            quantity: 1,
+                            shipping: true
+                        },
+                        files: {},
+                    };
+
+                    await updateProductController(req, res);
+                });
+                test("return 200 status code", async () => {
+                    expect(res.status).toHaveBeenCalledWith(200);
+                });
+                test("success response sent with object containing updated product", async () => {
+                    expect(res.send).toHaveBeenCalledWith(
+                        expect.objectContaining({
+                            success: true,
+                            message: "Product Updated Successfully",
+                            products: productDoc,
+                        })
+                    );
+                });
+            });
+            describe("when unexpected error happens", () => {
+                let statusCode, sentBody;
+                beforeAll(async () => {
+                    const res = {};
+                    res.status = jest.fn((code) => {
+                        statusCode = code;
+                        return res;
+                    });
+                    res.send = jest.fn((body) => {
+                        sentBody = body;
+                        return res;
+                    });
+                    productModel.findById.mockRejectedValue(new Error("update fail"));
+
+                    await updateProductController(
+                        {params: {pid: "p1"}, fields: {}, files: {}},
+                        res
+                    );
+                });
+                test("returns 500 status code", () => {
+                    expect(statusCode).toBe(500);
+                });
+                test("sends error response", () => {
+                    expect(sentBody).toEqual(
+                        expect.objectContaining({
+                            success: false,
+                            message: "Error in updating product",
+                        })
+                    );
+                });
+            });
+
+            test("returns 200 status code", () => {
+                expect(res.status).toHaveBeenCalledWith(200);
+            });
+
+            test("sends success response", () => {
+                expect(res.send).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        success: true,
+                        message: "Product Deleted successfully",
+                    }),
+                );
+            });
         });
-        test("returns 500 status code", () => {
-            expect(statusCode).toBe(500);
+        describe("when unexpected error happens", () => {
+            let statusCode, sentBody;
+            beforeAll(async () => {
+                const res = {};
+                res.status = jest.fn((code) => ((statusCode = code), res));
+                res.send = jest.fn((body) => ((sentBody = body), res));
+
+                const req = {params: {pid: "p1"}};
+
+                productModel.findByIdAndDelete.mockImplementation(() => {
+                    throw new Error("delete fail");
+                });
+
+                await deleteProductController(req, res);
+            });
+            test("returns 500 status code", () => {
+                expect(statusCode).toBe(500);
+            });
+
+            test("sends error response", () => {
+                expect(sentBody).toEqual(
+                    expect.objectContaining({
+                        success: false,
+                        message: "Error while deleting product",
+                    }),
+                );
+            });
         });
-        test("sends error response", () => {
-            expect(sentBody).toEqual(
-                expect.objectContaining({
-                    success: false,
-                    message: "Error in updating product",
-                })
-            );
-        });
     });
-
-    test("returns 200 status code", () => {
-      expect(res.status).toHaveBeenCalledWith(200);
-    });
-
-    test("sends success response", () => {
-      expect(res.send).toHaveBeenCalledWith(
-        expect.objectContaining({
-          success: true,
-          message: "Product Deleted successfully",
-        }),
-      );
-    });
-  });
-  describe("when unexpected error happens", () => {
-    let statusCode, sentBody;
-    beforeAll(async () => {
-      const res = {};
-      res.status = jest.fn((code) => ((statusCode = code), res));
-      res.send = jest.fn((body) => ((sentBody = body), res));
-
-      const req = { params: { pid: "p1" } };
-
-      productModel.findByIdAndDelete.mockImplementation(() => {
-        throw new Error("delete fail");
-      });
-
-      await deleteProductController(req, res);
-    });
-    test("returns 500 status code", () => {
-      expect(statusCode).toBe(500);
-    });
-
-    test("sends error response", () => {
-      expect(sentBody).toEqual(
-        expect.objectContaining({
-          success: false,
-          message: "Error while deleting product",
-        }),
-      );
-    });
-  });
 });
 
 describe("productFiltersController", () => {
@@ -924,18 +932,18 @@ describe("productListController", () => {
 describe("searchProductController", () => {
     describe("queries by keyword across name and description and returns results", () => {
         let res, chain;
-        const results = [{ name: "phone" }];
+        const results = [{name: "phone"}];
         beforeEach(async () => {
-            res = { json: jest.fn(), status: jest.fn().mockReturnValue(this), send: jest.fn() };
+            res = {json: jest.fn(), status: jest.fn().mockReturnValue(this), send: jest.fn()};
             chain = makeThenableQuery(results);
             productModel.find.mockReturnValue(chain);
-            await searchProductController({ params: { keyword: "phone" } }, res);
+            await searchProductController({params: {keyword: "phone"}}, res);
         });
         test("calls find with regex on name and description", () => {
             expect(productModel.find).toHaveBeenCalledWith({
                 $or: [
-                    { name: { $regex: "phone", $options: "i" } },
-                    { description: { $regex: "phone", $options: "i" } },
+                    {name: {$regex: "phone", $options: "i"}},
+                    {description: {$regex: "phone", $options: "i"}},
                 ],
             });
         });
@@ -950,14 +958,16 @@ describe("searchProductController", () => {
             const res = {};
             res.status = jest.fn((code) => ((statusCode = code), res));
             res.send = jest.fn((body) => ((sentBody = body), res));
-            productModel.find.mockImplementation(() => { throw new Error("search fail"); });
-            await searchProductController({ params: { keyword: "x" } }, res);
+            productModel.find.mockImplementation(() => {
+                throw new Error("search fail");
+            });
+            await searchProductController({params: {keyword: "x"}}, res);
         });
         test("returns 500 status code", () => {
             expect(statusCode).toBe(500);
         });
         test("sends error response", () => {
-            expect(sentBody).toEqual(expect.objectContaining({ success: false, message: "Error In Search Product API" }));
+            expect(sentBody).toEqual(expect.objectContaining({success: false, message: "Error In Search Product API"}));
         });
     });
 });
