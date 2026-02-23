@@ -8,3 +8,4 @@ node_modules
 *EXAMPLES.md
 /sonar-project.properties
 package.json
+.DS_Store
