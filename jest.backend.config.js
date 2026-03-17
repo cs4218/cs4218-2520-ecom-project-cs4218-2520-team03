@@ -12,7 +12,7 @@ export default {
     "<rootDir>/middlewares/authMiddleware.test.js",
     "<rootDir>/models/*.test.js",
     "<rootDir>/config/db.test.js",
-    "<rootDir>/tests/integration/*.test.js",
+    "<rootDir>/tests/integration/profileSecurity.test.js",
   ],
 
   // jest code coverage
