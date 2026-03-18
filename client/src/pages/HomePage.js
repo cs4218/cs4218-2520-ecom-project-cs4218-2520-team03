@@ -106,6 +106,7 @@ const HomePage = () => {
       console.log(error);
     }
   };
+  // Trinh Hoai Song Thu, A0266248W
   return (
     <Layout title={"ALL Products - Best offers "}>
       {/* banner image */}
@@ -180,18 +181,18 @@ const HomePage = () => {
                       More Details
                     </button>
                     <button
-                      className="btn btn-dark ms-1"
-                      onClick={() => {
-                        setCart([...cart, p]);
-                        localStorage.setItem(
-                          "cart",
-                          JSON.stringify([...cart, p]),
-                        );
-                        toast.success("Item Added to cart");
-                      }}
-                    >
-                      ADD TO CART
-                    </button>
+                    className={`btn ms-1 ${p.quantity === 0 ? "btn-secondary" : "btn-dark"}`}
+                    disabled={p.quantity === 0}
+                    onClick={() => {
+                      if (p.quantity === 0) return;
+
+                      setCart([...cart, p]);
+                      localStorage.setItem("cart", JSON.stringify([...cart, p]));
+                      toast.success("Item Added to cart");
+                    }}
+                  >
+                    {p.quantity === 0 ? "OUT OF STOCK" : "ADD TO CART"}
+                  </button>
                   </div>
                 </div>
               </div>

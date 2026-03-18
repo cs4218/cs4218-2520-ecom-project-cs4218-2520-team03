@@ -10,6 +10,7 @@ const { Option } = Select;
 const UpdateProduct = () => {
   const navigate = useNavigate();
   const params = useParams();
+
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -17,41 +18,38 @@ const UpdateProduct = () => {
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState("");
   const [shipping, setShipping] = useState(false);
-  const [photo, setPhoto] = useState("");
+  const [photo, setPhoto] = useState(null); // only for newly selected file
   const [id, setId] = useState("");
 
-  //get single product
   const getSingleProduct = async () => {
     try {
-      const { data } = await axios.get(
-        `/api/v1/product/get-product/${params.slug}`,
-      );
+      const { data } = await axios.get(`/api/v1/product/get-product/${params.slug}`);
       setName(data.product.name);
       setId(data.product._id);
       setDescription(data.product.description);
       setPrice(data.product.price);
-      setPrice(data.product.price);
       setQuantity(data.product.quantity);
       setShipping(data.product.shipping);
       setCategory(data.product.category._id);
+      setPhoto(null);
     } catch (error) {
       console.log(error);
     }
   };
+
   useEffect(() => {
     getSingleProduct();
-    //eslint-disable-next-line
   }, []);
-  //get all category
+
   const getAllCategory = async () => {
     try {
       const { data } = await axios.get("/api/v1/category/get-category");
       if (data?.success) {
-        setCategories(data?.category);
+        setCategories(data.category);
       }
     } catch (error) {
       console.log(error);
-      toast.error("Something wwent wrong in getting catgeory");
+      toast.error("Something went wrong in getting category");
     }
   };
 
@@ -59,7 +57,6 @@ const UpdateProduct = () => {
     getAllCategory();
   }, []);
 
-  //create product function
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
@@ -67,63 +64,61 @@ const UpdateProduct = () => {
         toast.error("Please fill all required fields");
         return;
       }
-      if (!photo) {
-        toast.error("A photo of the product is required");
-        return;
-      }
-      if (photo.size > 1_000_000) {
+
+      if (photo && photo.size > 1_000_000) {
         toast.error("Photo should be less than 1mb");
         return;
       }
-      if (price <= 0) {
+
+      if (Number(price) <= 0) {
         toast.error("Price must be greater than 0");
         return;
       }
-      if (quantity < 0) {
+
+      if (Number(quantity) < 0) {
         toast.error("Quantity must be greater than or equal to 0");
         return;
       }
+
       const productData = new FormData();
       productData.append("name", name);
       productData.append("description", description);
       productData.append("price", price);
       productData.append("quantity", quantity);
-      photo && productData.append("photo", photo);
       productData.append("category", category);
       productData.append("shipping", shipping);
+
+      if (photo) {
+        productData.append("photo", photo);
+      }
+
       const { data } = await axios.put(
         `/api/v1/product/update-product/${id}`,
-        productData,
+        productData
       );
+
       if (data?.success) {
         toast.success("Product Updated Successfully");
         navigate("/dashboard/admin/products");
       }
     } catch (error) {
       console.log(error);
-      toast.error("something went wrong");
+      toast.error("Something went wrong");
     }
   };
 
-  //delete a product
   const handleDelete = async () => {
     try {
-      // Prompt user with Yes/No options only
       let answer = window.prompt(
-        "Are you sure you want to delete this product? Type 'Yes' to confirm or 'No' to cancel.",
+        "Are you sure you want to delete this product? Type 'Yes' to confirm or 'No' to cancel."
       );
 
-      // Check if the answer is neither 'Yes' nor 'No'
       if (answer !== "Yes") {
         toast.error("Product deletion canceled.");
         return;
       }
 
-      // Proceed with deletion if answer is 'Yes'
-      const { data } = await axios.delete(
-        `/api/v1/product/delete-product/${id}`,
-      );
-
+      await axios.delete(`/api/v1/product/delete-product/${id}`);
       toast.success("Product Deleted Successfully");
       navigate("/dashboard/admin/products");
     } catch (error) {
@@ -131,8 +126,9 @@ const UpdateProduct = () => {
       toast.error("Something went wrong");
     }
   };
+
   return (
-    <Layout title={"Dashboard - Create Product"}>
+    <Layout title={"Dashboard - Update Product"}>
       <div className="container-fluid m-3 p-3">
         <div className="row">
           <div className="col-md-3">
@@ -142,14 +138,11 @@ const UpdateProduct = () => {
             <h1>Update Product</h1>
             <div className="m-1 w-75">
               <Select
-                variant={false}
                 placeholder="Select a category"
                 size="large"
                 showSearch
                 className="form-select mb-3"
-                onChange={(value) => {
-                  setCategory(value);
-                }}
+                onChange={(value) => setCategory(value)}
                 value={category}
               >
                 {categories?.map((c) => (
@@ -158,6 +151,7 @@ const UpdateProduct = () => {
                   </Option>
                 ))}
               </Select>
+
               <div className="mb-3">
                 <label className="btn btn-outline-secondary col-md-12">
                   {photo ? photo.name : "Upload Photo"}
@@ -170,27 +164,20 @@ const UpdateProduct = () => {
                   />
                 </label>
               </div>
-              <div className="mb-3">
-                {photo ? (
-                  <div className="text-center">
-                    <img
-                      src={URL.createObjectURL(photo)}
-                      alt="product_photo"
-                      height={"200px"}
-                      className="img img-responsive"
-                    />
-                  </div>
-                ) : (
-                  <div className="text-center">
-                    <img
-                      src={`/api/v1/product/product-photo/${id}`}
-                      alt="product_photo"
-                      height={"200px"}
-                      className="img img-responsive"
-                    />
-                  </div>
-                )}
+
+              <div className="mb-3 text-center">
+                <img
+                  src={
+                    photo
+                      ? URL.createObjectURL(photo)
+                      : `/api/v1/product/product-photo/${id}`
+                  }
+                  alt="product_photo"
+                  height="200px"
+                  className="img img-responsive"
+                />
               </div>
+
               <div className="mb-3">
                 <input
                   type="text"
@@ -200,9 +187,9 @@ const UpdateProduct = () => {
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
+
               <div className="mb-3">
                 <textarea
-                  type="text"
                   value={description}
                   placeholder="write a description"
                   className="form-control"
@@ -219,6 +206,7 @@ const UpdateProduct = () => {
                   onChange={(e) => setPrice(e.target.value)}
                 />
               </div>
+
               <div className="mb-3">
                 <input
                   type="number"
@@ -228,27 +216,27 @@ const UpdateProduct = () => {
                   onChange={(e) => setQuantity(e.target.value)}
                 />
               </div>
+
               <div className="mb-3">
                 <Select
-                  variant={false}
-                  placeholder="Select Shipping "
+                  placeholder="Select Shipping"
                   size="large"
                   showSearch
                   className="form-select mb-3"
-                  onChange={(value) => {
-                    setShipping(value);
-                  }}
+                  onChange={(value) => setShipping(value)}
                   value={shipping}
                 >
                   <Option value={false}>No</Option>
                   <Option value={true}>Yes</Option>
                 </Select>
               </div>
+
               <div className="mb-3">
                 <button className="btn btn-primary" onClick={handleUpdate}>
                   UPDATE PRODUCT
                 </button>
               </div>
+
               <div className="mb-3">
                 <button className="btn btn-danger" onClick={handleDelete}>
                   DELETE PRODUCT

@@ -1,5 +1,6 @@
 import braintree from "braintree";
 import orderModel from "../models/orderModel.js";
+import productModel from "../models/productModel.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -34,31 +35,47 @@ export const brainTreePaymentController = async (req, res) => {
   try {
     const { nonce, cart } = req.body;
     let total = 0;
-    cart.map((i) => {
+
+    cart.forEach((i) => {
       total += i.price;
     });
-    let newTransaction = gateway.transaction.sale(
-      {
-        amount: total,
-        paymentMethodNonce: nonce,
-        options: {
-          submitForSettlement: true,
+
+    const result = await new Promise((resolve, reject) => {
+      gateway.transaction.sale(
+        {
+          amount: total,
+          paymentMethodNonce: nonce,
+          options: {
+            submitForSettlement: true,
+          },
         },
-      },
-      function (error, result) {
-        if (result) {
-          const order = new orderModel({
-            products: cart,
-            payment: result,
-            buyer: req.user._id,
-          }).save();
-          res.json({ ok: true });
-        } else {
-          res.status(500).send(error);
+        (error, result) => {
+          if (error) return reject(error);
+          resolve(result);
         }
-      },
+      );
+    });
+
+    await new orderModel({
+      products: cart,
+      payment: result,
+      buyer: req.user._id,
+    }).save();
+
+    await Promise.all(
+      cart.map(async (product) => {
+        const item = await productModel.findById(product._id);
+        if (!item) return;
+
+        const quantity = parseInt(item.quantity, 10) - 1;
+        item.quantity = String(quantity);
+        await item.save();
+      })
     );
+
+    return res.json({ ok: true });
   } catch (error) {
     console.log(error);
+    return res.status(500).send(error);
   }
 };
