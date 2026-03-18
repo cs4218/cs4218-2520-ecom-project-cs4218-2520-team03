@@ -12,7 +12,9 @@ import cors from "cors";
 dotenv.config();
 
 //database config
-connectDB();
+if (process.env.NODE_ENV !== "test") {
+  connectDB();
+}
 
 const app = express();
 
@@ -32,10 +34,12 @@ app.get("/", (req, res) => {
   res.send("<h1>Welcome to ecommerce app</h1>");
 });
 
-const PORT = process.env.PORT || 6060;
+// Sun Zihan, A0259581R
+if (process.env.NODE_ENV !== 'test') {
+  const PORT = process.env.PORT || 6060;
+  app.listen(PORT, () => {
+      console.log(`Server running on ${process.env.DEV_MODE} mode on ${PORT}`.bgCyan.white);
+  });
+}
 
-app.listen(PORT, () => {
-  console.log(
-    `Server running on ${process.env.DEV_MODE} mode on ${PORT}`.bgCyan.white,
-  );
-});
+export default app;
