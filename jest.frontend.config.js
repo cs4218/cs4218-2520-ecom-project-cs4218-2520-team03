@@ -1,3 +1,6 @@
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
 export default {
   // name displayed during tests
   displayName: "frontend",
@@ -14,10 +17,13 @@ export default {
   // tells jest how to handle css/scss imports in your tests
   moduleNameMapper: {
     "\\.(css|scss)$": "identity-obj-proxy",
+    "^bson$": require.resolve("bson"),
   },
 
   // ignore all node_modules except styleMock (needed for css imports)
-  transformIgnorePatterns: ["/node_modules/(?!(styleMock\\.js)$)"],
+  transformIgnorePatterns: [
+    "/node_modules/(?!(styleMock\\.js|mongodb-memory-server|mongodb|bson)/)"
+  ],
 
   // only run these tests
   testMatch: [
@@ -31,6 +37,7 @@ export default {
     "<rootDir>/client/src/components/Routes/Private.test.js",
     "<rootDir>/client/src/components/Form/*.test.js",
     "<rootDir>/client/src/integration/sessionTokenValidation.test.js",
+    "<rootDir>/client/src/integration/UserIdentityLifecycle.test.js",
   ],
 
   // jest code coverage
