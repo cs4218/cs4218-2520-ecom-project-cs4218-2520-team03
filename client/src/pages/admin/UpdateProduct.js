@@ -24,6 +24,7 @@ const UpdateProduct = () => {
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(`/api/v1/product/get-product/${params.slug}`);
+      console.log("Product data:", data);
       setName(data.product.name);
       setId(data.product._id);
       setDescription(data.product.description);
@@ -31,7 +32,7 @@ const UpdateProduct = () => {
       setQuantity(data.product.quantity);
       setShipping(data.product.shipping);
       setCategory(data.product.category._id);
-      setPhoto(null);
+      setPhoto(data.product.photo);
     } catch (error) {
       console.log(error);
     }
@@ -62,11 +63,6 @@ const UpdateProduct = () => {
     try {
       if (!name || !description || !price || !category || !quantity) {
         toast.error("Please fill all required fields");
-        return;
-      }
-
-      if (!photo) {
-        toast.error("A photo of the product is required");
         return;
       }
 
