@@ -1,6 +1,5 @@
 import { jest } from "@jest/globals";
 
-// 1. MOCK BRAINTREE SDK (Must be at the very top)
 jest.mock("braintree", () => ({
   BraintreeGateway: jest.fn(() => ({
     clientToken: {
@@ -30,7 +29,6 @@ import path from "path";
 import fs from "fs";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
-// Import your app and models
 import app from "../../server.js";
 import User from "../../models/userModel.js";
 import Category from "../../models/categoryModel.js";
@@ -80,7 +78,6 @@ beforeEach(async () => {
   });
 });
 
-// Helper to create a product
 async function createCategoryAndProduct(adminToken) {
   const categoryRes = await request(app)
     .post("/api/v1/category/create-category")
@@ -115,7 +112,7 @@ async function createCategoryAndProduct(adminToken) {
 describe("Admin view order integration flow", () => {
   
   test("user place an order -> admin check updated orders", async () => {
-    // 1) Admin login & seed product
+    // 1) Admin login
     const adminLogin = await request(app)
       .post("/api/v1/auth/login")
       .send({ email: "admin@test.com", password: "Admin@123" });
@@ -129,13 +126,12 @@ describe("Admin view order integration flow", () => {
     const userToken = userLogin.body.token;
     const userId = userLogin.body.user._id;
 
-    // 3) Get Braintree token
+    // 3) Execute Payment
     const btTokenRes = await request(app)
       .get("/api/v1/product/braintree/token")
       .set("Authorization", `Bearer ${userToken}`);
     expect(btTokenRes.statusCode).toBe(200);
 
-    // 4) Execute Payment (This now hits the MOCK)
     const paymentRes = await request(app)
       .post("/api/v1/product/braintree/payment")
       .set("Authorization", userToken)
@@ -146,7 +142,7 @@ describe("Admin view order integration flow", () => {
 
     expect(paymentRes.statusCode).toBe(200);
 
-    // 5) Admin views all orders
+    // 4) Admin views all orders
     const allOrdersRes = await request(app)
       .get("/api/v1/auth/all-orders")
       .set("Authorization", adminToken);
@@ -154,7 +150,6 @@ describe("Admin view order integration flow", () => {
     expect(allOrdersRes.statusCode).toBe(200);
     expect(Array.isArray(allOrdersRes.body)).toBe(true);
     
-    // Check if the order we just placed exists
     const hasOrder = allOrdersRes.body.some(o => o.buyer?._id === userId || o.buyer === userId);
     expect(hasOrder).toBe(true);
   });
@@ -171,13 +166,13 @@ describe("Admin view order integration flow", () => {
       .send({ email: "johndoe@gmail.com", password: "User@123" });
     const userToken = userLogin.body.token;
 
-    // Create order
+    // 1. Create order
     await request(app)
       .post("/api/v1/product/braintree/payment")
       .set("Authorization", userToken)
       .send({ nonce: "test-nonce", cart: [{ _id: product._id, name: product.name, description: product.description, price: product.price }]  });
 
-    // Verify stock
+    // 2.Verify updated product quantity
     const getProductRes = await request(app).get(`/api/v1/product/get-product/${product.slug}`);
     expect(getProductRes.body.product.quantity).toBe(9);
   });

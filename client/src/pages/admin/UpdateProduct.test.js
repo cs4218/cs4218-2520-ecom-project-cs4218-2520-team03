@@ -168,7 +168,7 @@ describe("UpdateProduct Component", () => {
 
     await waitFor(() => {
       expect(toast.error).toHaveBeenCalledWith(
-        "Something wwent wrong in getting catgeory",
+        "Something went wrong in getting category",
       );
     });
   });
@@ -417,7 +417,7 @@ describe("UpdateProduct Component", () => {
     fireEvent.click(screen.getByText("UPDATE PRODUCT"));
 
     await waitFor(() => {
-      expect(toast.error).toHaveBeenCalledWith("something went wrong");
+      expect(toast.error).toHaveBeenCalledWith("Something went wrong");
     });
   });
   test("shows error toast when missing photo on form submission", async () => {

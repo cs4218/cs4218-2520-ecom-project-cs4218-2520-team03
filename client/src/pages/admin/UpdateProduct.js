@@ -65,6 +65,11 @@ const UpdateProduct = () => {
         return;
       }
 
+      if (!photo) {
+        toast.error("A photo of the product is required");
+        return;
+      }
+
       if (photo && photo.size > 1_000_000) {
         toast.error("Photo should be less than 1mb");
         return;
