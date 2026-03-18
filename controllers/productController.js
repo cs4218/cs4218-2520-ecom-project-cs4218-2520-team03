@@ -41,7 +41,10 @@ export async function saveProductService({
   const validation = validateProductFields(fields, files, requirePhoto);
   if (validation) return { ok: false, ...validation };
 
-  productDoc.set({ ...fields, slug: slugify(fields.name) });
+  productDoc.set({
+    ...fields,
+    slug: slugify(fields.name, { lower: true, strict: true }),
+  });
   attachPhoto(productDoc, files?.photo, readFile);
   await productDoc.save();
 
