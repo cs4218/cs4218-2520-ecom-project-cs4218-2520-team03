@@ -323,14 +323,6 @@ describe("UpdateProduct Component", () => {
     fireEvent.change(screen.getByPlaceholderText("write a Price"), {
       target: { value: "-10" },
     });
-    const file = new File(["photo"], "photo.png", { type: "image/png" });
-    
-    const uploadLabel = screen.getByText("Upload Photo");
-    const input = uploadLabel
-      .closest("label")
-      .querySelector('input[type="file"]');
-
-    fireEvent.change(input, { target: { files: [file] } });
     fireEvent.click(screen.getByText("UPDATE PRODUCT"));
 
     await waitFor(() => {
@@ -352,14 +344,7 @@ describe("UpdateProduct Component", () => {
     fireEvent.change(screen.getByPlaceholderText("write a quantity"), {
       target: { value: "-5" },
     });
-    const file = new File(["photo"], "photo.png", { type: "image/png" });
-    
-    const uploadLabel = screen.getByText("Upload Photo");
-    const input = uploadLabel
-      .closest("label")
-      .querySelector('input[type="file"]');
 
-    fireEvent.change(input, { target: { files: [file] } });
     fireEvent.click(screen.getByText("UPDATE PRODUCT"));
 
     await waitFor(() => {
@@ -406,48 +391,11 @@ describe("UpdateProduct Component", () => {
       expect(screen.getByPlaceholderText("write a Price")).toHaveValue(100);
       expect(screen.getByPlaceholderText("write a quantity")).toHaveValue(10);
     });
-    const file = new File(["photo"], "photo.png", { type: "image/png" });
-    
-          const uploadLabel = screen.getByText("Upload Photo");
-          const input = uploadLabel
-            .closest("label")
-            .querySelector('input[type="file"]');
-    
-          fireEvent.change(input, { target: { files: [file] } });
     fireEvent.click(screen.getByText("UPDATE PRODUCT"));
 
     await waitFor(() => {
       expect(toast.error).toHaveBeenCalledWith("something went wrong");
     });
-  });
-  test("shows error toast when missing photo on form submission", async () => {
-    mockFetchSampleProduct();
-    renderComponent();
-
-    await waitFor(() => {
-      expect(screen.getByPlaceholderText("write a name")).toBeInTheDocument();
-    });
-
-    fireEvent.change(screen.getByPlaceholderText("write a name"), {
-      target: { value: "Test Product" },
-    });
-    fireEvent.change(screen.getByPlaceholderText("write a description"), {
-      target: { value: "Test Description" },
-    });
-    fireEvent.change(screen.getByPlaceholderText("write a Price"), {
-      target: { value: "100" },
-    });
-    fireEvent.change(screen.getByPlaceholderText("write a quantity"), {
-      target: { value: "10" },
-    });
-
-    fireEvent.click(screen.getByText("UPDATE PRODUCT"));
-
-    await waitFor(() => {
-      expect(toast.error).toHaveBeenCalledWith(
-        "A photo of the product is required",
-      );
-    }); 
   });
 
   test("shows error toast when photo size exceeds limit on form submission", async () => {  
@@ -488,4 +436,52 @@ describe("UpdateProduct Component", () => {
       );
     });
   });
+//  test("allows updating a product without selecting a new photo", async () => {
+//    mockFetchSampleProduct();
+//
+//    axios.put.mockResolvedValueOnce({
+//      data: { success: true },
+//    });
+//
+//    const appendMock = jest.fn();
+//    global.FormData = jest.fn(() => ({ append: appendMock }));
+//
+//    renderComponent();
+//
+//    await waitFor(() => {
+//      expect(screen.getByPlaceholderText("write a name")).toBeInTheDocument();
+//    });
+//
+//    fireEvent.change(screen.getByPlaceholderText("write a name"), {
+//      target: { value: "Updated Book" },
+//    });
+//    fireEvent.change(screen.getByPlaceholderText("write a description"), {
+//      target: { value: "Updated Description" },
+//    });
+//    fireEvent.change(screen.getByPlaceholderText("write a Price"), {
+//      target: { value: "120" },
+//    });
+//    fireEvent.change(screen.getByPlaceholderText("write a quantity"), {
+//      target: { value: "15" },
+//    });
+//
+//    fireEvent.click(screen.getByText("UPDATE PRODUCT"));
+//
+//    await waitFor(() => {
+//      expect(appendMock).toHaveBeenCalledWith("name", "Updated Book");
+//      expect(appendMock).toHaveBeenCalledWith(
+//        "description",
+//        "Updated Description",
+//      );
+//      expect(appendMock).toHaveBeenCalledWith("price", "120");
+//      expect(appendMock).toHaveBeenCalledWith("quantity", "15");
+//      expect(appendMock).not.toHaveBeenCalledWith("photo", expect.anything());
+//
+//      expect(axios.put).toHaveBeenCalled();
+//      expect(toast.success).toHaveBeenCalledWith(
+//        "Product Updated Successfully",
+//      );
+//      expect(mockNavigate).toHaveBeenCalledWith("/dashboard/admin/products");
+//    });
+//  });
 });
