@@ -1,4 +1,12 @@
 // Sun Zihan, A0259581R
+import { jest } from "@jest/globals";
+
+// Mock the payment controller so it never tries to load Braintree
+jest.mock("../../controllers/paymentController.js", () => ({
+  braintreeTokenController: jest.fn(),
+  brainTreePaymentController: jest.fn(),
+}));
+
 import request from "supertest";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";

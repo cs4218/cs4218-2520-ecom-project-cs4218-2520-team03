@@ -5,6 +5,8 @@ export default {
   // when testing backend
   testEnvironment: "node",
 
+  setupFiles: ["<rootDir>/jest.setup.js"],
+  
   // which test to run
   testMatch: [
     "<rootDir>/controllers/*.test.js",
