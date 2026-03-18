@@ -1,25 +1,38 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/auth";
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import axios from "axios";
-import { set } from "mongoose";
 import Spinner from "../Spinner";
 
 export default function AdminRoute() {
-  const [ok, setOk] = useState(false);
-  const [auth, setAuth] = useAuth();
+  const [ok, setOk] = useState(null);
+  const [auth, , loading] = useAuth();
 
   useEffect(() => {
     const authCheck = async () => {
-      const res = await axios.get("/api/v1/auth/admin-auth");
-      if (res.data.ok) {
-        setOk(true);
-      } else {
+      try {
+        const res = await axios.get("/api/v1/auth/admin-auth", {
+          headers: {
+            Authorization: auth.token,
+          },
+        });
+        setOk(res.data.ok);
+      } catch (error) {
+        console.log("admin-auth error:", error.response?.data || error.message);
         setOk(false);
       }
     };
-    if (auth?.token) authCheck();
-  }, [auth?.token]);
 
-  return ok ? <Outlet /> : <Spinner />;
+    if (loading) return;
+
+    if (auth?.token) {
+      authCheck();
+    } else {
+      setOk(false);
+    }
+  }, [auth?.token, loading]);
+
+  if (loading || ok === null) return <Spinner />;
+
+  return ok ? <Outlet /> : <Navigate to="/login" replace />;
 }
