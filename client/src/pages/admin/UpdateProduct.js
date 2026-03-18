@@ -18,7 +18,7 @@ const UpdateProduct = () => {
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState("");
   const [shipping, setShipping] = useState(false);
-  const [photo, setPhoto] = useState(null); // only for newly selected file
+  const [photo, setPhoto] = useState(null);
   const [id, setId] = useState("");
 
   const getSingleProduct = async () => {
@@ -96,7 +96,6 @@ const UpdateProduct = () => {
       if (photo) {
         productData.append("photo", photo);
       }
-
       const { data } = await axios.put(
         `/api/v1/product/update-product/${id}`,
         productData
