@@ -1,15 +1,45 @@
 import colors from "colors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
-import app from "./app.js";
+import express from "express";
+import morgan from "morgan";
+import cors from "cors";
+
+import authRoutes from "./routes/authRoute.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
 
 dotenv.config();
-connectDB();
 
-const PORT = process.env.PORT || 6060;
+//database config
+if (process.env.NODE_ENV !== "test") {
+  connectDB();
+}
 
-app.listen(PORT, () => {
-  console.log(
-    `Server running on ${process.env.DEV_MODE} mode on ${PORT}`.bgCyan.white
-  );
+const app = express();
+
+//middlewares
+app.use(cors());
+app.use(express.json());
+app.use(morgan("dev"));
+
+//routes
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/category", categoryRoutes);
+app.use("/api/v1/product", productRoutes);
+
+// rest api
+
+app.get("/", (req, res) => {
+  res.send("<h1>Welcome to ecommerce app</h1>");
 });
+
+// Sun Zihan, A0259581R
+if (process.env.NODE_ENV !== 'test') {
+  const PORT = process.env.PORT || 6060;
+  app.listen(PORT, () => {
+      console.log(`Server running on ${process.env.DEV_MODE} mode on ${PORT}`.bgCyan.white);
+  });
+}
+
+export default app;

@@ -5,7 +5,7 @@ import path from "path";
 import fs from "fs";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
-import app from "../../app.js";
+import app from "../../server.js";
 import User from "../../models/userModel.js";
 import Category from "../../models/categoryModel.js";
 import Product from "../../models/productModel.js";
@@ -120,6 +120,7 @@ describe("Admin view order integration flow", () => {
       ] });
 
     // The real controller talks to braintree; depending on env vars it may fail. Accept 200 or 500. If 500, insert an order directly to continue flow validation.
+    console.log(paymentRes.body)
     expect(paymentRes.statusCode).toBe(200);
 
     // 5) user should have an order (either via successful payment or mock insert)
@@ -209,6 +210,3 @@ describe("Admin view order integration flow", () => {
     expect(updatedProduct.quantity).toBe(9);
   });
 });
-
-
-describe()

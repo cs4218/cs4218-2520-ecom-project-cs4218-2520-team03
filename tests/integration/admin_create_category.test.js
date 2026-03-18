@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
-import app from "../../app.js";
+import app from "../../server.js";
 import User from "../../models/userModel.js";
 import Category from "../../models/categoryModel.js";
 import { describe } from "node:test";
