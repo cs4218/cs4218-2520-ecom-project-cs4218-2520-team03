@@ -12,7 +12,7 @@ export const createCategoryController = async (req, res) => {
     if (existingCategory) {
       return res.status(409).send({
         success: false,
-        message: "Category Already Exisits",
+        message: "Category Already Exists",
       });
     }
     const category = await new categoryModel({

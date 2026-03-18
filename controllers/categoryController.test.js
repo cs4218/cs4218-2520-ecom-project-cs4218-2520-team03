@@ -51,7 +51,7 @@ describe("testcreateCategoryController", () => {
     expect(res.status).toHaveBeenCalledWith(409);
     expect(res.send).toHaveBeenCalledWith({
       success: false,
-      message: "Category Already Exisits",
+      message: "Category Already Exists",
     });
     expect(slugify).not.toHaveBeenCalled();
     expect(categoryModel).not.toHaveBeenCalled();

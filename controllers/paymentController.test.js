@@ -4,6 +4,7 @@
 
 import { braintreeTokenController, brainTreePaymentController } from "./paymentController.js";
 import orderModel from "../models/orderModel.js";
+import productModel from "../models/productModel.js";
 
 // jest.mock is hoisted before imports, so mock fns must be defined inside the factory.
 // They are exposed via _mocks so tests can access the same jest.fn() instances.
@@ -21,6 +22,7 @@ jest.mock("braintree", () => {
 });
 
 jest.mock("../models/orderModel.js");
+jest.mock("../models/productModel.js");
 
 // Retrieve the stable mock fn references created inside the factory above
 const { _mocks: { generate: mockGenerate, sale: mockSale } } = jest.requireMock("braintree");
@@ -107,19 +109,27 @@ describe("brainTreePaymentController", () => {
   it("saves a new order and responds with ok:true on successful transaction", async () => {
     const fakeResult = { success: true };
     mockSale.mockImplementation((opts, cb) => cb(null, fakeResult));
-    const mockSave = jest.fn().mockResolvedValue({});
-    orderModel.mockImplementation(() => ({ save: mockSave }));
 
-    await brainTreePaymentController(req, res);
+    const mockOrderSave = jest.fn().mockResolvedValue({});
+    orderModel.mockImplementation(() => ({ save: mockOrderSave }));
 
-    expect(orderModel).toHaveBeenCalledWith({
-      products: req.body.cart,
-      payment: fakeResult,
-      buyer: "user-123",
+    const mockProductSave = jest.fn().mockResolvedValue({});
+    productModel.findById.mockResolvedValue({
+      quantity: "5",
+      save: mockProductSave,
     });
-    expect(mockSave).toHaveBeenCalled();
-    expect(res.json).toHaveBeenCalledWith({ ok: true });
+
+  await brainTreePaymentController(req, res);
+
+  expect(orderModel).toHaveBeenCalledWith({
+    products: req.body.cart,
+    payment: fakeResult,
+    buyer: "user-123",
   });
+  expect(mockOrderSave).toHaveBeenCalled();
+  expect(productModel.findById).toHaveBeenCalled();
+  expect(res.json).toHaveBeenCalledWith({ ok: true });
+});
 
   it("responds with 500 when the transaction fails", async () => {
     const fakeError = new Error("transaction failed");
