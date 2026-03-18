@@ -9,8 +9,8 @@ import userModel from "../../models/userModel.js";
 import categoryModel from "../../models/categoryModel.js";
 import productModel from "../../models/productModel.js";
 
-let mongoServer;
 let admin;
+let mongoServer;
 let adminToken;
 let category;
 
