@@ -17,7 +17,7 @@ const UpdateProduct = () => {
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState("");
   const [shipping, setShipping] = useState(false);
-  const [photo, setPhoto] = useState("");
+  const [photo, setPhoto] = useState(null);
   const [id, setId] = useState("");
 
   //get single product
@@ -67,11 +67,7 @@ const UpdateProduct = () => {
         toast.error("Please fill all required fields");
         return;
       }
-      if (!photo) {
-        toast.error("A photo of the product is required");
-        return;
-      }
-      if (photo.size > 1_000_000) {
+      if (photo && photo.size > 1_000_000) {
         toast.error("Photo should be less than 1mb");
         return;
       }
@@ -88,9 +84,11 @@ const UpdateProduct = () => {
       productData.append("description", description);
       productData.append("price", price);
       productData.append("quantity", quantity);
-      photo && productData.append("photo", photo);
       productData.append("category", category);
       productData.append("shipping", shipping);
+      if (photo) {
+        productData.append("photo", photo);
+      }
       const { data } = await axios.put(
         `/api/v1/product/update-product/${id}`,
         productData,
