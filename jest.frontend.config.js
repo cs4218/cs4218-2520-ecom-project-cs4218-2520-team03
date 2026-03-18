@@ -30,6 +30,7 @@ export default {
     "<rootDir>/client/src/hooks/useCategory.test.js",
     "<rootDir>/client/src/components/Routes/Private.test.js",
     "<rootDir>/client/src/components/Form/*.test.js",
+    "<rootDir>/client/src/integration/sessionTokenValidation.test.js",
   ],
 
   // jest code coverage
@@ -63,5 +64,8 @@ export default {
       functions: 95,
     },
   },
-  setupFilesAfterEnv: ["<rootDir>/client/src/setupTests.js"],
+  setupFilesAfterEnv: [
+    "<rootDir>/client/src/setupTests.js",
+    "<rootDir>/jest.setup.js"
+  ],
 };

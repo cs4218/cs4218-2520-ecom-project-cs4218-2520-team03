@@ -5,6 +5,8 @@ export default {
   // when testing backend
   testEnvironment: "node",
 
+  setupFiles: ["<rootDir>/jest.setup.js"],
+  
   // which test to run
   testMatch: [
     "<rootDir>/controllers/*.test.js",
@@ -12,6 +14,7 @@ export default {
     "<rootDir>/middlewares/authMiddleware.test.js",
     "<rootDir>/models/*.test.js",
     "<rootDir>/config/db.test.js",
+    "<rootDir>/tests/integration/profileSecurity.test.js",
   ],
 
   // jest code coverage
