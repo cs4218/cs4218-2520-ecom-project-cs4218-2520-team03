@@ -117,4 +117,32 @@ describe("Integration: Session Persistence and Token Validation", () => {
     }));
     expect(next).not.toHaveBeenCalled();
   });
+
+  it("should clear localStorage and reset auth state when token validation fails", async () => {
+    const authData = { user: mockUser, token: "expired" };
+    localStorage.setItem("auth", JSON.stringify(authData));
+    
+    axios.get.mockResolvedValue({ data: { ok: false } });
+  
+    render(
+      <AuthProvider>
+        <MemoryRouter initialEntries={["/dashboard"]}>
+          <Routes>
+            <Route path="/dashboard" element={<PrivateRoute />}>
+              <Route path="" element={<div>Protected Content</div>} />
+            </Route>
+          </Routes>
+        </MemoryRouter>
+      </AuthProvider>
+    );
+  
+    await waitFor(() => expect(axios.get).toHaveBeenCalledWith("/api/v1/auth/user-auth"));
+  
+    await waitFor(() => {
+      const storedAuth = localStorage.getItem("auth");
+      expect(storedAuth === null || JSON.parse(storedAuth).token === "").toBe(true);
+    }, { timeout: 2000 });
+  
+    expect(screen.queryByText("Protected Content")).not.toBeInTheDocument();
+  });
 });
