@@ -1,4 +1,5 @@
 // Sun Zihan, A0259581R
+// Story: Login -> Dashboard -> Update Profile -> Dashboard -> Verify Changes
 
 import { test, expect } from '@playwright/test';
 
