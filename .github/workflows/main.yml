@@ -50,7 +50,6 @@ jobs:
 
     env:
       CI: true
-      PORT: 6060
       MONGO_URL: mongodb://127.0.0.1:27017/ecom_e2e
       JWT_SECRET: test_secret_for_ci
       BRAINTREE_MERCHANT_ID: ${{ secrets.BRAINTREE_MERCHANT_ID }}
