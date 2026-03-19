@@ -1,4 +1,6 @@
 // Sun Zihan, A0259581R
+// Story: Register and Login -> Add Item -> Cart -> Update Address -> Redirected to Profile 
+// -> Update Profile -> Return to Cart -> Verify Data Consistency
 
 import { test, expect } from '@playwright/test';
 
