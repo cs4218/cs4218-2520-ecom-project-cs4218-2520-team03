@@ -44,6 +44,8 @@ const ProductDetails = () => {
       toast.error("Something went wrong with retrieving similar product");
     }
   };
+  // Sun Zihan, A0259581R
+  // Add optional chaining to product ID and price rendering
   return (
     <Layout>
       <div className="row container product-details">
@@ -94,7 +96,7 @@ const ProductDetails = () => {
           {relatedProducts?.map((p) => (
             <div className="card m-2" key={p._id}>
               <img
-                src={`/api/v1/product/product-photo/${p._id}`}
+                src={product?._id ? `/api/v1/product/product-photo/${product._id}` : ""}
                 className="card-img-top"
                 alt={p.name}
               />
@@ -102,14 +104,14 @@ const ProductDetails = () => {
                 <div className="card-name-price">
                   <h5 className="card-title">{p.name}</h5>
                   <h5 className="card-title card-price">
-                    {p.price.toLocaleString("en-US", {
+                  {p?.price?.toLocaleString("en-US", {
                       style: "currency",
                       currency: "USD",
                     })}
                   </h5>
                 </div>
                 <p className="card-text ">
-                  {p.description.substring(0, 60)}...
+                  {p.description?.substring(0, 60) || ""}...
                 </p>
                 <div className="card-name-price">
                   <button

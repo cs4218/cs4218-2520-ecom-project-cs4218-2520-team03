@@ -10,11 +10,14 @@ import toast from "react-hot-toast";
 import "../styles/CartStyles.css";
 //Seah Yi Xun Ryo A0252602R, CartPage.js
 // Exported for unit testing
+
+// Sun Zihan, A0259581R
+// Addi null checks and fallback values to prevent NaN total and substring TypeError
 export const totalPrice = (cart) => {
   try {
     let total = 0;
     cart?.map((item) => {
-      total = total + item.price;
+      total = total + (item.price || 0);
     });
     return total.toLocaleString("en-US", {
       style: "currency",
@@ -112,7 +115,7 @@ const CartPage = () => {
                   </div>
                   <div className="col-md-4">
                     <p>{p.name}</p>
-                    <p>{p.description.substring(0, 30)}</p>
+                    <p>{p.description?.substring(0, 30) || ""}</p> 
                     <p>Price : {p.price}</p>
                   </div>
                   <div className="col-md-4 cart-remove-btn">
