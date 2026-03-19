@@ -16,13 +16,13 @@ import userModel from "../../models/userModel.js";
 let mongoServer;
 
 beforeAll(async () => {
-  await mongoose.disconnect(); 
-  
+  await mongoose.disconnect();
+
   mongoServer = await MongoMemoryServer.create();
   const uri = mongoServer.getUri();
 
   await mongoose.connect(uri);
-});
+}, 15000);
 
 afterAll(async () => {
   if (mongoose.connection.readyState !== 0) {

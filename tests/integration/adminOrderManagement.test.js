@@ -40,7 +40,7 @@ let mongoServer;
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   await mongoose.connect(mongoServer.getUri());
-});
+}, 15000);
 
 afterAll(async () => {
   await mongoose.connection.dropDatabase();
