@@ -34,28 +34,28 @@ jobs:
       - run: npm install
       - run: npm run test:backend
 
-test-e2e:
-  runs-on: ubuntu-latest
+  test-e2e:
+    runs-on: ubuntu-latest
 
-  services:
-    mongo:
-      image: mongo:7
-      ports:
-        - 27017:27017
-      options: >-
-        --health-cmd="mongosh --eval 'db.adminCommand({ ping: 1 })'"
-        --health-interval=10s
-        --health-timeout=5s
-        --health-retries=10
+    services:
+      mongo:
+        image: mongo:7
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd="mongosh --eval 'db.adminCommand({ ping: 1 })'"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
 
-  env:
-    CI: true
-    PORT: 6060
-    MONGO_URL: mongodb://127.0.0.1:27017/ecom_e2e
-    JWT_SECRET: test_secret_for_ci
-    BRAINTREE_MERCHANT_ID: ${{ secrets.BRAINTREE_MERCHANT_ID }}
-    BRAINTREE_PUBLIC_KEY: ${{ secrets.BRAINTREE_PUBLIC_KEY }}
-    BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
+    env:
+      CI: true
+      PORT: 6060
+      MONGO_URL: mongodb://127.0.0.1:27017/ecom_e2e
+      JWT_SECRET: test_secret_for_ci
+      BRAINTREE_MERCHANT_ID: ${{ secrets.BRAINTREE_MERCHANT_ID }}
+      BRAINTREE_PUBLIC_KEY: ${{ secrets.BRAINTREE_PUBLIC_KEY }}
+      BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
 
     steps:
       - uses: actions/checkout@v4
