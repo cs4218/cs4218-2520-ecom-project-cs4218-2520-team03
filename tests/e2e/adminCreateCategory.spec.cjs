@@ -1,3 +1,4 @@
+// Trinh Hoai Song Thu, A0266248W
 const { test, expect } = require('@playwright/test');
 test.describe.configure({ mode: 'serial' });
 test.beforeEach(async ({ page }) => {
