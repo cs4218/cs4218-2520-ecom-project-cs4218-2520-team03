@@ -65,6 +65,7 @@ const Header = () => {
                       <Link
                         className="dropdown-item"
                         to={`/category/${c.slug}`}
+                        data-testid={`header-category-link-${c.slug}`}
                       >
                         {c.name}
                       </Link>
