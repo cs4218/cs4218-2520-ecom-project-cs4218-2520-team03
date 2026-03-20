@@ -3,9 +3,8 @@ const { test, expect } = require('@playwright/test');
 test.describe.configure({ mode: 'serial' });
 test.beforeEach(async ({ page }) => {
   await page.goto('http://localhost:3000/login');
-
-  await page.getByPlaceholder('Enter your email').fill('tester123@gmail.com');
-  await page.getByPlaceholder('Enter your password').fill('cs4218');
+  await page.getByPlaceholder('Enter your email').fill('admin@gmail.com');
+  await page.getByPlaceholder('Enter your password').fill('123456');
   await page.getByRole('button', { name: 'LOGIN' }).click();
 
   await expect(page).toHaveURL('http://localhost:3000/');

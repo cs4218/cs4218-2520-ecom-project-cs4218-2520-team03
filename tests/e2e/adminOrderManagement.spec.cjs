@@ -4,8 +4,8 @@ test.describe.configure({ mode: 'serial' });
 test.beforeEach(async ({ page }) => {
   await page.goto('http://localhost:3000/login');
 
-  await page.getByPlaceholder('Enter your email').fill('cs4218@test.com');
-  await page.getByPlaceholder('Enter your password').fill('cs4218@test.com');
+  await page.getByPlaceholder('Enter your email').fill('user@gmail.com');
+  await page.getByPlaceholder('Enter your password').fill('123456');
   await page.getByRole('button', { name: 'LOGIN' }).click();
 
   await expect(page).toHaveURL('http://localhost:3000/');
