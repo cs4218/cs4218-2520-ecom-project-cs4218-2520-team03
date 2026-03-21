@@ -4,7 +4,7 @@
 import { test, expect } from '@playwright/test';
 
 const TEST_USER = {
-  email: 'test@test.com',
+  email: 'user@gmail.com',
   password: '123456',
 };
 

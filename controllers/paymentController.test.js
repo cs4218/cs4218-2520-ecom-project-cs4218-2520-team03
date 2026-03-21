@@ -1,6 +1,6 @@
 // Seah Yi Xun Ryo, A0252602R
 // Unit tests for paymentController: braintreeTokenController and brainTreePaymentController.
-// The braintree gateway and orderModel are mocked — no real HTTP calls or DB writes.
+
 
 import { braintreeTokenController, brainTreePaymentController } from "./paymentController.js";
 import orderModel from "../models/orderModel.js";
