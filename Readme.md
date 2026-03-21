@@ -99,7 +99,22 @@ To download and use the MERN (MongoDB, Express.js, React.js, Node.js) app from G
    - Use `npm run dev` to run the app from root directory, which starts the development server.
    - Navigate to `http://localhost:3000` to access the application.
 
-## 5. Unit Testing with Jest
+## 5. Automated PR Reviews (Qodo PR Agent)
+
+This repository uses [Qodo PR Agent](https://qodo-merge-docs.qodo.ai/) to automatically review pull requests using Gemini AI.
+
+When a PR is opened, the agent will automatically:
+- **Describe** the changes in the PR
+- **Review** the code for bugs, security issues, and best practices
+- **Suggest** code improvements
+
+You can also interact with the agent by commenting on a PR:
+- `/review` — re-run the code review
+- `/describe` — re-generate the PR description
+- `/improve` — get code improvement suggestions
+- `/ask <question>` — ask the agent a question about the PR
+
+## 6. Unit Testing with Jest
 
 Unit testing is a crucial aspect of software development aimed at verifying the functionality of individual units or components of a software application. It involves isolating these units and subjecting them to various test scenarios to ensure their correctness.  
 Jest is a popular JavaScript testing framework widely used for unit testing. It offers a simple and efficient way to write and execute tests in JavaScript projects.
