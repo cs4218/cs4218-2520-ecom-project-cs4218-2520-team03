@@ -4,8 +4,6 @@
 
 import { test, expect } from '@playwright/test';
 
-// Sun Zihan, A0259581R
-
 async function setupUserWithCart(page, user) {
   await page.goto('/register');
   await page.evaluate(() => localStorage.clear());
