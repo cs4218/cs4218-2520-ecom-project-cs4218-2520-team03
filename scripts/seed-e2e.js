@@ -101,6 +101,15 @@ const SEED_PRODUCTS = [
     shipping: true,
   },
   {
+    name: "Expensive Laptop",
+    slug: "expensive-laptop",
+    description: "Seed product for high-price filter flows.",
+    price: 1000,
+    categoryName: "Sports",
+    quantity: 100,
+    shipping: true,
+  },
+  {
     name: "Sports Bottle Zero",
     slug: "sports-bottle-zero",
     description: "Out-of-stock seed product for stock-state flows.",

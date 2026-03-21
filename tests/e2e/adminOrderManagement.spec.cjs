@@ -123,9 +123,13 @@ test('user should not be able to place an order with invalid card details', asyn
 
 test('admin should see order with failed payment status', async ({ page }) => {
   // 1) User places an order with invalid card details
-  await page.getByRole('button', { name: 'Loadmore' }).click();
-  await page.locator('div:nth-child(12) > .card-body > div:nth-child(3) > .btn.ms-1.btn-dark').click();
-  await page.locator('div:nth-child(12) > .card-body > div:nth-child(3) > .btn.ms-1.btn-dark').click();
+  await page.getByRole('button', { name: 'More Details' }).nth(2).click();
+  await page.getByRole('separator').first().click();
+  await expect(await page.getByRole('heading', { name: 'Name : Expensive Laptop' })).toBeVisible();
+  await page.getByRole('button', { name: 'ADD TO CART' }).first().click();
+  await page.getByRole('button', { name: 'ADD TO CART' }).first().click();
+  await page.getByRole('button', { name: 'ADD TO CART' }).first().click();
+
   await page.getByRole('link', { name: 'Cart' }).click();
   await page.getByRole('button', { name: 'Paying with Card' }).click();
   await page.locator('iframe[name="braintree-hosted-field-number"]').contentFrame().getByRole('textbox', { name: 'Credit Card Number' }).click();
@@ -165,7 +169,7 @@ test('admin should see order with failed payment status', async ({ page }) => {
   await expect(firstRow.getByRole('cell').nth(2)).toHaveText('CS 4218 Test Account');
   await expect(firstRow.getByRole('cell').nth(3)).toContainText('a few seconds ago');
   await expect(firstRow.getByRole('cell').nth(4)).toHaveText('Failed');
-  await expect(firstRow.getByRole('cell').nth(5)).toHaveText('2');
+  await expect(firstRow.getByRole('cell').nth(5)).toHaveText('3');
 
 });
 }); 
@@ -181,7 +185,7 @@ test('admin should see quantity change after user places order', async ({ page }
   await page.getByRole('button', { name: 'ADMIN' }).click();
   await page.getByRole('link', { name: 'Dashboard' }).click();
   await page.getByRole('link', { name: 'Products' }).click();
-  await page.getByRole('link', { name: 'Smartphone Smartphone A high-' }).click();
+  await page.getByRole('link', { name: 'Expensive Laptop Expensive' }).click();
   const initialQuantity = await page.getByPlaceholder('write a quantity').inputValue();
 
   // 2) Admin logout and user log in
@@ -193,12 +197,11 @@ test('admin should see quantity change after user places order', async ({ page }
   await page.getByRole('button', { name: 'LOGIN' }).click();
 
   // 3) User places an order of that product
-  await page.getByRole('button', { name: 'Loadmore' }).click();
-  await page.getByRole('heading', { name: 'Smartphone' }).click();
-  await page.locator('div:nth-child(11) > .card-body > div:nth-child(3) > .btn.btn-info').click();
-  await expect(await page.getByRole('heading', { name: 'Name : Smartphone' })).toBeVisible();
-  await page.getByRole('button', { name: 'ADD TO CART' }).click();
-  await page.getByRole('button', { name: 'ADD TO CART' }).click();
+  await page.getByRole('button', { name: 'More Details' }).nth(2).click();
+  await page.getByRole('separator').first().click();
+  await expect(await page.getByRole('heading', { name: 'Name : Expensive Laptop' })).toBeVisible();
+  await page.getByRole('button', { name: 'ADD TO CART' }).first().click();
+  await page.getByRole('button', { name: 'ADD TO CART' }).first().click();
   await page.getByRole('link', { name: 'Cart' }).click();
   await page.getByRole('button', { name: 'Paying with Card' }).click();
   await page.locator('iframe[name="braintree-hosted-field-number"]').contentFrame().getByRole('textbox', { name: 'Credit Card Number' }).fill('4111111111111111');
@@ -220,7 +223,7 @@ test('admin should see quantity change after user places order', async ({ page }
   await page.getByRole('button', { name: 'ADMIN' }).click();
   await page.getByRole('link', { name: 'Dashboard' }).click();
   await page.getByRole('link', { name: 'Products' }).click();
-  await page.getByRole('link', { name: 'Smartphone Smartphone A high-' }).click();
+  await page.getByRole('link', { name: 'Expensive Laptop Expensive' }).click();
   const updatedQuantity = await page.getByPlaceholder('write a quantity').inputValue();
   expect(parseInt(updatedQuantity)).toBe(parseInt(initialQuantity) - 2);
 });
