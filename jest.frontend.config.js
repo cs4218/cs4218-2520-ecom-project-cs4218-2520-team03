@@ -36,10 +36,7 @@ export default {
     "<rootDir>/client/src/hooks/useCategory.test.js",
     "<rootDir>/client/src/components/Routes/Private.test.js",
     "<rootDir>/client/src/components/Form/*.test.js",
-    "<rootDir>/client/src/integration/sessionTokenValidation.test.js",
-    "<rootDir>/client/src/integration/UserIdentityLifecycle.test.js",
-    "<rootDir>/client/src/integration/homePageIntegration.test.js",
-    "<rootDir>/client/src/integration/headerIntegration.test.js",
+    "<rootDir>/client/src/integration/*",
   ],
 
   // jest code coverage

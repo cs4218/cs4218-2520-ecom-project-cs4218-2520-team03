@@ -125,7 +125,7 @@ const renderApp = (route = "/") =>
         </AuthProvider>
     );
 
-describe("Header Integration", () => {
+describe("Frontend Header Integration Tests", () => {
     beforeEach(() => {
         jest.clearAllMocks();
         localStorage.clear();
@@ -342,7 +342,7 @@ describe("Header Integration", () => {
 
             await waitFor(() => {
                 expect(getByText("Product Details")).toBeInTheDocument();
-                expect(getByText(/Name : Book A/i)).toBeInTheDocument();
+                expect(getByText("Name : Book A")).toBeInTheDocument();
             });
         });
     });

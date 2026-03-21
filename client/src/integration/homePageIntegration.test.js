@@ -118,7 +118,7 @@ const renderApp = (route = "/") =>
         </AuthProvider>
     );
 
-describe("HomePage Integration", () => {
+describe("Frontend HomePage Integration Tests", () => {
     beforeEach(() => {
         jest.clearAllMocks();
         localStorage.clear();
@@ -247,7 +247,7 @@ describe("HomePage Integration", () => {
 
             await waitFor(() => {
                 expect(getByText("Product Details")).toBeInTheDocument();
-                expect(getByText(/Name : Book A/i)).toBeInTheDocument();
+                expect(getByText("Name : Book A")).toBeInTheDocument();
             });
         });
 
