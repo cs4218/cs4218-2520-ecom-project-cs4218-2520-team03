@@ -330,5 +330,33 @@ describe("Frontend HomePage Integration Tests", () => {
 
             expect(localStorage.getItem("cart")).toContain("Laptop");
         });
+
+        it("hides Loadmore when filters are active", async () => {
+            axios.get.mockReset();
+
+            axios.get
+                .mockResolvedValueOnce({ data: { category: categories } })
+                .mockResolvedValueOnce({ data: { success: true, category: categories } })
+                .mockResolvedValueOnce({ data: { total: 3 } })
+                .mockResolvedValueOnce({ data: { products: allProducts } });
+
+            axios.post.mockResolvedValueOnce({ data: { products: [book] } });
+
+            const { getByText, getByLabelText, queryByText } = renderApp();
+
+            await waitFor(() => {
+                expect(getByText("Loadmore")).toBeInTheDocument();
+                expect(getByText("Book A")).toBeInTheDocument();
+                expect(getByText("Laptop")).toBeInTheDocument();
+            });
+
+            fireEvent.click(getByLabelText("Books"));
+
+            await waitFor(() => {
+                expect(queryByText("Laptop")).toBeNull();
+            });
+
+            expect(queryByText("Loadmore")).toBeNull();
+        });
     });
 });

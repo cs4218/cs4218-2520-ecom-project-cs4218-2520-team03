@@ -1,10 +1,10 @@
+// Trinh Hoai Song Thu, A0266248W
 const { test, expect } = require('@playwright/test');
 test.describe.configure({ mode: 'serial' });
 test.beforeEach(async ({ page }) => {
   await page.goto('http://localhost:3000/login');
-
-  await page.getByPlaceholder('Enter your email').fill('tester123@gmail.com');
-  await page.getByPlaceholder('Enter your password').fill('cs4218');
+  await page.getByPlaceholder('Enter your email').fill('admin@gmail.com');
+  await page.getByPlaceholder('Enter your password').fill('123456');
   await page.getByRole('button', { name: 'LOGIN' }).click();
 
   await expect(page).toHaveURL('http://localhost:3000/');
@@ -42,11 +42,10 @@ test('should show error for duplicate category', async ({ page }) => {
 test('should trim whitespace from category name', async ({ page }) => {
   await page.goto('http://localhost:3000/dashboard/admin/create-category');
 
-  const beforeCount = await countNumberOfCategories(page);
-  // make sure the input is empty
   await page.getByPlaceholder('Enter new category').fill('  Test Whitespace  ');
   await page.getByRole('button', { name: 'Submit' }).click();
   await expect(page.getByRole('cell', { name: 'Test Whitespace', exact: true })).toBeVisible();
+  await deleteCategoryIfExists(page, 'Test Whitespace');
 });
 
 test('should update an existing category', async ({ page }) => {
@@ -79,13 +78,6 @@ test('should delete an existing category', async ({ page }) => {
   await clickDeleteForCategory(page, 'Accessories');
   await expect(page.getByRole('cell', { name: 'Accessories' })).toHaveCount(0);
 });
-
-
-async function countNumberOfCategories(page) {
-  const rows = await page.locator('table tbody tr').count();
-  console.log(`Number of categories: ${rows}`);
-  return rows;
-}
 
 async function createCategory(page, name) {
   await page.getByPlaceholder('Enter new category').fill(name);

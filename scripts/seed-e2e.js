@@ -35,6 +35,15 @@ const SEED_USERS = [
     answer: "123",
     role: 1,
   },
+  {
+    name: "CS 4218 Test Account",
+    email: "cs4218@test.com",
+    password: "cs4218@test.com",
+    phone: "12345678",
+    address: "123",
+    answer: "123",
+    role: 1,
+  }
 ];
 
 const SEED_CATEGORIES = [
@@ -89,6 +98,15 @@ const SEED_PRODUCTS = [
     price: 149,
     categoryName: "Electronics",
     quantity: 6,
+    shipping: true,
+  },
+  {
+    name: "Expensive Laptop",
+    slug: "expensive-laptop",
+    description: "Seed product for high-price filter flows.",
+    price: 1000,
+    categoryName: "Sports",
+    quantity: 100,
     shipping: true,
   },
   {

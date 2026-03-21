@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /Users/myinfo/cs4218-2520-ecom-project-cs4218-2520-team03/client/src/pages -name *.integration.test.js -o -name *Integration.test.js)"
+    ]
+  }
+}

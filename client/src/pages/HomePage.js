@@ -19,6 +19,8 @@ const HomePage = () => {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  // Chen Peiran, A0257826R
+  const hasActiveFilters = checked.length > 0 || radio.length > 0;
 
   //get all cat
   const getAllCategory = async () => {
@@ -66,6 +68,7 @@ const HomePage = () => {
   //load more
   const loadMore = async () => {
     try {
+      if (hasActiveFilters) return;
       setLoading(true);
       const { data } = await axios.get(`/api/v1/product/product-list/${page}`);
       setLoading(false);
@@ -91,7 +94,10 @@ const HomePage = () => {
   }, [checked.length, radio.length]);
 
   useEffect(() => {
-    if (checked.length || radio.length) filterProduct();
+    if (checked.length || radio.length) {
+      setPage(1);
+      filterProduct();
+    }
   }, [checked, radio]);
 
   //get filterd product
@@ -181,25 +187,25 @@ const HomePage = () => {
                       More Details
                     </button>
                     <button
-                    className={`btn ms-1 ${p.quantity === 0 ? "btn-secondary" : "btn-dark"}`}
-                    disabled={p.quantity === 0}
-                    onClick={() => {
-                      if (p.quantity === 0) return;
+                      className={`btn ms-1 ${p.quantity === 0 ? "btn-secondary" : "btn-dark"}`}
+                      disabled={p.quantity === 0}
+                      onClick={() => {
+                        if (p.quantity === 0) return;
 
-                      setCart([...cart, p]);
-                      localStorage.setItem("cart", JSON.stringify([...cart, p]));
-                      toast.success("Item Added to cart");
-                    }}
-                  >
-                    {p.quantity === 0 ? "OUT OF STOCK" : "ADD TO CART"}
-                  </button>
+                        setCart([...cart, p]);
+                        localStorage.setItem("cart", JSON.stringify([...cart, p]));
+                        toast.success("Item Added to cart");
+                      }}
+                    >
+                      {p.quantity === 0 ? "OUT OF STOCK" : "ADD TO CART"}
+                    </button>
                   </div>
                 </div>
               </div>
             ))}
           </div>
           <div className="m-2 p-3">
-            {products && products.length < total && (
+            {!hasActiveFilters && products && products.length < total && (
               <button
                 className="btn loadmore"
                 onClick={(e) => {

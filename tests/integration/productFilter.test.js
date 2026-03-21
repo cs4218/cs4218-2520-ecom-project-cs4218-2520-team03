@@ -154,4 +154,34 @@ describe("Backend integration tests for homepage product filters", () => {
         const names = res.body.products.map((p) => p.name).sort();
         expect(names).toEqual(["Book A", "Book B", "Laptop", "Shirt"]);
     });
+
+    it("appends new products when clicking loadmore", async () => {
+        const createdProducts = [];
+        for (let i = 1; i <= 8; i++) {
+            const product = await createProduct({
+                name: `Product ${i}`,
+                price: i * 10,
+                category: books._id,
+            });
+            createdProducts.push(product);
+        }
+
+        const page1 = await request(app).get("/api/v1/product/product-list/1");
+        const page2 = await request(app).get("/api/v1/product/product-list/2");
+
+        expect(page1.status).toBe(200);
+        expect(page2.status).toBe(200);
+        expect(page1.body.success).toBe(true);
+        expect(page2.body.success).toBe(true);
+
+        expect(page1.body.products).toHaveLength(6);
+        expect(page2.body.products).toHaveLength(2);
+
+        const page1Ids = page1.body.products.map((p) => p._id.toString());
+        const page2Ids = page2.body.products.map((p) => p._id.toString());
+
+        page2Ids.forEach((id) => {
+            expect(page1Ids).not.toContain(id);
+        });
+    });
 });
