@@ -120,8 +120,14 @@ test('user should not be able to place an order with invalid card details', asyn
 
 test('admin should see order with failed payment status', async ({ page }) => {
   // 1) User places an order with invalid card details
-  await page.getByRole('button', { name: 'More Details' }).nth(2).click();
-  await page.getByRole('separator').first().click();
+//   await page.getByRole('button', { name: 'More Details' }).nth(2).click();
+//   await page.getByRole('separator').first().click();
+  const productCard = page.locator('.card').filter({
+    has: page.getByText('Expensive Laptop', { exact: true }),
+  });
+
+  await expect(productCard).toBeVisible();
+  await productCard.getByRole('button', { name: 'More Details' }).click();
   await expect(await page.getByRole('heading', { name: 'Name : Expensive Laptop' })).toBeVisible();
   await page.getByRole('button', { name: 'ADD TO CART' }).first().click();
   await page.getByRole('button', { name: 'ADD TO CART' }).first().click();
