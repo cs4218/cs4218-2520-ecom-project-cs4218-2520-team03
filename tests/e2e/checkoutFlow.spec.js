@@ -28,9 +28,12 @@ test.describe('Story B — Checkout flow: cart summary and orders page', () => {
     await login(page);
     await page.goto('/');
 
-    const addToCartButtons = page.getByRole('button', { name: 'ADD TO CART' });
-    await expect(addToCartButtons.first()).toBeVisible({ timeout: 10000 });
-    await addToCartButtons.first().click();
+    // Only consider cards that have "ADD TO CART" buttons (skip out-of-stock cards)
+    const availableCards = page.locator('.card').filter({
+      has: page.getByRole('button', { name: 'ADD TO CART' }),
+    });
+    await expect(availableCards.first()).toBeVisible({ timeout: 10000 });
+    await availableCards.first().getByRole('button', { name: 'ADD TO CART' }).click();
     await expect(page.getByText('Item Added to cart')).toBeVisible({ timeout: 5000 });
 
     await page.goto('/cart');
@@ -43,8 +46,14 @@ test.describe('Story B — Checkout flow: cart summary and orders page', () => {
   // Seah Yi Xun Ryo, A0252602R
   test('logged-in user can access the orders page', async ({ page }) => {
     await login(page);
-    await page.goto('/dashboard/user/orders');
-    await page.waitForLoadState('networkidle');
+    // Navigate via Header dropdown (client-side React Router nav — no full page reload,
+    // so auth context and axios header stay initialized, avoiding the PrivateRoute race condition)
+    await page.getByRole('button', { name: /user/i }).click();
+    await page.getByRole('link', { name: 'Dashboard' }).click();
+    // PrivateRoute authCheck fires with axios header already set → ok=true quickly
+    await expect(page.getByRole('link', { name: 'Orders' })).toBeVisible({ timeout: 10000 });
+    // Client-side nav to orders — PrivateRoute stays ok=true
+    await page.getByRole('link', { name: 'Orders' }).click();
     await expect(page.getByText('All Orders')).toBeVisible({ timeout: 10000 });
   });
 

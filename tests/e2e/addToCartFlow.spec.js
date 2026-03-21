@@ -28,25 +28,23 @@ test.describe('Story D — Add two products to cart and verify both in CartPage'
     await login(page);
     await page.goto('/');
 
-    const addToCartButtons = page.getByRole('button', { name: 'ADD TO CART' });
-    await expect(addToCartButtons.first()).toBeVisible({ timeout: 10000 });
+    const availableCards = page.locator('.card').filter({
+      has: page.getByRole('button', { name: 'ADD TO CART' }),
+    });
+    await expect(availableCards.nth(0)).toBeVisible({ timeout: 10000 });
 
-    // Capture names of the first two product cards
-    const cards = page.locator('.card');
-    const firstName = await cards.nth(0).locator('.card-title').first().innerText();
-    const secondName = await cards.nth(1).locator('.card-title').first().innerText();
+    const firstName = await availableCards.nth(0).locator('.card-title').first().innerText();
+    const secondName = await availableCards.nth(1).locator('.card-title').first().innerText();
 
-    // Add both to cart
-    await addToCartButtons.nth(0).click();
+    // Add both to cart using their specific card buttons
+    await availableCards.nth(0).getByRole('button', { name: 'ADD TO CART' }).click();
     await expect(page.getByText('Item Added to cart').first()).toBeVisible({ timeout: 5000 });
 
-    await addToCartButtons.nth(1).click();
+    await availableCards.nth(1).getByRole('button', { name: 'ADD TO CART' }).click();
     await expect(page.getByText('Item Added to cart').first()).toBeVisible({ timeout: 5000 });
 
-    // Navigate to cart
     await page.goto('/cart');
 
-    // Both products should be visible
     await expect(page.getByText(firstName)).toBeVisible({ timeout: 5000 });
     await expect(page.getByText(secondName)).toBeVisible({ timeout: 5000 });
 
