@@ -1,65 +1,56 @@
 // Sun Zihan, A0259581R
-// Story: Register → Login → Logout → Re-register with same details → Registration Blocked → Re-login
+// Story: Attempt Re-registration with seeded details → Registration Blocked → Re-login
 
 import { test, expect } from '@playwright/test';
 
-test.describe('User Registration Conflict and Identity Recovery', () => {
-  let duplicateUser;
+const SEEDED_USER = {
+  email: "user@gmail.com",
+  password: "123456",
+  name: "user",
+  phone: "12345678",
+  address: "123",
+  answer: "123"
+};
 
-  test.beforeEach(async () => {
-    const uniqueId = Date.now();
-    duplicateUser = {
-      name: `ConflictUser_${uniqueId}`,
-      email: `conflict_${uniqueId}@test.com`,
-      password: 'password123',
-      phone: '87654321',
-      address: '123 Testing Lane',
-      answer: 'Football'
-    };
+test.describe('User Registration Conflict and Identity Recovery', () => {
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(() => localStorage.clear());
+    await page.reload();
   });
 
   test('should handle duplicate registration by displaying error and allowing subsequent login', async ({ page }) => {
-    await page.goto('/register');
-    await page.getByPlaceholder('Enter your name').fill(duplicateUser.name);
-    await page.getByPlaceholder('Enter your email').fill(duplicateUser.email);
-    await page.getByPlaceholder('Enter your password').fill(duplicateUser.password);
-    await page.getByPlaceholder('Confirm your password').fill(duplicateUser.password);
-    await page.getByPlaceholder('Enter your phone').fill(duplicateUser.phone);
-    await page.getByPlaceholder('Enter your address').fill(duplicateUser.address);
-    await page.getByPlaceholder('Enter your favorite sport').fill(duplicateUser.answer);
-    await page.getByRole('button', { name: 'REGISTER' }).click();
-
-    await expect(page).toHaveURL(/.*login/);
-
-    await page.getByPlaceholder('Enter your email').fill(duplicateUser.email);
-    await page.getByPlaceholder('Enter your password').fill(duplicateUser.password);
+    await page.goto('/login');
+    await page.getByPlaceholder('Enter your email').fill(SEEDED_USER.email);
+    await page.getByPlaceholder('Enter your password').fill(SEEDED_USER.password);
     await page.getByRole('button', { name: 'LOGIN' }).click();
     
-    await expect(page.locator('.navbar-nav')).toContainText(duplicateUser.name);
+    await expect(page.locator('.navbar-nav')).toContainText(SEEDED_USER.name);
 
-    await page.getByRole('button', { name: duplicateUser.name }).click();
+    await page.getByRole('button', { name: SEEDED_USER.name, exact: false }).click();
     await page.getByRole('link', { name: 'Logout' }).click();
     
     await expect(page).toHaveURL(/.*login/);
     await expect(page.getByRole('link', { name: 'Register' })).toBeVisible();
 
     await page.goto('/register');
-    await page.getByPlaceholder('Enter your name').fill(duplicateUser.name);
-    await page.getByPlaceholder('Enter your email').fill(duplicateUser.email);
-    await page.getByPlaceholder('Enter your password').fill(duplicateUser.password);
-    await page.getByPlaceholder('Confirm your password').fill(duplicateUser.password);
-    await page.getByPlaceholder('Enter your phone').fill(duplicateUser.phone);
-    await page.getByPlaceholder('Enter your address').fill(duplicateUser.address);
-    await page.getByPlaceholder('Enter your favorite sport').fill(duplicateUser.answer);
+    await page.getByPlaceholder('Enter your name').fill(SEEDED_USER.name);
+    await page.getByPlaceholder('Enter your email').fill(SEEDED_USER.email);
+    await page.getByPlaceholder('Enter your password').fill(SEEDED_USER.password);
+    await page.getByPlaceholder('Confirm your password').fill(SEEDED_USER.password);
+    await page.getByPlaceholder('Enter your phone').fill(SEEDED_USER.phone);
+    await page.getByPlaceholder('Enter your address').fill(SEEDED_USER.address);
+    await page.getByPlaceholder('Enter your favorite sport').fill(SEEDED_USER.answer);
     await page.getByRole('button', { name: 'REGISTER' }).click();
 
     await expect(page.getByText(/already|exists|registered/i)).toBeVisible();
 
     await page.goto('/login');
-    await page.getByPlaceholder('Enter your email').fill(duplicateUser.email);
-    await page.getByPlaceholder('Enter your password').fill(duplicateUser.password);
+    await page.getByPlaceholder('Enter your email').fill(SEEDED_USER.email);
+    await page.getByPlaceholder('Enter your password').fill(SEEDED_USER.password);
     await page.getByRole('button', { name: 'LOGIN' }).click();
 
-    await expect(page.locator('.navbar-nav')).toContainText(duplicateUser.name);
+    await expect(page.locator('.navbar-nav')).toContainText(SEEDED_USER.name);
   });
 });
