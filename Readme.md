@@ -139,7 +139,7 @@ To begin unit testing with Jest in your project, follow these steps:
      npm run test
      ```
 
-## 6. Task Allocation
+## 6. Task Allocation (MS1)
 1. Chen Peiran
 - Write unit tests for frontend pages and navigation components (HomePage.js, Dashboard.js, Header.js, Footer.js, UserMenu.js, About.js, Contact.js, Policy.js, Pagenotfound.js, userModel.js)
 - Write unit tests for layout infrastructure and route protection (Layout.js, Spinner.js, Private.js)
@@ -163,3 +163,22 @@ To begin unit testing with Jest in your project, follow these steps:
 - Write unit tests for Admin Dashboard (AdminMenu.js, AdminDashboard.js)
 - Write unit tests for Admin Actions (CategoryForm.js, CreateCategory.js, CreateProduct.js, UpdateProduct.js, categoryController.js)
 - Write unit tests for Admin View Users (Users.js)
+
+## 7. Task Allocation (MS2)
+
+**Seed Script**
+- `scripts/seed-e2e.js`: Added standardised seed users (`user@gmail.com`, `admin@gmail.com`, password `123456`) and seed products including an out-of-stock product (`Sports Bottle Zero`, `quantity: 0`) to support stock-state E2E flows
+
+### Seah Yi Xun, Ryo (A0252602R)
+
+**Integration Tests**
+- `client/src/integration/cartFlowIntegration.test.js` — CartProvider + CartPage: add item, view in cart, remove item, assert cart empty (5 tests)
+- `client/src/integration/checkoutIntegration.test.js` — CartProvider + CartPage payment section + Orders page: cart summary, total price, orders page access (6 tests)
+- `client/src/integration/emptyCartIntegration.test.js` — CartProvider + CartPage: empty cart UI, login-to-checkout prompt, checkout section hidden (6 tests)
+- `client/src/integration/addToCartIntegration.test.js` — CartProvider + HomePage + CartPage: add two products, both appear in cart (4 tests)
+- `client/src/integration/removeItemTotalIntegration.test.js` — CartProvider + CartPage + totalPrice: remove item updates displayed total and localStorage (5 tests)
+
+**E2E Tests (Playwright)**
+- Story A: `tests/e2e/cartFlow.spec.js` — logged-in user adds item, views in cart, removes it; guest user sees empty cart with login prompt (2 tests)
+- Story B: `tests/e2e/checkoutFlow.spec.js` — logged-in user sees cart summary and total; logged-in user navigates to orders page via dashboard (2 tests)
+- Story D: `tests/e2e/addToCartFlow.spec.js` — logged-in user adds two products, both appear in cart (1 test)
