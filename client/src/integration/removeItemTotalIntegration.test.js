@@ -41,7 +41,7 @@ jest.mock("react-hot-toast", () => ({
 }));
 
 // Seah Yi Xun Ryo, A0252602R
-// Extract the USD amount from a string that may contain other text (e.g. "Total : $80.00 ").
+
 const parseUsd = (str) => {
   const match = String(str).match(/\$([\d,]+\.\d{2})/);
   return match ? parseFloat(match[1].replace(/,/g, "")) : 0;
