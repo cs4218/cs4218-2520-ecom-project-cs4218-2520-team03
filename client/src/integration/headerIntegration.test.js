@@ -7,6 +7,7 @@ import { MemoryRouter, Routes, Route } from "react-router-dom";
 
 import HomePage from "../pages/HomePage";
 import Search from "../pages/Search";
+import Categories from "../pages/Categories";
 import CategoryProduct from "../pages/CategoryProduct";
 import ProductDetails from "../pages/ProductDetails";
 
@@ -116,6 +117,7 @@ const renderApp = (route = "/") =>
                         <Routes>
                             <Route path="/" element={<HomePage />} />
                             <Route path="/search" element={<Search />} />
+                            <Route path="/categories" element={<Categories />} />
                             <Route path="/category/:slug" element={<CategoryProduct />} />
                             <Route path="/product/:slug" element={<ProductDetails />} />
                         </Routes>
@@ -261,6 +263,25 @@ describe("Frontend Header Integration Tests", () => {
     });
 
     describe("Category Function", () => {
+        it("navigates from header to the All Categories page", async () => {
+            axios.get
+                .mockResolvedValueOnce({ data: { category: categories } })
+                .mockResolvedValueOnce({ data: { category: categories } });
+
+            const { getByText, getByRole, getByTestId } = renderApp();
+
+            await waitFor(() => {
+                expect(getByText("All Categories")).toBeInTheDocument();
+            });
+
+            fireEvent.click(getByRole("link", { name: "All Categories" }));
+
+            await waitFor(() => {
+                expect(getByTestId("categories-page-link-books")).toBeInTheDocument();
+                expect(getByTestId("categories-page-link-electronics")).toBeInTheDocument();
+            });
+        });
+
         it("navigates from category dropdown to the correct category product page", async () => {
             axios.get
                 .mockResolvedValueOnce({ data: { category: categories } })
