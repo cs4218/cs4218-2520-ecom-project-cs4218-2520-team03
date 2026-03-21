@@ -4,10 +4,13 @@
 
 import { test, expect } from '@playwright/test';
 
+// Sun Zihan, A0259581R
+
 async function setupUserWithCart(page, user) {
   await page.goto('/register');
   await page.evaluate(() => localStorage.clear());
   await page.reload();
+  
   await page.getByPlaceholder('Enter your name').fill(user.name);
   await page.getByPlaceholder('Enter your email').fill(user.email);
   await page.getByPlaceholder('Enter your password').fill(user.password);
@@ -21,15 +24,14 @@ async function setupUserWithCart(page, user) {
   await page.getByPlaceholder('Enter your email').fill(user.email);
   await page.getByPlaceholder('Enter your password').fill(user.password);
   await page.getByRole('button', { name: 'LOGIN' }).click();
+  
   await expect(page.locator('.navbar-nav')).toContainText(user.name);
-
   await page.goto('/product/test-product');
 
-  const productName = page.locator('.product-details-info h6').first();
-  await expect(productName).not.toBeEmpty({ timeout: 10000 });
-
-  const addToCartBtn = page.getByRole('button', { name: 'ADD TO CART' });
-  await expect(addToCartBtn).toBeVisible();
+  const productDetails = page.locator('.product-details'); 
+  const addToCartBtn = productDetails.getByRole('button', { name: 'ADD TO CART' });
+  
+  await expect(addToCartBtn).toBeVisible({ timeout: 10000 });
   await addToCartBtn.click();
 }
 
