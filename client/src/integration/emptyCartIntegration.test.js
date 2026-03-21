@@ -7,7 +7,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import axios from "axios";
 import { CartProvider } from "../context/cart";
-import CartPage from "./CartPage";
+import CartPage from "../pages/CartPage";
 
 jest.mock("axios");
 

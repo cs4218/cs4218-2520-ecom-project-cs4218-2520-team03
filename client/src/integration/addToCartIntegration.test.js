@@ -7,8 +7,8 @@ import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import axios from "axios";
 import { CartProvider } from "../context/cart";
-import HomePage from "./HomePage";
-import CartPage from "./CartPage";
+import HomePage from "../pages/HomePage";
+import CartPage from "../pages/CartPage";
 
 jest.mock("axios");
 
