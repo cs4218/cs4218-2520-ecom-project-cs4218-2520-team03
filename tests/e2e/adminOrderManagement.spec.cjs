@@ -104,9 +104,7 @@ test('admin should see successful order after user places an order of multiple i
   await expect(firstRow.getByRole('cell').nth(4)).toHaveText('Success');
   await expect(firstRow.getByRole('cell').nth(5)).toHaveText('3');
 
-  // Clean up: Admin set order status to cancel, then logout
-  await page.getByText('Not Process').first().click();
-  await page.getByText('cancel').nth(2).click();
+  // Admin logout
   await page.getByRole('button', { name: 'ADMIN' }).click();
   await page.getByRole('link', { name: 'Logout' }).click();
   await expect(page).toHaveURL('http://localhost:3000/login');
