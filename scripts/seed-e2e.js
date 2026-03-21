@@ -101,6 +101,15 @@ const SEED_PRODUCTS = [
     shipping: true,
   },
   {
+    name: "E2E Test Delete Product",
+    slug: "e2e-test-delete-product",
+    description: "Test product for admin delete",
+    price: 88,
+    categoryName: "Electronics",
+    quantity: 10,
+    shipping: true,
+  },
+  {
     name: "Old E2E Test Update Product",
     slug: "old-e2e-test-update-product",
     description: "Test product for admin update",
