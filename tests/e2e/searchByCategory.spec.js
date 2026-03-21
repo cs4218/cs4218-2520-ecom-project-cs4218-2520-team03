@@ -14,7 +14,7 @@ async function login(page) {
     await page.waitForURL((url) => url.pathname === '/', { timeout: 15000 });
 }
 
-test.describe('Header and category navigation flows', () => {
+test.describe('Search by category', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/');
         await page.evaluate(() => localStorage.removeItem('cart'));
