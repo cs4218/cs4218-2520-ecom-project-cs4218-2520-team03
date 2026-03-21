@@ -1,3 +1,4 @@
+// Chen Peiran, A0257826R
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
 import { useAuth } from "../context/auth";
@@ -65,6 +66,7 @@ const Header = () => {
                       <Link
                         className="dropdown-item"
                         to={`/category/${c.slug}`}
+                        data-testid={`header-category-link-${c.slug}`}
                       >
                         {c.name}
                       </Link>
