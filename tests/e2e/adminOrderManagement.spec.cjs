@@ -1,6 +1,7 @@
 // Trinh Hoai Song Thu, A0266248W
 const { test, expect } = require('@playwright/test');
 test.describe.configure({ mode: 'serial' });
+test.describe('Admin order management tests', () => {
 test.beforeEach(async ({ page }) => {
   await page.goto('http://localhost:3000/login');
 
@@ -171,5 +172,60 @@ test('admin should see order with failed payment status', async ({ page }) => {
   await expect(firstRow.getByRole('cell').nth(5)).toHaveText('2');
 
 });
+}); 
 
+test.describe('Admin inventory management test', () => {
 
+test('admin should see quantity change after user places order', async ({ page }) => {
+  // 1) Admin check initial quantity of a product
+  await page.goto('http://localhost:3000/login');
+  await page.getByRole('textbox', { name: 'Enter your email' }).fill('admin@gmail.com');
+  await page.getByRole('textbox', { name: 'Enter your password' }).fill('123456');
+  await page.getByRole('button', { name: 'LOGIN' }).click();
+  await page.getByRole('button', { name: 'ADMIN' }).click();
+  await page.getByRole('link', { name: 'Dashboard' }).click();
+  await page.getByRole('link', { name: 'Products' }).click();
+  await page.getByRole('link', { name: 'Smartphone Smartphone A high-' }).click();
+  const initialQuantity = await page.getByPlaceholder('write a quantity').inputValue();
+
+  // 2) Admin logout and user log in
+  await page.getByRole('button', { name: 'ADMIN' }).click();
+  await page.getByRole('link', { name: 'Logout' }).click();
+  await expect(page).toHaveURL('http://localhost:3000/login');
+  await page.getByRole('textbox', { name: 'Enter your email' }).fill('user@gmail.com');
+  await page.getByRole('textbox', { name: 'Enter your password' }).fill('123456');
+  await page.getByRole('button', { name: 'LOGIN' }).click();
+
+  // 3) User places an order of that product
+  await page.getByRole('button', { name: 'Loadmore' }).click();
+  await page.getByRole('heading', { name: 'Smartphone' }).click();
+  await page.locator('div:nth-child(11) > .card-body > div:nth-child(3) > .btn.btn-info').click();
+  await expect(await page.getByRole('heading', { name: 'Name : Smartphone' })).toBeVisible();
+  await page.getByRole('button', { name: 'ADD TO CART' }).click();
+  await page.getByRole('button', { name: 'ADD TO CART' }).click();
+  await page.getByRole('link', { name: 'Cart' }).click();
+  await page.getByRole('button', { name: 'Paying with Card' }).click();
+  await page.locator('iframe[name="braintree-hosted-field-number"]').contentFrame().getByRole('textbox', { name: 'Credit Card Number' }).fill('4111111111111111');
+  await page.locator('iframe[name="braintree-hosted-field-expirationDate"]').contentFrame().getByRole('textbox', { name: 'Expiration Date' }).fill('1228');
+  await page.locator('iframe[name="braintree-hosted-field-cvv"]').contentFrame().getByRole('textbox', { name: 'CVV' }).fill('123');
+  await page.getByRole('button', { name: 'Make Payment' }).click();
+  await expect(page).toHaveURL('http://localhost:3000/dashboard/user/orders',{ timeout: 35000 });
+  
+  // 2) User logout and admin log in
+  await page.getByRole('button', { name: 'USER' }).click();
+  await page.getByRole('link', { name: 'Logout' }).click();
+  await expect(page).toHaveURL('http://localhost:3000/login');
+  await page.getByPlaceholder('Enter your email').fill('admin@gmail.com');
+  await page.getByPlaceholder('Enter your password').fill('123456');
+  await page.getByRole('button', { name: 'LOGIN' }).click();
+  await expect(page).toHaveURL('http://localhost:3000/');
+
+  // 3) Admin check quantity of the product again
+  await page.getByRole('button', { name: 'ADMIN' }).click();
+  await page.getByRole('link', { name: 'Dashboard' }).click();
+  await page.getByRole('link', { name: 'Products' }).click();
+  await page.getByRole('link', { name: 'Smartphone Smartphone A high-' }).click();
+  const updatedQuantity = await page.getByPlaceholder('write a quantity').inputValue();
+  expect(parseInt(updatedQuantity)).toBe(parseInt(initialQuantity) - 2);
+});
+}); 
