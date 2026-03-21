@@ -169,6 +169,20 @@ To begin unit testing with Jest in your project, follow these steps:
 **Seed Script**
 - `scripts/seed-e2e.js`: Added standardised seed users (`user@gmail.com`, `admin@gmail.com`, password `123456`) and seed products including an out-of-stock product (`Sports Bottle Zero`, `quantity: 0`) to support stock-state E2E flows
 
+### Chen Zhiruo (A0256855N)
+
+**Integration Tests**
+- `tests/integration/productDelete.test.js` — tests integration between deleteProduct, productList & productRoutes
+- `client/src/integration/productUpdate.test.js` — tests integration between updateProduct, searchProduct, getSingleProduct & productRoutes
+- `client/src/integration/orderStatusUpdate.test.js` — tests integration between authRoute, getOrdersController & orderStatusController
+
+**UI Tests (Playwright)**
+- `scripts\seed-e2e.js` and `.github\workflows\main.yml` - Created a github workflow job with a seeded database to run all ui tests in the pipeline 
+- `tests/e2e/adminCreateProduct.spec.js` — admin creates product, checks if product is visible in product list, search and filter results
+- `tests/e2e/adminUpdateProduct.spec.js` — admin updates an existing product, checks if updated product is visible in product list, search and filter results
+- `tests/e2e/adminDeleteProduct.spec.js` — admin deletes existing product, checks that product is not visible in product list, search and filter results
+- `tests/e2e/adminUpdateOrderStatus.spec.js` — admin updates the status of an existing user order, user checks that the status of the order is updated
+
 ### Seah Yi Xun, Ryo (A0252602R)
 
 **Integration Tests**
@@ -178,7 +192,7 @@ To begin unit testing with Jest in your project, follow these steps:
 - `client/src/integration/addToCartIntegration.test.js` — CartProvider + HomePage + CartPage: add two products, both appear in cart (4 tests)
 - `client/src/integration/removeItemTotalIntegration.test.js` — CartProvider + CartPage + totalPrice: remove item updates displayed total and localStorage (5 tests)
 
-**E2E Tests (Playwright)**
+**UI Tests (Playwright)**
 - Story A: `tests/e2e/cartFlow.spec.js` — logged-in user adds item, views in cart, removes it; guest user sees empty cart with login prompt (2 tests)
 - Story B: `tests/e2e/checkoutFlow.spec.js` — logged-in user sees cart summary and total; logged-in user navigates to orders page via dashboard (2 tests)
 - Story D: `tests/e2e/addToCartFlow.spec.js` — logged-in user adds two products, both appear in cart (1 test)
