@@ -4,8 +4,8 @@ test.describe.configure({ mode: 'serial' });
 test.beforeEach(async ({ page }) => {
   await page.goto('http://localhost:3000/login');
 
-  await page.getByPlaceholder('Enter your email').fill('user@gmail.com');
-  await page.getByPlaceholder('Enter your password').fill('123456');
+  await page.getByPlaceholder('Enter your email').fill('cs4218@test.com');
+  await page.getByPlaceholder('Enter your password').fill('cs4218@test.com');
   await page.getByRole('button', { name: 'LOGIN' }).click();
 
   await expect(page).toHaveURL('http://localhost:3000/');
@@ -13,7 +13,6 @@ test.beforeEach(async ({ page }) => {
 
 test('admin should see successful order after user places an order of 1 item', async ({ page }) => {
     // 3) User places an order
-  await page.getByRole('heading', { name: 'Laptop' }).click();
   await page.getByRole('button', { name: 'ADD TO CART' }).nth(3).click();
   await page.getByRole('link', { name: 'Cart' }).click();
   await page.getByRole('button', { name: 'Paying with Card' }).click();
@@ -31,8 +30,8 @@ test('admin should see successful order after user places an order of 1 item', a
   // 6) Admin log in and check orders
   await page.goto('http://localhost:3000/login');
 
-  await page.getByPlaceholder('Enter your email').fill('tester123@gmail.com');
-  await page.getByPlaceholder('Enter your password').fill('cs4218');
+  await page.getByPlaceholder('Enter your email').fill('admin@gmail.com');
+  await page.getByPlaceholder('Enter your password').fill('123456');
   await page.getByRole('button', { name: 'LOGIN' }).click();
   await expect(page).toHaveURL('http://localhost:3000/');
   await page.getByRole('button', { name: 'Test' }).click();
@@ -41,6 +40,15 @@ test('admin should see successful order after user places an order of 1 item', a
   await expect(page).toHaveURL('http://localhost:3000/dashboard/admin/orders');
 
   // Check if the new order is visible in the admin orders page
+  const firstRow = page.locator('table tbody tr').first();
+
+  await expect(firstRow).toBeVisible();
+  await expect(firstRow.getByRole('cell').nth(0)).toHaveText('1');
+  await expect(firstRow.getByRole('cell').nth(1)).toContainText('Not Process');
+  await expect(firstRow.getByRole('cell').nth(2)).toHaveText('CS 4218 Test Account');
+  await expect(firstRow.getByRole('cell').nth(3)).toContainText('a few seconds ago');
+  await expect(firstRow.getByRole('cell').nth(4)).toHaveText('Success');
+  await expect(firstRow.getByRole('cell').nth(5)).toHaveText('1');
   await expect(page.locator('#root').getByText('Not Process').first()).toBeVisible();
   await expect(page.getByRole('cell', { name: 'CS 4218 Test Account' }).first()).toBeVisible();
   await expect(page.getByRole('cell', { name: 'Success' }).first()).toBeVisible();
