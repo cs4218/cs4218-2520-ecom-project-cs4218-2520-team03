@@ -38,10 +38,10 @@ test.describe('Story D — Add two products to cart and verify both in CartPage'
 
     // Add both to cart
     await addToCartButtons.nth(0).click();
-    await expect(page.getByText('Item Added to cart')).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText('Item Added to cart').first()).toBeVisible({ timeout: 5000 });
 
     await addToCartButtons.nth(1).click();
-    await expect(page.getByText('Item Added to cart')).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText('Item Added to cart').first()).toBeVisible({ timeout: 5000 });
 
     // Navigate to cart
     await page.goto('/cart');

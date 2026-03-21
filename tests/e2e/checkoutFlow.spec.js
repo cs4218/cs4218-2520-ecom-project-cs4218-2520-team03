@@ -44,6 +44,7 @@ test.describe('Story B — Checkout flow: cart summary and orders page', () => {
   test('logged-in user can access the orders page', async ({ page }) => {
     await login(page);
     await page.goto('/dashboard/user/orders');
+    await page.waitForLoadState('networkidle');
     await expect(page.getByText('All Orders')).toBeVisible({ timeout: 10000 });
   });
 
