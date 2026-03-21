@@ -35,7 +35,7 @@ test("Admin update product flow", async ({ page }) => {
     await page.getByRole("link", { name: "Products" }).click();
     await expect(page).toHaveURL(/\/dashboard\/admin\/products/);
 
-    await openProductFromAdminList(page, originalName);
+    await page.getByText(originalName, { exact: true }).click();
 
     await expect(
       page.getByRole("heading", { name: "Update Product" })
@@ -110,18 +110,3 @@ test("Admin update product flow", async ({ page }) => {
   });
 });
 
-async function openProductFromAdminList(page, productName) {
-  const productLink = page.getByText(productName, { exact: true });
-  const nextButton = page.getByRole("button", { name: /Next/i });
-
-  while (!(await productLink.isVisible())) {
-    if (!(await nextButton.isVisible())) {
-      throw new Error(`Product "${productName}" was not found in admin product list.`);
-    }
-
-    await nextButton.click();
-    await page.waitForLoadState("networkidle");
-  }
-
-  await productLink.click();
-}
