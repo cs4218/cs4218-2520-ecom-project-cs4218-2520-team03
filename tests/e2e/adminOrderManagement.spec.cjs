@@ -34,7 +34,7 @@ test('admin should see successful order after user places an order of 1 item', a
   await page.getByPlaceholder('Enter your password').fill('123456');
   await page.getByRole('button', { name: 'LOGIN' }).click();
   await expect(page).toHaveURL('http://localhost:3000/');
-  await page.getByRole('button', { name: 'Test' }).click();
+  await page.getByRole('button', { name: 'ADMIN' }).click();
   await page.getByRole('link', { name: 'Dashboard' }).click();
   await page.getByRole('link', { name: 'Orders' }).click();
   await expect(page).toHaveURL('http://localhost:3000/dashboard/admin/orders');
@@ -56,7 +56,7 @@ test('admin should see successful order after user places an order of 1 item', a
   // Clean up: Admin set order status to cancel, then logout
   await page.getByText('Not Process').first().click();
   await page.getByText('cancel').nth(2).click();
-  await page.getByRole('button', { name: 'Test' }).click();
+  await page.getByRole('button', { name: 'ADMIN' }).click();
   await page.getByRole('link', { name: 'Logout' }).click();
   await expect(page).toHaveURL('http://localhost:3000/login');
 });
@@ -83,13 +83,13 @@ test('admin should see successful order after user places an order of multiple i
   // 3) Admin log in and check orders
   await page.goto('http://localhost:3000/login');
 
-  await page.getByPlaceholder('Enter your email').fill('tester123@gmail.com');
-  await page.getByPlaceholder('Enter your password').fill('cs4218');
+  await page.getByPlaceholder('Enter your email').fill('admin@gmail.com');
+  await page.getByPlaceholder('Enter your password').fill('123456');
   await page.getByRole('button', { name: 'LOGIN' }).click();
   await expect(page).toHaveURL('http://localhost:3000/');
 
   // 4) Admin check order
-  await page.getByRole('button', { name: 'Test' }).click();
+  await page.getByRole('button', { name: 'ADMIN' }).click();
   await page.getByRole('link', { name: 'Dashboard' }).click();
   await page.getByRole('link', { name: 'Orders' }).click();
   await expect(page).toHaveURL('http://localhost:3000/dashboard/admin/orders');
@@ -108,7 +108,7 @@ test('admin should see successful order after user places an order of multiple i
   // Clean up: Admin set order status to cancel, then logout
   await page.getByText('Not Process').first().click();
   await page.getByText('cancel').nth(2).click();
-  await page.getByRole('button', { name: 'Test' }).click();
+  await page.getByRole('button', { name: 'ADMIN' }).click();
   await page.getByRole('link', { name: 'Logout' }).click();
   await expect(page).toHaveURL('http://localhost:3000/login');
 });
@@ -123,3 +123,53 @@ test('user should not be able to place an order with invalid card details', asyn
   await page.getByRole('button', { name: 'Make Payment' }).click();
   await expect(page).toHaveURL('http://localhost:3000/cart');
 });
+
+test('admin should see order with failed payment status', async ({ page }) => {
+  // 1) User places an order with invalid card details
+  await page.getByRole('button', { name: 'Loadmore' }).click();
+  await page.locator('div:nth-child(12) > .card-body > div:nth-child(3) > .btn.ms-1.btn-dark').click();
+  await page.locator('div:nth-child(12) > .card-body > div:nth-child(3) > .btn.ms-1.btn-dark').click();
+  await page.getByRole('link', { name: 'Cart' }).click();
+  await page.getByRole('button', { name: 'Paying with Card' }).click();
+  await page.locator('iframe[name="braintree-hosted-field-number"]').contentFrame().getByRole('textbox', { name: 'Credit Card Number' }).click();
+  await page.locator('iframe[name="braintree-hosted-field-number"]').contentFrame().getByRole('textbox', { name: 'Credit Card Number' }).fill('4000 1111 1111 1115');
+  await page.locator('iframe[name="braintree-hosted-field-expirationDate"]').contentFrame().getByRole('textbox', { name: 'Expiration Date' }).click();
+  await page.locator('iframe[name="braintree-hosted-field-expirationDate"]').contentFrame().getByRole('textbox', { name: 'Expiration Date' }).fill('1230');
+  await page.locator('iframe[name="braintree-hosted-field-cvv"]').contentFrame().getByRole('textbox', { name: 'CVV' }).click();
+  await page.locator('iframe[name="braintree-hosted-field-cvv"]').contentFrame().getByRole('textbox', { name: 'CVV' }).fill('123');
+  await page.getByRole('button', { name: 'Make Payment' }).click();
+  await expect(page).toHaveURL('http://localhost:3000/dashboard/user/orders',{ timeout: 25000 });
+
+  // 2) User logout
+  await page.getByRole('button', { name: 'CS 4218 Test Account' }).click();
+  await page.getByRole('link', { name: 'Logout' }).click();
+  await expect(page).toHaveURL('http://localhost:3000/login');
+  
+  // 3) Admin log in and check orders
+  await page.goto('http://localhost:3000/login');
+
+  await page.getByPlaceholder('Enter your email').fill('admin@gmail.com');
+  await page.getByPlaceholder('Enter your password').fill('123456');
+  await page.getByRole('button', { name: 'LOGIN' }).click();
+  await expect(page).toHaveURL('http://localhost:3000/');
+
+  // 4) Admin check order
+  await page.getByRole('button', { name: 'ADMIN' }).click();
+  await page.getByRole('link', { name: 'Dashboard' }).click();
+  await page.getByRole('link', { name: 'Orders' }).click();
+  await expect(page).toHaveURL('http://localhost:3000/dashboard/admin/orders');
+
+  // Check if the new order is visible in the admin orders page
+  const firstRow = page.locator('table tbody tr').first();
+
+  await expect(firstRow).toBeVisible();
+  await expect(firstRow.getByRole('cell').nth(0)).toHaveText('1');
+  await expect(firstRow.getByRole('cell').nth(1)).toContainText('Not Process');
+  await expect(firstRow.getByRole('cell').nth(2)).toHaveText('CS 4218 Test Account');
+  await expect(firstRow.getByRole('cell').nth(3)).toContainText('a few seconds ago');
+  await expect(firstRow.getByRole('cell').nth(4)).toHaveText('Failed');
+  await expect(firstRow.getByRole('cell').nth(5)).toHaveText('2');
+
+});
+
+
