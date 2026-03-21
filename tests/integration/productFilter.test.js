@@ -77,7 +77,7 @@ describe("Backend integration tests for homepage product filters", () => {
         expect(names).toEqual(["Book A", "Book B"]);
     });
 
-    test("returns products from multiple selected categories", async () => {
+    it("returns products from multiple selected categories", async () => {
         await createProduct({ name: "Book A", price: 20, category: books._id });
         await createProduct({ name: "Laptop", price: 900, category: electronics._id });
         await createProduct({ name: "Shirt", price: 40, category: clothing._id });
@@ -96,7 +96,7 @@ describe("Backend integration tests for homepage product filters", () => {
         expect(names).toEqual(["Book A", "Laptop"]);
     });
 
-    test("returns only products within the selected price range", async () => {
+    it("returns only products within the selected price range", async () => {
         await createProduct({ name: "Book A", price: 20, category: books._id });
         await createProduct({ name: "Book B", price: 59, category: books._id });
         await createProduct({ name: "Laptop", price: 900, category: electronics._id });
@@ -116,7 +116,7 @@ describe("Backend integration tests for homepage product filters", () => {
         expect(names).toEqual(["Book B", "Shirt"]);
     });
 
-    test("returns only products satisfying both category and price filters", async () => {
+    it("returns only products satisfying both category and price filters", async () => {
         await createProduct({ name: "Book A", price: 20, category: books._id });
         await createProduct({ name: "Book B", price: 59, category: books._id });
         await createProduct({ name: "Shirt", price: 40, category: clothing._id });
@@ -135,7 +135,7 @@ describe("Backend integration tests for homepage product filters", () => {
         expect(res.body.products[0].name).toBe("Book B");
     });
 
-    test("returns all products when no filters are selected", async () => {
+    it("returns all products when no filters are selected", async () => {
         await createProduct({ name: "Book A", price: 20, category: books._id });
         await createProduct({ name: "Book B", price: 59, category: books._id });
         await createProduct({ name: "Laptop", price: 900, category: electronics._id });
