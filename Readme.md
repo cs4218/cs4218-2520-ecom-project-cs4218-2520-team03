@@ -182,3 +182,23 @@ To begin unit testing with Jest in your project, follow these steps:
 - Story A: `tests/e2e/cartFlow.spec.js` — logged-in user adds item, views in cart, removes it; guest user sees empty cart with login prompt (2 tests)
 - Story B: `tests/e2e/checkoutFlow.spec.js` — logged-in user sees cart summary and total; logged-in user navigates to orders page via dashboard (2 tests)
 - Story D: `tests/e2e/addToCartFlow.spec.js` — logged-in user adds two products, both appear in cart (1 test)
+
+### Trinh Hoai Song Thu (A0266248W)
+**Integration Tests**
+Test the integrations between:
+- the Frontend Admin Panel, the Category API Controller, and the Database.
+- the Identity Provider (Auth Service) and Role-Based Access Control (RBAC).
+- the Cart State, the Third-Party Payment Gateway (e.g., Braintree/Stripe), and the Order Processing Service.
+- the Order Service and the Product/Inventory Database.
+**E2E Tests (Playwright)**
+- Implement automated end-to-end tests to simulate critical user journeys and administrative workflows:
+- Admin Management Flows:
+   - Category Creation: Admin login $\rightarrow$ Category creation $\rightarrow$ Verification of UI persistence in the category list.
+   - Category Update: Admin login $\rightarrow$ Modification of existing category $\rightarrow$ Verification of real-time UI update.
+   - Category Deletion: Admin login $\rightarrow$ Resource removal $\rightarrow$ Verification of UI exclusion from the list.
+- User Transactional & Cross-Role Flows:
+   - Full Checkout & Order Visibility: User login $\rightarrow$ Add to cart $\rightarrow$ Payment processing $\rightarrow$ Logout $\rightarrow$ Admin login $\rightarrow$ Verification of new order in the "All Orders" dashboard.
+   - Inventory Integrity Check: User login $\rightarrow$ Item checkout $\rightarrow$ Payment success $\rightarrow$ Logout $\rightarrow$ Admin login $\rightarrow$ Verification of automated quantity decrement in the product inventory.
+**Code coverage (SonarQube)**
+- Generate SonarQube analysis report
+- Write the code coverage report
