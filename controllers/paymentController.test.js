@@ -127,7 +127,7 @@ describe("brainTreePaymentController", () => {
     buyer: "user-123",
   });
   expect(mockOrderSave).toHaveBeenCalled();
-  expect(productModel.findById).toHaveBeenCalled();
+  expect(productModel.findByIdAndUpdate).toHaveBeenCalled();
   expect(res.json).toHaveBeenCalledWith({ ok: true });
 });
 
