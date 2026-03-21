@@ -10,10 +10,8 @@ const TEST_ADMIN = {
 const IMAGE_PATH = path.resolve(process.cwd(), "client/public/logo192.png");
 
 test("Admin create product flow", async ({ page }) => {
-  const stamp = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
-
   const categoryName = "Electronics";
-  const productName = `E2E Create Product ${stamp}`;
+  const productName = 'E2E Test Create Product';
   const description = "Created through Playwright admin flow";
   const price = "85";
   const quantity = "7";

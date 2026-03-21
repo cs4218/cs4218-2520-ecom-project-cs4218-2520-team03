@@ -101,6 +101,15 @@ const SEED_PRODUCTS = [
     shipping: true,
   },
   {
+    name: "Old E2E Test Update Product",
+    slug: "old-e2e-test-update-product",
+    description: "Test product for admin update",
+    price: 39,
+    categoryName: "Electronics",
+    quantity: 10,
+    shipping: true,
+  },
+  {
     // Seed this last so it becomes the newest product and appears first
     name: "Test Product",
     slug: "test-product",
