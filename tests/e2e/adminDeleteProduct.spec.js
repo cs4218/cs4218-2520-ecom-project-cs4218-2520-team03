@@ -8,7 +8,7 @@ const TEST_ADMIN = {
 
 test("Admin delete product flow", async ({ page }) => {
   const productName = "E2E Test Delete Product";
-  const categoryName = "Sports";
+  const categoryName = "Fitness";
 
   await test.step("Login as admin", async () => {
     await page.goto("/login");

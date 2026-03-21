@@ -9,7 +9,7 @@ const TEST_ADMIN = {
 
 test("Admin update product flow", async ({ page }) => {
   const IMAGE_PATH = path.resolve(process.cwd(), "client/public/logo192.png");
-  const oldCategory = 'Sports';
+  const oldCategory = 'Fitness';
   const newCategory = 'Home';
   const originalName = 'Old E2E Test Update Product';
   const updatedName = 'New E2E Test Update Product';
