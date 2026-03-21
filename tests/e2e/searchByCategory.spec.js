@@ -27,7 +27,7 @@ test.describe('Search by category', () => {
         await page.getByTestId('header-category-link-sports').click();
 
         await expect(page).toHaveURL(/\/category\/sports/);
-        await expect(page.getByText(/Category - Sports/i)).toBeVisible();
+        await expect(page.getByText('Category - Sports')).toBeVisible();
 
         const productCard = page.locator('.card', { hasText: 'Test Product' }).first();
         await expect(productCard).toBeVisible();
@@ -36,8 +36,8 @@ test.describe('Search by category', () => {
 
         await expect(page).toHaveURL(/\/product\/test-product/);
         await expect(page.getByRole('heading', { name: 'Product Details' })).toBeVisible();
-        await expect(page.getByText(/Name : Test Product/i)).toBeVisible();
-        await expect(page.getByText(/Category : Sports/i)).toBeVisible();
+        await expect(page.getByText('Name : Test Product')).toBeVisible();
+        await expect(page.getByText('Category : Sports')).toBeVisible();
     });
 
     test('user opens All Categories from the dropdown, clicks Books, and reaches a book product details page', async ({ page }) => {
@@ -51,7 +51,7 @@ test.describe('Search by category', () => {
         await page.getByRole('link', { name: 'Books' }).click();
 
         await expect(page).toHaveURL(/\/category\/books/);
-        await expect(page.getByText(/Category - Books/i)).toBeVisible();
+        await expect(page.getByText('Category - Books')).toBeVisible();
 
         const productCard = page.locator('.card', { hasText: 'Pocket Notebook' }).first();
         await expect(productCard).toBeVisible();
@@ -60,7 +60,7 @@ test.describe('Search by category', () => {
 
         await expect(page).toHaveURL(/\/product\/pocket-notebook/);
         await expect(page.getByRole('heading', { name: 'Product Details' })).toBeVisible();
-        await expect(page.getByText(/Name : Pocket Notebook/i)).toBeVisible();
-        await expect(page.getByText(/Category : Books/i)).toBeVisible();
+        await expect(page.getByText('Name : Pocket Notebook')).toBeVisible();
+        await expect(page.getByText('Category : Books')).toBeVisible();
     });
 });
