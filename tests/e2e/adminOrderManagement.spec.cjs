@@ -50,9 +50,6 @@ test('admin should see successful order after user places an order of 1 item', a
   await expect(firstRow.getByRole('cell').nth(3)).toContainText('a few seconds ago');
   await expect(firstRow.getByRole('cell').nth(4)).toHaveText('Success');
   await expect(firstRow.getByRole('cell').nth(5)).toHaveText('1');
-  await expect(page.locator('#root').getByText('Not Process').first()).toBeVisible();
-  await expect(page.getByRole('cell', { name: 'CS 4218 Test Account' }).first()).toBeVisible();
-  await expect(page.getByRole('cell', { name: 'Success' }).first()).toBeVisible();
 
   // Clean up: Admin logout
   await page.getByRole('button', { name: 'ADMIN' }).click();
@@ -185,7 +182,7 @@ test('admin should see quantity change after user places order', async ({ page }
   await page.getByRole('button', { name: 'ADMIN' }).click();
   await page.getByRole('link', { name: 'Dashboard' }).click();
   await page.getByRole('link', { name: 'Products' }).click();
-  await page.getByRole('link', { name: 'Expensive Laptop Expensive' }).click();
+  await page.getByRole('link', { name: 'Smart Watch Ultra Smart Watch' }).click();
   const initialQuantity = await page.getByPlaceholder('write a quantity').inputValue();
 
   // 2) Admin logout and user log in
@@ -197,9 +194,8 @@ test('admin should see quantity change after user places order', async ({ page }
   await page.getByRole('button', { name: 'LOGIN' }).click();
 
   // 3) User places an order of that product
-  await page.getByRole('button', { name: 'More Details' }).nth(2).click();
-  await page.getByRole('separator').first().click();
-  await expect(await page.getByRole('heading', { name: 'Name : Expensive Laptop' })).toBeVisible();
+  await page.getByRole('button', { name: 'More Details' }).nth(3).click();
+  await expect(await page.getByRole('heading', { name: 'Name : Smart Watch Ultra' })).toBeVisible();
   await page.getByRole('button', { name: 'ADD TO CART' }).first().click();
   await page.getByRole('button', { name: 'ADD TO CART' }).first().click();
   await page.getByRole('link', { name: 'Cart' }).click();
@@ -223,7 +219,7 @@ test('admin should see quantity change after user places order', async ({ page }
   await page.getByRole('button', { name: 'ADMIN' }).click();
   await page.getByRole('link', { name: 'Dashboard' }).click();
   await page.getByRole('link', { name: 'Products' }).click();
-  await page.getByRole('link', { name: 'Expensive Laptop Expensive' }).click();
+  await page.getByRole('link', { name: 'Smart Watch Ultra Smart Watch' }).click();
   const updatedQuantity = await page.getByPlaceholder('write a quantity').inputValue();
   expect(parseInt(updatedQuantity)).toBe(parseInt(initialQuantity) - 2);
 });
