@@ -64,12 +64,9 @@ export const brainTreePaymentController = async (req, res) => {
 
     await Promise.all(
       cart.map(async (product) => {
-        const item = await productModel.findById(product._id);
-        if (!item) return;
-
-        const quantity = parseInt(item.quantity, 10) - 1;
-        item.quantity = String(quantity);
-        await item.save();
+        await productModel.findByIdAndUpdate(product._id, {
+          $inc: { quantity: -1 } // This decrements the value by 1 atomically
+        });
       })
     );
 
