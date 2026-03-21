@@ -54,9 +54,7 @@ test('admin should see successful order after user places an order of 1 item', a
   await expect(page.getByRole('cell', { name: 'CS 4218 Test Account' }).first()).toBeVisible();
   await expect(page.getByRole('cell', { name: 'Success' }).first()).toBeVisible();
 
-  // Clean up: Admin set order status to cancel, then logout
-  await page.getByText('Not Process').first().click();
-  await page.getByText('cancel').nth(2).click();
+  // Clean up: Admin logout
   await page.getByRole('button', { name: 'ADMIN' }).click();
   await page.getByRole('link', { name: 'Logout' }).click();
   await expect(page).toHaveURL('http://localhost:3000/login');
