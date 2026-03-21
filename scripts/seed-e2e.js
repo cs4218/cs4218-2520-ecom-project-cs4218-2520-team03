@@ -35,6 +35,15 @@ const SEED_USERS = [
     answer: "123",
     role: 1,
   },
+  {
+    name: "CS 4218 Test Account",
+    email: "cs4218@test.com",
+    password: "cs4218@test.com",
+    phone: "12345678",
+    address: "123",
+    answer: "123",
+    role: 1,
+  }
 ];
 
 const SEED_CATEGORIES = [
