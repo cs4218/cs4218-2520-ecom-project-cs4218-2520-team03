@@ -93,10 +93,10 @@ test("Admin update product flow", async ({ page }) => {
 
   await test.step("Verify Updated product appears under category filter", async () => {
     await page.goto("/");
-    const categoryFilter = page.locator("div").filter({
+    const categorySection = page.locator("div").filter({
       has: page.getByRole("heading", { name: "Filter By Category" }),
     });
-    await categoryFilter.getByText(newCategory, { exact: true }).click();
+    await categorySection.getByRole("checkbox", { name: newCategory }).check();
     await expect(page.getByText(updatedName)).toBeVisible();
   });
 
