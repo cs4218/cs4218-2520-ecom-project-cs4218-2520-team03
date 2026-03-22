@@ -169,6 +169,20 @@ To begin unit testing with Jest in your project, follow these steps:
 **Seed Script**
 - `scripts/seed-e2e.js`: Added standardised seed users (`user@gmail.com`, `admin@gmail.com`, password `123456`) and seed products including an out-of-stock product (`Sports Bottle Zero`, `quantity: 0`) to support stock-state E2E flows
 
+### Chen Peiran (A0257826R)
+
+**Integration Tests**
+- `client/src/integration/headerIntegration.test.js` — Tests integration between header search and category dropdown, router navigation, and shared cart state across pages
+- `client/src/integration/homePageIntegration.test.js` — Tests integration between homepage filter controls, product rendering, cart context, and navigation
+- `tests/integration/productFilter.test.js` — Tests integration between category filters, price filters, and pagination logic in the product filtering endpoint
+- `tests/integration/headerSearch.test.js` — Tests integration between search endpoint keyword handling and product database filtering logic
+- `tests/integration/headerCategoryDropdown.test.js` — Tests integration between category retrieval endpoints and product queries for header category navigation
+
+**E2E Tests (Playwright)**
+- `tests/e2e/headerSearch.spec.js` — User searches for product, checks product details or adds to cart
+- `tests/e2e/homepageFilter.spec.js` — User filters by price and category, checks product details or resets filter and loads more products
+- `tests/e2e/searchByCategory.spec.js` — User goes to the Category dropdown to look for a category, checks product details
+
 ### Chen Zhiruo (A0256855N)
 
 **Integration Tests**
