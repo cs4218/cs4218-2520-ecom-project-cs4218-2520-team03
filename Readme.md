@@ -176,7 +176,7 @@ To begin unit testing with Jest in your project, follow these steps:
 - `client/src/integration/productUpdate.test.js` — tests integration between updateProduct, searchProduct, getSingleProduct & productRoutes
 - `client/src/integration/orderStatusUpdate.test.js` — tests integration between authRoute, getOrdersController & orderStatusController
 
-**UI Tests (Playwright)**
+**E2E Tests (Playwright)**
 - `scripts\seed-e2e.js` and `.github\workflows\main.yml` - Created a github workflow job with a seeded database to run all ui tests in the pipeline 
 - `tests/e2e/adminCreateProduct.spec.js` — admin creates product, checks if product is visible in product list, search and filter results
 - `tests/e2e/adminUpdateProduct.spec.js` — admin updates an existing product, checks if updated product is visible in product list, search and filter results
