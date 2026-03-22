@@ -192,7 +192,21 @@ To begin unit testing with Jest in your project, follow these steps:
 - `client/src/integration/addToCartIntegration.test.js` — CartProvider + HomePage + CartPage: add two products, both appear in cart (4 tests)
 - `client/src/integration/removeItemTotalIntegration.test.js` — CartProvider + CartPage + totalPrice: remove item updates displayed total and localStorage (5 tests)
 
-**UI Tests (Playwright)**
+**E2E Tests (Playwright)**
 - Story A: `tests/e2e/cartFlow.spec.js` — logged-in user adds item, views in cart, removes it; guest user sees empty cart with login prompt (2 tests)
 - Story B: `tests/e2e/checkoutFlow.spec.js` — logged-in user sees cart summary and total; logged-in user navigates to orders page via dashboard (2 tests)
 - Story D: `tests/e2e/addToCartFlow.spec.js` — logged-in user adds two products, both appear in cart (1 test)
+
+
+### Sun Zihan (A0259581R)
+
+**Integration Tests**
+- `tests/integration/profileSecurity.test.js` — API & Model Integration: Tests the interaction between updateProfileController and userModel to ensure password hashing and partial updates synchronize correctly with the loginController
+- `client/src/integration/userIdentityLifecycle.test.js` — Vertical Integration: Validates full data flow between Login.js, AuthContext, and authController.js using a real MongoMemoryServer instance
+- `client/src/integration/sessionTokenValidation.test.js` — Security & State Integration: Verifies interaction between AuthProvider, PrivateRoute, and requireSignIn middleware to ensure JWT restoration and reactive axios header synchronization
+
+**E2E Tests (Playwright)**
+- `tests/e2e/accountRecovery.spec.js` — Identity Recovery Lifecycle: End-to-end journey from "Forgot Password" request through security answer validation to successful re-authentication and homepage verification
+- `tests/e2e/cartProfileFlow.spec.js` — Cross-Component Synchronization: Validates that a user can add items to the cart, update their shipping address in the Profile, and see those changes reflect reactively in the Cart summary
+- `tests/e2e/userRegistrationConflict.spec.js` — Identity Collision Handling: Ensures that attempting to re-register with existing credentials triggers the correct error state and does not impede subsequent valid logins (1 test).
+- `tests/e2e/profileSync.spec.js` — State Persistence Lifecycle: Verifies that updates made within the Profile are immediately reflected across the User Dashboard and Navigation Bar without a manual page refresh
