@@ -169,6 +169,34 @@ To begin unit testing with Jest in your project, follow these steps:
 **Seed Script**
 - `scripts/seed-e2e.js`: Added standardised seed users (`user@gmail.com`, `admin@gmail.com`, password `123456`) and seed products including an out-of-stock product (`Sports Bottle Zero`, `quantity: 0`) to support stock-state E2E flows
 
+### Chen Peiran (A0257826R)
+
+**Integration Tests**
+- `client/src/integration/headerIntegration.test.js` — Tests integration between header search and category dropdown, router navigation, and shared cart state across pages
+- `client/src/integration/homePageIntegration.test.js` — Tests integration between homepage filter controls, product rendering, cart context, and navigation
+- `tests/integration/productFilter.test.js` — Tests integration between category filters, price filters, and pagination logic in the product filtering endpoint
+- `tests/integration/headerSearch.test.js` — Tests integration between search endpoint keyword handling and product database filtering logic
+- `tests/integration/headerCategoryDropdown.test.js` — Tests integration between category retrieval endpoints and product queries for header category navigation
+
+**E2E Tests (Playwright)**
+- `tests/e2e/headerSearch.spec.js` — User searches for product, checks product details or adds to cart
+- `tests/e2e/homepageFilter.spec.js` — User filters by price and category, checks product details or resets filter and loads more products
+- `tests/e2e/searchByCategory.spec.js` — User goes to the Category dropdown to look for a category, checks product details
+
+### Chen Zhiruo (A0256855N)
+
+**Integration Tests**
+- `tests/integration/productDelete.test.js` — tests integration between deleteProduct, productList & productRoutes
+- `client/src/integration/productUpdate.test.js` — tests integration between updateProduct, searchProduct, getSingleProduct & productRoutes
+- `client/src/integration/orderStatusUpdate.test.js` — tests integration between authRoute, getOrdersController & orderStatusController
+
+**E2E Tests (Playwright)**
+- `scripts\seed-e2e.js` and `.github\workflows\main.yml` - Created a github workflow job with a seeded database to run all ui tests in the pipeline 
+- `tests/e2e/adminCreateProduct.spec.js` — admin creates product, checks if product is visible in product list, search and filter results
+- `tests/e2e/adminUpdateProduct.spec.js` — admin updates an existing product, checks if updated product is visible in product list, search and filter results
+- `tests/e2e/adminDeleteProduct.spec.js` — admin deletes existing product, checks that product is not visible in product list, search and filter results
+- `tests/e2e/adminUpdateOrderStatus.spec.js` — admin updates the status of an existing user order, user checks that the status of the order is updated
+
 ### Seah Yi Xun, Ryo (A0252602R)
 
 **Integration Tests**
@@ -202,3 +230,16 @@ Test the integrations between:
 **Code coverage (SonarQube)**
 - Generate SonarQube analysis report
 - Write the code coverage report
+
+### Sun Zihan (A0259581R)
+
+**Integration Tests**
+- `tests/integration/profileSecurity.test.js` — API & Model Integration: Tests the interaction between updateProfileController and userModel to ensure password hashing and partial updates synchronize correctly with the loginController
+- `client/src/integration/userIdentityLifecycle.test.js` — Vertical Integration: Validates full data flow between Login.js, AuthContext, and authController.js using a real MongoMemoryServer instance
+- `client/src/integration/sessionTokenValidation.test.js` — Security & State Integration: Verifies interaction between AuthProvider, PrivateRoute, and requireSignIn middleware to ensure JWT restoration and reactive axios header synchronization
+
+**E2E Tests (Playwright)**
+- `tests/e2e/accountRecovery.spec.js` — Identity Recovery Lifecycle: End-to-end journey from "Forgot Password" request through security answer validation to successful re-authentication and homepage verification
+- `tests/e2e/cartProfileFlow.spec.js` — Cross-Component Synchronization: Validates that a user can add items to the cart, update their shipping address in the Profile, and see those changes reflect reactively in the Cart summary
+- `tests/e2e/userRegistrationConflict.spec.js` — Identity Collision Handling: Ensures that attempting to re-register with existing credentials triggers the correct error state and does not impede subsequent valid logins (1 test).
+- `tests/e2e/profileSync.spec.js` — State Persistence Lifecycle: Verifies that updates made within the Profile are immediately reflected across the User Dashboard and Navigation Bar without a manual page refresh

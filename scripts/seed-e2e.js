@@ -1,3 +1,4 @@
+// Chen Zhiruo A0256855N
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -8,6 +9,7 @@ import slugify from "slugify";
 import userModel from "../models/userModel.js";
 import categoryModel from "../models/categoryModel.js";
 import productModel from "../models/productModel.js";
+import orderModel from "../models/orderModel.js";
 
 if (!process.env.MONGO_URL) {
   throw new Error("MONGO_URL is required");
@@ -224,12 +226,36 @@ async function seedProducts() {
   }
 }
 
+async function seedOrders() {
+  const buyer = await userModel.findOne({ email: "user@gmail.com" });
+  const product = await productModel.findOne({ slug: "expensive-laptop" });
+
+  if (!buyer) throw new Error("Seed buyer not found");
+  if (!product) throw new Error("Seed product not found");
+
+  await orderModel.deleteMany({
+    buyer: buyer._id,
+    "payment.seeded": true,
+  });
+
+  await orderModel.create({
+    products: [product._id],
+    buyer: buyer._id,
+    status: "Processing",
+    payment: {
+      seeded: true,
+      method: "seed",
+    },
+  });
+}
+
 async function main() {
   await mongoose.connect(process.env.MONGO_URL);
 
   await seedUsers();
   await seedCategories();
   await seedProducts();
+  await seedOrders();
 
   console.log("E2E seed complete");
   await mongoose.disconnect();
