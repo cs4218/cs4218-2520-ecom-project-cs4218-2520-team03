@@ -2,11 +2,18 @@ import userModel from "../models/userModel.js";
 import orderModel from "../models/orderModel.js";
 import { comparePassword, hashPassword } from "./../helpers/authHelper.js";
 import JWT from "jsonwebtoken";
+import xss from "xss";
+
+const isString = (val) => typeof val === 'string';
 
 // Sun Zihan, A0259581R
 export const registerController = async (req, res) => {
   try {
     const { name, email, password, phone, address, answer } = req.body;
+
+    if (![name, email, password, phone, address, answer].every(isString)) {
+      return res.status(400).send({ success: false, message: "Invalid input format" });
+    }
 
     if (!name || !email || !password || !phone || !address || !answer) {
       return res.status(400).send({ success: false, message: "Missing required registration details" });
@@ -22,12 +29,12 @@ export const registerController = async (req, res) => {
 
     const hashedPassword = await hashPassword(password);
     const user = await new userModel({
-      name,
-      email,
-      phone,
-      address,
+      name: xss(name),     
+      email: xss(email),     
+      phone: xss(phone),
+      address: xss(address),
       password: hashedPassword,
-      answer,
+      answer: xss(answer),
     }).save();
 
     return res.status(201).send({
@@ -45,6 +52,10 @@ export const registerController = async (req, res) => {
 export const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    if (!isString(email) || !isString(password)) {
+      return res.status(400).send({ success: false, message: "Invalid email or password format" });
+    }
 
     if (!email || !password) {
       return res.status(400).send({ success: false, message: "Email and password are required" });
@@ -85,6 +96,10 @@ export const loginController = async (req, res) => {
 export const forgotPasswordController = async (req, res) => {
   try {
     const { email, answer, newPassword } = req.body;
+
+    if (!isString(email) || !isString(answer) || !isString(newPassword)) {
+      return res.status(400).send({ success: false, message: "Invalid field format" });
+    }
 
     if (!email || !answer || !newPassword) {
       return res.status(400).send({ success: false, message: "Missing required fields for password reset" });
@@ -130,7 +145,7 @@ export const updateProfileController = async (req, res) => {
     const user = await userModel.findById(req.user._id);
     //password
     if (password && password.length < 6) {
-      return res.json({ error: "Password is required and should be 6 characters long" });
+      return res.status(400).send({ success: false, message: "Password must be at least 6 characters long" });
     }
     const hashedPassword = password ? await hashPassword(password) : undefined;
     const updatedUser = await userModel.findByIdAndUpdate(
@@ -149,11 +164,10 @@ export const updateProfileController = async (req, res) => {
       updatedUser,
     });
   } catch (error) {
-    console.log(error);
+    console.error(`Update Profile Error: ${error.message}`);
     res.status(400).send({
       success: false,
       message: "Error while updating profile",
-      error,
     });
   }
 };
@@ -167,11 +181,10 @@ export const getOrdersController = async (req, res) => {
       .populate("buyer", "name");
     res.json(orders);
   } catch (error) {
-    console.log(error);
+    console.error(`Get Orders Error: ${error.message}`);
     res.status(500).send({
       success: false,
       message: "Error while getting orders",
-      error,
     });
   }
 };
@@ -185,11 +198,10 @@ export const getAllOrdersController = async (req, res) => {
       .sort({ createdAt: -1 });
     res.json(orders);
   } catch (error) {
-    console.log(error);
+    console.error(`Get All Orders Error: ${error.message}`);
     res.status(500).send({
       success: false,
       message: "Error while getting orders",
-      error,
     });
   }
 };
@@ -206,11 +218,10 @@ export const orderStatusController = async (req, res) => {
     );
     res.json(orders);
   } catch (error) {
-    console.log(error);
+    console.error(`Order Status Error: ${error.message}`);
     res.status(500).send({
       success: false,
       message: "Error while updating orders",
-      error,
     });
   }
 };

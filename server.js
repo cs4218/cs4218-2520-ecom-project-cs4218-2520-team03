@@ -9,6 +9,9 @@ import authRoutes from "./routes/authRoute.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 
+import mongoSanitize from "express-mongo-sanitize";
+import helmet from "helmet";
+
 dotenv.config();
 
 //database config
@@ -17,6 +20,10 @@ if (process.env.NODE_ENV !== "test") {
 }
 
 const app = express();
+
+// Sun Zihan, A0259581R
+app.use(helmet()); 
+app.use(mongoSanitize());
 
 //middlewares
 app.use(cors());
