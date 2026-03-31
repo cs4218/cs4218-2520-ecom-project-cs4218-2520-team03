@@ -28,8 +28,8 @@ export const registerController = async (req, res) => {
     
     const user = await new userModel({
       name: xss(name),
-      email: xss(email),
-      phone: xss(phone),
+      email: email,
+      phone: phone,
       address: xss(address),
       password: hashedPassword,
       answer: xss(answer),
