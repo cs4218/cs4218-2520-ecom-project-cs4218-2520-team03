@@ -113,6 +113,18 @@ describe("Auth Controller", () => {
       await registerController(req, res);
       expect(res.status).toHaveBeenCalledWith(500);
     });
+
+    it("should return 400 if fields are not strings", async () => {
+      req.body = { 
+        name: 123, email: "j@t.com", password: "p", 
+        phone: "1", address: "a", answer: "s" 
+      };
+      await registerController(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.send).toHaveBeenCalledWith(expect.objectContaining({
+        message: "Invalid input format"
+      }));
+    });
   });
 
   describe("loginController", () => {
