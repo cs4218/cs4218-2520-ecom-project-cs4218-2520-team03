@@ -2,6 +2,9 @@ import userModel from "../models/userModel.js";
 import orderModel from "../models/orderModel.js";
 import { comparePassword, hashPassword } from "./../helpers/authHelper.js";
 import JWT from "jsonwebtoken";
+import xss from "xss"; 
+
+const isString = (val) => typeof val === 'string'; 
 
 // Sun Zihan, A0259581R
 export const registerController = async (req, res) => {
@@ -12,22 +15,24 @@ export const registerController = async (req, res) => {
       return res.status(400).send({ success: false, message: "Missing required registration details" });
     }
 
+    if (![name, email, password, phone, address, answer].every(isString)) {
+      return res.status(400).send({ success: false, message: "Invalid input format" });
+    }
+
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
-      return res.status(409).send({
-        success: false,
-        message: "Email already registered, please login",
-      });
+      return res.status(409).send({ success: false, message: "Email already registered, please login" });
     }
 
     const hashedPassword = await hashPassword(password);
+    
     const user = await new userModel({
-      name,
-      email,
-      phone,
-      address,
+      name: xss(name),
+      email: xss(email),
+      phone: xss(phone),
+      address: xss(address),
       password: hashedPassword,
-      answer,
+      answer: xss(answer),
     }).save();
 
     return res.status(201).send({
@@ -37,17 +42,20 @@ export const registerController = async (req, res) => {
     });
   } catch (error) {
     console.error(`Register Error: ${error.message}`);
-    return res.status(500).send({ success: false, message: "Internal server error during registration" });
+    return res.status(500).send({ success: false, message: "Internal server error during registration", error });
   }
 };
 
-// Sun Zihan, A0259581R
 export const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
       return res.status(400).send({ success: false, message: "Email and password are required" });
+    }
+
+    if (!isString(email) || !isString(password)) {
+      return res.status(400).send({ success: false, message: "Invalid email or password format" });
     }
 
     const user = await userModel.findOne({ email });
@@ -77,7 +85,7 @@ export const loginController = async (req, res) => {
     });
   } catch (error) {
     console.error(`Login Error: ${error.message}`);
-    return res.status(500).send({ success: false, message: "Internal server error during login" });
+    return res.status(500).send({ success: false, message: "Internal server error during login", error });
   }
 };
 
@@ -88,6 +96,10 @@ export const forgotPasswordController = async (req, res) => {
 
     if (!email || !answer || !newPassword) {
       return res.status(400).send({ success: false, message: "Missing required fields for password reset" });
+    }
+
+    if (!isString(email) || !isString(answer) || !isString(newPassword)) {
+      return res.status(400).send({ success: false, message: "Invalid field format" });
     }
 
     const user = await userModel.findOne({ email, answer });
@@ -104,7 +116,7 @@ export const forgotPasswordController = async (req, res) => {
     });
   } catch (error) {
     console.error(`Forgot Password Error: ${error.message}`);
-    return res.status(500).send({ success: false, message: "Internal server error during password reset" });
+    return res.status(500).send({ success: false, message: "Internal server error during password reset", error });
   }
 };
 
@@ -123,7 +135,7 @@ export const testController = (req, res) => {
   }
 };
 
-//update prfole
+//update profile
 export const updateProfileController = async (req, res) => {
   try {
     const { name, email, password, address, phone } = req.body;
