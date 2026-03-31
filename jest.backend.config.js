@@ -15,6 +15,7 @@ export default {
     "<rootDir>/models/*.test.js",
     "<rootDir>/config/db.test.js",
     "<rootDir>/tests/integration/*.test.js",
+    "<rootDir>/tests/security/*.test.js"
   ],
 
   // jest code coverage

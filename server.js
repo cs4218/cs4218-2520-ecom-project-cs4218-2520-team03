@@ -9,6 +9,9 @@ import authRoutes from "./routes/authRoute.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 
+import helmet from "helmet";
+import mongoSanitize from "express-mongo-sanitize";
+
 dotenv.config();
 
 //database config
@@ -22,6 +25,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
+// Sun Zihan, A0259581R 
+app.use(helmet()); 
+app.use(mongoSanitize());
 
 //routes
 app.use("/api/v1/auth", authRoutes);
