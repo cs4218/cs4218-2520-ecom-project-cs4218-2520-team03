@@ -380,12 +380,27 @@ describe("Auth Controller", () => {
       expect(updateArg.name).toBe("X");
     });
 
+    // Sun Zihan, A0259581R - Update response: should strip sensitive fields and include success message
     it("should return 200 with success true, message and updatedUser on success", async () => {
-      const updatedUser = { _id: "u1", name: "Updated", password: "h", phone: "1", address: "a" };
-      req.user = { _id: "u1" };
+      const userId = "u1";
+      const updatedUserMock = { 
+        _id: userId, 
+        name: "Updated", 
+        email: "test@test.com", 
+        phone: "1", 
+        address: "a", 
+        role: 0,
+        password: "hashed_password" 
+      };
+
+      req.user = { _id: userId };
       req.body = { name: "Updated" };
-      userModel.findById = jest.fn().mockResolvedValue({ _id: "u1", name: "Old", password: "h", phone: "1", address: "a" });
-      userModel.findByIdAndUpdate = jest.fn().mockResolvedValue(updatedUser);
+
+      userModel.findById = jest.fn().mockResolvedValue({ 
+        _id: userId, name: "Old", password: "h", phone: "1", address: "a" 
+      });
+      
+      userModel.findByIdAndUpdate = jest.fn().mockResolvedValue(updatedUserMock);
 
       await updateProfileController(req, res);
 
@@ -394,7 +409,14 @@ describe("Auth Controller", () => {
         expect.objectContaining({
           success: true,
           message: expect.stringMatching(/profile.*updated|updated.*profile/i),
-          updatedUser,
+          updatedUser: {
+            _id: userId,
+            name: "Updated",
+            email: "test@test.com", 
+            phone: "1",
+            address: "a",
+            role: 0
+          },
         })
       );
     });
