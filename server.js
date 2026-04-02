@@ -36,7 +36,10 @@ app.set('trust proxy', 1);
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
   max: 5, 
-  skip: (req) => process.env.NODE_ENV === 'test' && !req.headers['x-test-rate-limit'],
+  skip: (req) => {
+    if (req.headers['x-test-rate-limit'] === 'true') return false;
+    return process.env.NODE_ENV === 'test' || process.env.CI === 'true';
+  },  
   message: {
     success: false,
     message: "Too many login attempts, please try again after 15 minutes"
