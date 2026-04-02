@@ -12,6 +12,8 @@ import productRoutes from "./routes/productRoutes.js";
 import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
 
+import rateLimit from 'express-rate-limit';
+
 dotenv.config();
 
 //database config
@@ -25,9 +27,29 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
+
 // Sun Zihan, A0259581R 
 app.use(helmet()); 
 app.use(mongoSanitize());
+app.set('trust proxy', 1);
+
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, 
+  max: 5, 
+  skip: (req) => {
+    if (req.headers['x-test-rate-limit'] === 'true') return false;
+    return process.env.NODE_ENV === 'test' || process.env.CI === 'true';
+  },  
+  message: {
+    success: false,
+    message: "Too many login attempts, please try again after 15 minutes"
+  },
+  standardHeaders: true, 
+  legacyHeaders: false, 
+});
+
+app.use("/api/v1/auth/login", loginLimiter);
+app.use("/api/v1/auth/forgot-password", loginLimiter);
 
 //routes
 app.use("/api/v1/auth", authRoutes);
