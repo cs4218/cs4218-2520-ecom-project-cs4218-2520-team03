@@ -24,13 +24,26 @@ if (process.env.NODE_ENV !== "test") {
 const app = express();
 
 //middlewares
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000", 
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 app.use(express.json());
 app.use(morgan("dev"));
 
 // Sun Zihan, A0259581R 
-app.use(helmet()); 
-app.use(mongoSanitize());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      useDefaults: true, 
+      directives: {
+        "default-src": ["'self'"], 
+        "connect-src": ["'self'"], 
+      },
+    },
+  })
+);app.use(mongoSanitize());
 app.set('trust proxy', 1);
 
 const loginLimiter = rateLimit({
@@ -48,8 +61,8 @@ const loginLimiter = rateLimit({
   legacyHeaders: false, 
 });
 
-app.use("/api/v1/auth/login", loginLimiter);
-app.use("/api/v1/auth/forgot-password", loginLimiter);
+//app.use("/api/v1/auth/login", loginLimiter);
+//app.use("/api/v1/auth/forgot-password", loginLimiter);
 
 //routes
 app.use("/api/v1/auth", authRoutes);
