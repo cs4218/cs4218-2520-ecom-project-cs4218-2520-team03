@@ -129,6 +129,62 @@ describe("Auth Controller", () => {
         message: "Invalid input format"
       }));
     });
+
+    it("should return 400 if email format is invalid", async () => {
+      req.body = { 
+        name: "John", email: "invalid-email", password: "password123", 
+        phone: "12345678", address: "SG", answer: "Soccer" 
+      };
+      await registerController(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.send).toHaveBeenCalledWith(expect.objectContaining({
+        message: "Invalid email format or length"
+      }));
+    });
+
+    it("should return 400 if password is too short", async () => {
+      req.body = { 
+        name: "John", email: "j@t.com", password: "123", 
+        phone: "12345678", address: "SG", answer: "Soccer" 
+      };
+      await registerController(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.send).toHaveBeenCalledWith(expect.objectContaining({
+        message: "Password must be 6-64 characters"
+      }));
+    });
+
+    it("should return 400 if phone is not 8 digits", async () => {
+      req.body = { 
+        name: "John", email: "j@t.com", password: "password123", 
+        phone: "123", address: "SG", answer: "Soccer" 
+      };
+      await registerController(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.send).toHaveBeenCalledWith(expect.objectContaining({
+        message: "Phone must be exactly 8 digits"
+      }));
+    });
+
+    it("should return 400 on Mongoose ValidationError", async () => {
+      req.body = { 
+        name: "John", email: "j@t.com", password: "password123", 
+        phone: "12345678", address: "SG", answer: "Soccer" 
+      };
+      userModel.findOne.mockResolvedValue(null);
+      const validationError = new Error("Validation Failed");
+      validationError.name = "ValidationError";
+      
+      userModel.mockImplementation(() => ({
+        save: jest.fn().mockRejectedValue(validationError)
+      }));
+
+      await registerController(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.send).toHaveBeenCalledWith(expect.objectContaining({
+        message: "Validation Failed"
+      }));
+    });
   });
 
   describe("loginController", () => {
@@ -418,6 +474,65 @@ describe("Auth Controller", () => {
         success: false,
         message: "Internal server error during profile update",
       });
+    });
+
+    it("should return 404 if user is not found in updateProfileController", async () => {
+      req.user = { _id: "nonexistent" };
+      req.body = { name: "New Name" };
+      userModel.findById = jest.fn().mockResolvedValue(null);
+
+      await updateProfileController(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.send).toHaveBeenCalledWith(expect.objectContaining({
+        success: false,
+        message: "User not found"
+      }));
+    });
+
+    it("should return 400 if updated name format is invalid", async () => {
+      req.user = { _id: "user123" };
+      req.body = { name: "Invalid_Name_#" }; 
+      
+      userModel.findById = jest.fn().mockResolvedValue({ _id: "user123" });
+
+      await updateProfileController(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.send).toHaveBeenCalledWith(expect.objectContaining({
+        success: false,
+        message: "Invalid name format or length"
+      }));
+    });
+
+    it("should return 400 if updated name is too long", async () => {
+      req.user = { _id: "user123" };
+      req.body = { name: "a".repeat(51) }; 
+
+      userModel.findById = jest.fn().mockResolvedValue({ _id: "user123" });
+
+      await updateProfileController(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.send).toHaveBeenCalledWith(expect.objectContaining({
+        success: false,
+        message: "Invalid name format or length"
+      }));
+    });
+
+    it("should return 400 if updated phone is not exactly 8 digits", async () => {
+      req.user = { _id: "user123" };
+      req.body = { phone: "12345" }; 
+
+      userModel.findById = jest.fn().mockResolvedValue({ _id: "user123" });
+
+      await updateProfileController(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.send).toHaveBeenCalledWith(expect.objectContaining({
+        success: false,
+        message: "Phone must be exactly 8 digits"
+      }));
     });
   });
 
