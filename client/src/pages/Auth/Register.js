@@ -26,21 +26,28 @@ const Register = () => {
   const validate = () => {
     let tempErrors = {};
 
-    if (!name.trim()) tempErrors.name = "Name is required";
-    if (!address.trim()) tempErrors.address = "Address is required";
-    if (!answer.trim()) tempErrors.answer = "Answer is required";
+    const nameRegex = /^[a-zA-Z0-9 ]+$/;
+    if (!name.trim()) {
+      tempErrors.name = "Name is required";
+    } else if (name.length > 50) {
+      tempErrors.name = "Name cannot exceed 50 characters";
+    } else if (!nameRegex.test(name)) {
+      tempErrors.name = "Name can only contain letters and numbers";
+    }
 
-    const emailRegex = /^\S+@\S+\.\S+$/;
+    const emailRegex = /^(?![._-])(?!.*[._-]{2})[a-zA-Z0-9._-]+(?<![._-])@(?![.-])(?:[a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,63}$/;
     if (!email) {
       tempErrors.email = "Email is required";
+    } else if (email.length > 320) {
+      tempErrors.email = "Email is too long";
     } else if (!emailRegex.test(email)) {
       tempErrors.email = "Please enter a valid email address (eg. name@example.com)";
     }
 
     if (!password) {
       tempErrors.password = "Password is required";
-    } else if (password.length < 6) {
-      tempErrors.password = "Password must be at least 6 characters long";
+    } else if (password.length < 6 || password.length > 64) {
+      tempErrors.password = "Password must be 6-64 characters";
     }
 
     if (password !== confirmPassword) {
@@ -54,6 +61,18 @@ const Register = () => {
       tempErrors.phone = "Phone number must contain only digits";
     } else if (phone.length !== 8) {
       tempErrors.phone = "Phone number must be 8 digits long";
+    }
+
+    if (!address.trim()) {
+      tempErrors.address = "Address is required";
+    } else if (address.length > 100) {
+      tempErrors.address = "Address too long (Max 100)";
+    }
+
+    if (!answer.trim()) {
+      tempErrors.answer = "Answer is required";
+    } else if (answer.length > 50) {
+      tempErrors.answer = "Answer too long (Max 50)";
     }
 
     setErrors(tempErrors);

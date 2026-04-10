@@ -2,9 +2,12 @@ import userModel from "../models/userModel.js";
 import orderModel from "../models/orderModel.js";
 import { comparePassword, hashPassword } from "./../helpers/authHelper.js";
 import JWT from "jsonwebtoken";
-import xss from "xss"; 
+import xss from "xss";
 
-const isString = (val) => typeof val === 'string'; 
+const isString = (val) => typeof val === "string";
+const nameRegex = /^[a-zA-Z0-9 ]+$/;
+const phoneRegex = /^\d{8}$/;
+const emailRegex = /^(?![._-])(?!.*[._-]{2})[a-zA-Z0-9._-]+(?<![._-])@(?![.-])(?:[a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,63}$/;
 
 // Sun Zihan, A0259581R
 export const registerController = async (req, res) => {
@@ -19,16 +22,29 @@ export const registerController = async (req, res) => {
       return res.status(400).send({ success: false, message: "Invalid input format" });
     }
 
+    if (!nameRegex.test(name) || name.length > 50) {
+      return res.status(400).send({ success: false, message: "Invalid name format or length" });
+    }
+    if (!emailRegex.test(email) || email.length > 320) {
+      return res.status(400).send({ success: false, message: "Invalid email format or length" });
+    }
+    if (password.length < 6 || password.length > 64) {
+      return res.status(400).send({ success: false, message: "Password must be 6-64 characters" });
+    }
+    if (!phoneRegex.test(phone)) {
+      return res.status(400).send({ success: false, message: "Phone must be exactly 8 digits" });
+    }
+
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
       return res.status(409).send({ success: false, message: "Email already registered, please login" });
     }
 
     const hashedPassword = await hashPassword(password);
-    
+
     const user = await new userModel({
       name: xss(name),
-      email: email,
+      email: email.toLowerCase(),
       phone: phone,
       address: xss(address),
       password: hashedPassword,
@@ -42,7 +58,12 @@ export const registerController = async (req, res) => {
     });
   } catch (error) {
     console.error(`Register Error: ${error.message}`);
-    return res.status(500).send({ success: false, message: "Internal server error during registration", error });
+    
+    if (error.name === "ValidationError") {
+      return res.status(400).send({ success: false, message: error.message });
+    }
+    
+    return res.status(500).send({ success: false, message: "Internal server error during registration" });
   }
 };
 
@@ -85,7 +106,7 @@ export const loginController = async (req, res) => {
     });
   } catch (error) {
     console.error(`Login Error: ${error.message}`);
-    return res.status(500).send({ success: false, message: "Internal server error during login", error });
+    return res.status(500).send({ success: false, message: "Internal server error during login" });
   }
 };
 
@@ -116,7 +137,7 @@ export const forgotPasswordController = async (req, res) => {
     });
   } catch (error) {
     console.error(`Forgot Password Error: ${error.message}`);
-    return res.status(500).send({ success: false, message: "Internal server error during password reset", error });
+    return res.status(500).send({ success: false, message: "Internal server error during password reset" });
   }
 };
 
@@ -138,26 +159,57 @@ export const testController = (req, res) => {
 //update profile
 export const updateProfileController = async (req, res) => {
   try {
-    const { name, email, password, address, phone } = req.body;
+    const { name, password, address, phone } = req.body;
+
     const user = await userModel.findById(req.user._id);
-    //password
-    if (password && password.length < 6) {
-      return res.json({ error: "Password is required and should be 6 characters long" });
+    if (!user) {
+      return res.status(404).send({ success: false, message: "User not found" });
     }
-    const hashedPassword = password ? await hashPassword(password) : undefined;
+    
+    if (password !== undefined && password !== null && password !== "") {
+      if (password.length < 6 || password.length > 64) {
+        return res.status(400).send({ 
+            success: false, 
+            message: "Password must be 6-64 characters" 
+        });
+      }
+    }
+
+    if (name !== undefined && name !== null && name !== "") {
+      if (name.length > 50 || !nameRegex.test(name)) {
+        return res.status(400).send({ success: false, message: "Invalid name format or length" });
+      }
+    }
+
+    if (phone !== undefined && phone !== null) {
+      if (!phoneRegex.test(phone)) {
+        return res.status(400).send({ success: false, message: "Phone must be exactly 8 digits" });
+      }
+    }
+
+    if (address !== undefined && address !== null) {
+      if (address.length > 100 || address.trim() === "") {
+        return res.status(400).send({ success: false, message: "Invalid address format" });
+      }
+    }
+
+    const updateData = {};
+    if (name) updateData.name = xss(name);
+    if (phone) updateData.phone = phone;
+    if (address) updateData.address = xss(address);
+    if (password && password.trim() !== "") {
+      updateData.password = await hashPassword(password);
+    }
+
     const updatedUser = await userModel.findByIdAndUpdate(
       req.user._id,
-      {
-        name: name || user.name,
-        password: hashedPassword || user.password,
-        phone: phone || user.phone,
-        address: address || user.address,
-      },
-      { new: true },
+      updateData, 
+      { new: true, runValidators: true }
     );
-    res.status(200).send({
+
+    return res.status(200).send({
       success: true,
-      message: "Profile Updated Successfully",
+      message: "Profile updated successfully",
       updatedUser: {
         _id: updatedUser._id,
         name: updatedUser.name,
@@ -168,11 +220,15 @@ export const updateProfileController = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
-    res.status(400).send({
+    console.error(`Profile Update Error: ${error.message}`);
+    
+    if (error.name === "ValidationError") {
+      return res.status(400).send({ success: false, message: error.message });
+    }
+    
+    return res.status(500).send({
       success: false,
-      message: "Error while updating profile",
-      error,
+      message: "Internal server error during profile update",
     });
   }
 };
@@ -218,11 +274,7 @@ export const orderStatusController = async (req, res) => {
   try {
     const { orderId } = req.params;
     const { status } = req.body;
-    const orders = await orderModel.findByIdAndUpdate(
-      orderId,
-      { status },
-      { new: true },
-    );
+    const orders = await orderModel.findByIdAndUpdate(orderId, { status }, { new: true });
     res.json(orders);
   } catch (error) {
     console.log(error);

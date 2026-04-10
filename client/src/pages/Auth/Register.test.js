@@ -59,31 +59,39 @@ describe("Register Component", () => {
     expect(queryByText(/name is required/i)).not.toBeInTheDocument();
   });
 
-  it("should show inline validation for all syntax and format rules", () => {
-    const { getInputs, getByText, queryByText } = setup();
+  it("should show inline validation for all syntax and format rules", async () => {
+    const { getInputs, findByText } = setup();
     const inputs = getInputs();
 
     fireEvent.change(inputs.email, { target: { name: "email", value: "invalid" } });
     fireEvent.click(inputs.submitBtn);
-    expect(getByText(/please enter a valid email address/i)).toBeInTheDocument();
+    expect(await findByText(/please enter a valid email address/i)).toBeInTheDocument();
     fireEvent.change(inputs.email, { target: { name: "email", value: "john@test.com" } });
 
     fireEvent.change(inputs.password, { target: { name: "password", value: "123" } });
     fireEvent.click(inputs.submitBtn);
-    expect(getByText(/password must be at least 6 characters long/i)).toBeInTheDocument();
-
+    expect(await findByText(/password must be 6-64 characters/i)).toBeInTheDocument();
+    
     fireEvent.change(inputs.password, { target: { name: "password", value: "password123" } });
     fireEvent.change(inputs.confirm, { target: { name: "confirmPassword", value: "mismatch" } });
     fireEvent.click(inputs.submitBtn);
-    expect(getByText(/passwords do not match/i)).toBeInTheDocument();
+    expect(await findByText(/passwords do not match/i)).toBeInTheDocument();
 
     fireEvent.change(inputs.phone, { target: { name: "phone", value: "abc" } });
     fireEvent.click(inputs.submitBtn);
-    expect(getByText(/phone number must contain only digits/i)).toBeInTheDocument();
+    expect(await findByText(/phone number must contain only digits/i)).toBeInTheDocument();
 
     fireEvent.change(inputs.phone, { target: { name: "phone", value: "12345" } });
     fireEvent.click(inputs.submitBtn);
-    expect(getByText(/phone number must be 8 digits long/i)).toBeInTheDocument();
+    expect(await findByText(/phone number must be 8 digits long/i)).toBeInTheDocument();
+
+    fireEvent.change(inputs.address, { target: { name: "address", value: "a".repeat(101) } });
+    fireEvent.click(inputs.submitBtn);
+    expect(await findByText(/address too long/i)).toBeInTheDocument();
+
+    fireEvent.change(inputs.answer, { target: { name: "answer", value: "a".repeat(51) } });
+    fireEvent.click(inputs.submitBtn);
+    expect(await findByText(/answer too long/i)).toBeInTheDocument();
   });
 
   it("should successfully register and reset form state when response message is present", async () => {

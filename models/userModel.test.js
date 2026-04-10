@@ -10,8 +10,8 @@ describe("User model schema", () => {
             name: "Test User",
             email: "test@example.com",
             password: "password123",
-            phone: "1234567890",
-            address: { street: "123 Main St", city: "Test City" },
+            phone: "87654321",
+            address: "123 Main St, Test City",
             answer: "test answer",
             role: 0,
         };
@@ -85,9 +85,9 @@ describe("User model schema", () => {
         expect(userModel.schema.paths.phone.instance).toBe("String");
     })
 
-    it("should define address as a Mixed type", () => {
-        expect(userModel.schema.paths.address.instance).toBe("Mixed");
-    })
+    it("should define address as a String type", () => {
+        expect(userModel.schema.paths.address.instance).toBe("String"); 
+    });
 
     it("should define answer as a String", () => {
         expect(userModel.schema.paths.answer.instance).toBe("String");
@@ -103,7 +103,7 @@ describe("User model schema", () => {
             email: "test@example.com",
             password: "password123",
             phone: "1234567890",
-            address: { street: "123 Main St", city: "Test City" },
+            address: "123 Main St, Test City",
             answer: "test answer"
         });
 
@@ -115,7 +115,7 @@ describe("User model schema", () => {
             name: "Test User",
             password: "password123",
             phone: "1234567890",
-            address: { street: "123 Main St", city: "Test City" },
+            address: "123 Main St, Test City",
             answer: "test answer"
         });
 
@@ -127,7 +127,7 @@ describe("User model schema", () => {
             name: "Test User",
             email: "test@example.com",
             phone: "1234567890",
-            address: { street: "123 Main St", city: "Test City" },
+            address: "123 Main St, Test City",
             answer: "test answer"
         });
 
@@ -139,7 +139,7 @@ describe("User model schema", () => {
             name: "Test User",
             email: "test@example.com",
             password: "password123",
-            address: { street: "123 Main St", city: "Test City" },
+            address: "123 Main St, Test City",
             answer: "test answer"
         });
 
@@ -164,7 +164,7 @@ describe("User model schema", () => {
             email: "test@example.com",
             password: "password123",
             phone: "1234567890",
-            address: { street: "123 Main St", city: "Test City" },
+            address: "123 Main St, Test City",
         });
 
         expect(user.validateSync().errors.answer).toBeDefined();
