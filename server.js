@@ -61,8 +61,8 @@ const loginLimiter = rateLimit({
   legacyHeaders: false, 
 });
 
-//app.use("/api/v1/auth/login", loginLimiter);
-//app.use("/api/v1/auth/forgot-password", loginLimiter);
+app.use("/api/v1/auth/login", loginLimiter);
+app.use("/api/v1/auth/forgot-password", loginLimiter);
 
 //routes
 app.use("/api/v1/auth", authRoutes);

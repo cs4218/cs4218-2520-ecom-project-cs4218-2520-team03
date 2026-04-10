@@ -3,6 +3,8 @@ import request from "supertest";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import app from "../../server.js";
+import userModel from "../../models/userModel.js"; 
+import { hashPassword } from "../../helpers/authHelper.js"; 
 
 let mongoServer;
 
@@ -10,6 +12,19 @@ beforeAll(async () => {
   await mongoose.disconnect();
   mongoServer = await MongoMemoryServer.create();
   await mongoose.connect(mongoServer.getUri());
+});
+
+beforeEach(async () => {
+  await userModel.deleteMany({});
+  const hashedPassword = await hashPassword("correctPassword123");
+  await new userModel({
+    name: "Victim User",
+    email: "victim@test.com",
+    password: hashedPassword,
+    phone: "88888888", 
+    address: "123 Security St", 
+    answer: "blue"
+  }).save();
 });
 
 afterAll(async () => {
@@ -29,7 +44,7 @@ describe("Security Testing - Automated Brute Force and Rate Limiting", () => {
           .send({ email: "victim@test.com", password: commonPassword });
       }
   
-      // Next attempt (6th attempt) must be blocked regardless of the password used
+      // The 6th attempt must be blocked with 429
       const res = await request(app)
         .post(loginUrl)
         .set('x-test-rate-limit', 'true')

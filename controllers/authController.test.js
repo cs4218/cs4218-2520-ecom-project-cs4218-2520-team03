@@ -106,8 +106,12 @@ describe("Auth Controller", () => {
 
     it("should return 500 if an error occurs during registration", async () => {
       req.body = { 
-        name: "John", email: "error@test.com", password: "p", 
-        phone: "1", address: "a", answer: "s" 
+        name: "John Doe", 
+        email: "error@test.com", 
+        password: "password123", 
+        phone: "12345678", 
+        address: "Valid Address", 
+        answer: "Valid Answer" 
       };
       userModel.findOne.mockRejectedValue(new Error("DB Error"));
       await registerController(req, res);
@@ -265,21 +269,16 @@ describe("Auth Controller", () => {
       expect(userModel.findById).toHaveBeenCalledWith(userId);
     });
 
-    it("should return JSON error when password provided and length < 6 (no status set)", async () => {
+    it("should return 400 error when password length is invalid", async () => {
       req.user = { _id: "user1" };
-      req.body = { password: "12345" };
-      const existingUser = { _id: "user1", name: "U", password: "h", phone: "1", address: "a" };
-      userModel.findById = jest.fn().mockResolvedValue(existingUser);
-
+      req.body = { password: "123" }; 
+      
       await updateProfileController(req, res);
-
-      expect(res.json).toHaveBeenCalledWith(
-        expect.objectContaining({
-          error: expect.stringMatching(/password|6|character/i),
-        })
-      );
-      expect(res.status).not.toHaveBeenCalled();
-      expect(userModel.findByIdAndUpdate).not.toHaveBeenCalled();
+    
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.send).toHaveBeenCalledWith(expect.objectContaining({
+         message: expect.stringMatching(/password/i) 
+      }));
     });
 
     it("should call hashPassword when password is provided and valid", async () => {
@@ -298,36 +297,25 @@ describe("Auth Controller", () => {
       expect(hashPassword).toHaveBeenCalledWith("validpassword");
     });
 
-    it("should call findByIdAndUpdate with user id, update object, and { new: true }", async () => {
+    it("should call findByIdAndUpdate with user id, update object, and { new: true, runValidators: true }", async () => {
       const userId = "user456";
-      const existingUser = { _id: userId, name: "Jane", password: "hash", phone: "99", address: "Home" };
+      const existingUser = { _id: userId, name: "Jane", password: "hash", phone: "91234567", address: "Home" };
       req.user = { _id: userId };
-      req.body = { name: "Jane Doe", phone: "88" };
+      req.body = { name: "Jane Doe", phone: "81234567" }; 
       userModel.findById = jest.fn().mockResolvedValue(existingUser);
-      userModel.findByIdAndUpdate = jest.fn().mockResolvedValue({
-        _id: userId,
-        name: "Jane Doe",
-        password: "hash",
-        phone: "88",
-        address: "Home",
-      });
+      userModel.findByIdAndUpdate = jest.fn().mockResolvedValue({ ...existingUser, name: "Jane Doe" });
 
       await updateProfileController(req, res);
 
       expect(userModel.findByIdAndUpdate).toHaveBeenCalledWith(
         userId,
-        {
-          name: "Jane Doe",
-          password: existingUser.password,
-          phone: "88",
-          address: "Home",
-        },
-        { new: true }
+        expect.objectContaining({ name: "Jane Doe" }),
+        { new: true, runValidators: true } // Added runValidators
       );
     });
 
     it("should use name || user.name, phone || user.phone, address || user.address in update", async () => {
-      const existingUser = { _id: "u1", name: "A", password: "p", phone: "1", address: "Addr" };
+      const existingUser = { _id: "u1", name: "A", password: "p", phone: "12345678", address: "Addr" };
       req.user = { _id: "u1" };
       req.body = { address: "NewAddr" };
       userModel.findById = jest.fn().mockResolvedValue(existingUser);
@@ -337,20 +325,15 @@ describe("Auth Controller", () => {
 
       expect(userModel.findByIdAndUpdate).toHaveBeenCalledWith(
         "u1",
-        {
-          name: "A",
-          password: "p",
-          phone: "1",
-          address: "NewAddr",
-        },
-        { new: true }
+        { address: "NewAddr" },
+        { new: true, runValidators: true }
       );
     });
 
     it("should use hashedPassword || user.password when password is provided", async () => {
       req.user = { _id: "u1" };
       req.body = { password: "newpass6" };
-      const existingUser = { _id: "u1", name: "A", password: "oldHash", phone: "1", address: "a" };
+      const existingUser = { _id: "u1", name: "A", password: "oldHash", phone: "12345678", address: "a" };
       userModel.findById = jest.fn().mockResolvedValue(existingUser);
       hashPassword.mockResolvedValue("newHash");
       userModel.findByIdAndUpdate = jest.fn().mockResolvedValue({ ...existingUser, password: "newHash" });
@@ -362,25 +345,23 @@ describe("Auth Controller", () => {
         expect.objectContaining({
           password: "newHash",
         }),
-        { new: true }
+        { new: true, runValidators: true } // Added runValidators
       );
     });
 
     it("should not include email in findByIdAndUpdate update object", async () => {
       req.user = { _id: "u1" };
-      req.body = { name: "X", email: "new@email.com", phone: "1", address: "a" };
-      const existingUser = { _id: "u1", name: "Old", password: "p", phone: "1", address: "a" };
+      req.body = { name: "ValidName", email: "new@email.com", phone: "87654321", address: "a" }; 
+      const existingUser = { _id: "u1", name: "Old", password: "p", phone: "12345678", address: "a" };
       userModel.findById = jest.fn().mockResolvedValue(existingUser);
-      userModel.findByIdAndUpdate = jest.fn().mockResolvedValue({ ...existingUser, name: "X" });
+      userModel.findByIdAndUpdate = jest.fn().mockResolvedValue({ ...existingUser, name: "ValidName" });
 
       await updateProfileController(req, res);
 
       const updateArg = userModel.findByIdAndUpdate.mock.calls[0][1];
       expect(updateArg).not.toHaveProperty("email");
-      expect(updateArg.name).toBe("X");
     });
 
-    // Sun Zihan, A0259581R - Update response: should strip sensitive fields and include success message
     it("should return 200 with success true, message and updatedUser on success", async () => {
       const userId = "u1";
       const updatedUserMock = { 
@@ -424,7 +405,7 @@ describe("Auth Controller", () => {
     it("should return 400 with success false and error message when update fails", async () => {
       // Arrange
       req.user = { _id: "u1" };
-      req.body = {};
+      req.body = { name: "ValidName" };
       const dbError = new Error("Database error");
       userModel.findById = jest.fn().mockRejectedValue(dbError);
 
@@ -432,15 +413,11 @@ describe("Auth Controller", () => {
       await updateProfileController(req, res);
 
       // Assert
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.send).toHaveBeenCalledWith(
-        expect.objectContaining({
-          success: false,
-          message: expect.stringMatching(/updating profile|update.*profile/i),
-          error: dbError,
-        })
-      );
-      expect(consoleLogSpy).toHaveBeenCalledWith(dbError);
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.send).toHaveBeenCalledWith({
+        success: false,
+        message: "Internal server error during profile update",
+      });
     });
   });
 

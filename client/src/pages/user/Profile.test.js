@@ -105,9 +105,12 @@ describe("Profile Component", () => {
   it("should validate password length and mismatch", async () => {
     const { getInputs, findByText } = setup();
     const inputs = getInputs();
+
     fireEvent.change(inputs.password, { target: { name: "password", value: "123" } });
     fireEvent.click(inputs.submitBtn);
-    expect(await findByText(/password must be at least 6 characters long/i)).toBeInTheDocument();
+    
+    expect(await findByText(/password must be 6-64 characters/i)).toBeInTheDocument();
+
     fireEvent.change(inputs.password, { target: { name: "password", value: "password123" } });
     fireEvent.change(inputs.confirm, { target: { name: "confirmPassword", value: "mismatch" } });
     fireEvent.click(inputs.submitBtn);
@@ -144,7 +147,7 @@ describe("Profile Component", () => {
     fireEvent.change(inputs.password, { target: { name: "password", value: "   " } });
     fireEvent.click(inputs.submitBtn);
 
-    expect(await findByText(/password must be at least 6 characters long/i)).toBeInTheDocument();
+    expect(await findByText(/password must be 6-64 characters/i)).toBeInTheDocument();
     expect(axios.put).not.toHaveBeenCalled();
   });
 
@@ -166,7 +169,6 @@ describe("Profile Component", () => {
     const { getInputs } = setup();
     const inputs = getInputs();
 
-    // Update fails but user persists
     axios.put.mockResolvedValueOnce({ data: { updatedUser: mockUser } });
     window.localStorage.getItem.mockReturnValueOnce(null);
     fireEvent.click(inputs.submitBtn);
@@ -175,14 +177,22 @@ describe("Profile Component", () => {
       expect(localStorage.setItem).not.toHaveBeenCalled();
     });
 
-    // Backend data error
     axios.put.mockResolvedValueOnce({ data: { error: "Backend error" } });
     fireEvent.click(inputs.submitBtn);
     await waitFor(() => expect(toast.error).toHaveBeenCalledWith("Backend error"));
 
-    // Network failure
     axios.put.mockRejectedValueOnce(new Error("Network error"));
     fireEvent.click(inputs.submitBtn);
     await waitFor(() => expect(toast.error).toHaveBeenCalledWith("Something went wrong"));
+  });
+
+  it("should show error for excessively long address", async () => {
+    const { getInputs, findByText } = setup();
+    const inputs = getInputs();
+
+    fireEvent.change(inputs.address, { target: { name: "address", value: "a".repeat(101) } });
+    fireEvent.click(inputs.submitBtn);
+
+    expect(await findByText(/address too long/i)).toBeInTheDocument();
   });
 });

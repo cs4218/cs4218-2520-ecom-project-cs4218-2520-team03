@@ -16,13 +16,25 @@ beforeAll(async () => {
   await mongoose.connect(mongoServer.getUri());
 
   const userA = await new userModel({
-    name: "User A", email: "a@test.com", password: "password123", phone: "1", address: "A", answer: "A", role: 0
+    name: "User A", 
+    email: "a@test.com", 
+    password: "password123", 
+    phone: "81111111", 
+    address: "Address A", 
+    answer: "A", 
+    role: 0
   }).save();
   userAId = userA._id;
   userAToken = JWT.sign({ _id: userA._id }, process.env.JWT_SECRET);
 
   const userB = await new userModel({
-    name: "User B", email: "b@test.com", password: "password123", phone: "2", address: "B", answer: "B", role: 0
+    name: "User B", 
+    email: "b@test.com", 
+    password: "password123", 
+    phone: "82222222", 
+    address: "Address B", 
+    answer: "B", 
+    role: 0
   }).save();
   userBId = userB._id;
   userBToken = JWT.sign({ _id: userB._id }, process.env.JWT_SECRET);
