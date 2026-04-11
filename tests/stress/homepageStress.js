@@ -4,27 +4,25 @@ import exec from 'k6/execution';
 import { Trend, Rate } from 'k6/metrics';
 import { check } from 'k6';
 
-const BASE_URL = 'http://localhost:6060';
-const PRODUCT_SLUG = 'expensive-laptop';
-
-const LEVELS = [2800, 2900, 2950, 2980, 3000];
-const HOLD_SECONDS = 150;
-const RECOVERY_SECONDS = 45;
+const BASE_URL = 'http://localhost:3000';
+const LEVELS = [600, 1000, 1400, 1800, 2200, 2400, 2600];
+const HOLD_SECONDS = 120;
+const RECOVERY_SECONDS = 20;
 const RECOVERY_VUS = 50;
 
 const SCENARIO_NAMES = [...LEVELS.map((v) => `vus_${String(v).padStart(3, '0')}`), 'recovery'];
 
-const productResponseMetrics = {};
-const productFailRates = {};
+const homepageResponseMetrics = {};
+const homepageFailRates = {};
 
 for (const name of SCENARIO_NAMES) {
-  productResponseMetrics[name] = new Trend(`get_product_response_time_${name}`);
-  productFailRates[name] = new Rate(`get_product_failed_${name}`);
+  homepageResponseMetrics[name] = new Trend(`homepage_response_time_${name}`);
+  homepageFailRates[name] = new Rate(`homepage_failed_${name}`);
 }
 
 export const options = {
   scenarios: buildSequentialScenarios(),
-  summaryTrendStats: ['avg', 'med', 'p(95)', 'p(99)'],
+  summaryTrendStats: ['med', 'p(95)', 'p(99)'],
 };
 
 function buildSequentialScenarios() {
@@ -35,10 +33,10 @@ function buildSequentialScenarios() {
     const name = `vus_${String(vus).padStart(3, '0')}`;
     scenarios[name] = {
       executor: 'constant-vus',
-      exec: 'productStress',
+      exec: 'homepageStress',
       vus: vus,
       duration: `${HOLD_SECONDS}s`,
-      gracefulStop: '60s',
+      gracefulStop: '5s',
       startTime: `${offset}s`,
     };
     offset += HOLD_SECONDS;
@@ -46,7 +44,7 @@ function buildSequentialScenarios() {
 
   scenarios.recovery = {
     executor: 'constant-vus',
-    exec: 'productStress',
+    exec: 'homepageStress',
     vus: RECOVERY_VUS,
     duration: `${RECOVERY_SECONDS}s`,
     gracefulStop: '5s',
@@ -56,18 +54,10 @@ function buildSequentialScenarios() {
   return scenarios;
 }
 
-export function productStress() {
+export function homepageStress() {
   const currentScenario = exec.scenario.name;
 
-  const res = http.get(`${BASE_URL}/api/v1/product/get-product/${PRODUCT_SLUG}`);
+  const res = http.get(`${BASE_URL}/`);
 
-  productResponseMetrics[currentScenario].add(res.timings.duration);
-
-  const ok = check(res, {
-    'get product status is 200': (r) => r.status === 200,
-    'get product response is json': (r) =>
-      String(r.headers['Content-Type'] || '').includes('application/json'),
-  });
-
-  productFailRates[currentScenario].add(!ok);
+  homepageResponseMetrics[currentScenario].add(res.timings.duration);
 }

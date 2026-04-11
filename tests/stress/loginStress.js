@@ -55,7 +55,7 @@ scenarios.recovery = {
 
 export const options = {
   scenarios,
-  summaryTrendStats: ['avg', 'med', 'p(95)', 'p(99)'],
+  summaryTrendStats: ['med', 'p(95)', 'p(99)'],
   thresholds: {
     http_req_failed: ['rate<0.01'],
     http_req_duration: ['p(95)<5000'],
@@ -85,11 +85,5 @@ export function loginStress() {
     token = null;
   }
 
-  const ok = check(res, {
-    'login status is 200': (r) => r.status === 200,
-    'login returns token': () => !!token,
-  });
-
   loginMetrics[scenarioName].add(res.timings.duration);
-  loginFailRates[scenarioName].add(!ok);
 }

@@ -247,7 +247,12 @@ Test the integrations between:
 ## 8. Task Allocation (MS3)
 ### Chen Peiran (A0257826R)
 ### Chen Zhiruo (A0256855N)
-Wrote stress tests for login, homepage, categories, product and checkout.
+- `tests/stress/loginStress.js` — Stress test for Login `/api/v1/auth/login` 
+- `tests/stress/homepageStress.js` — Stress test for Homepage `/`
+- `tests/stress/categoryStress.js` — Stress test for Category `/api/v1/category/get-category`
+- `tests/stress/productStress.js` — Stress test for Product `/api/v1/product/get-product/product-slug`
+- `tests/stress/checkoutStress.js` — Stress test for Checkout `/api/v1/product/braintree/payment`
+
 ### Seah Yi Xun, Ryo (A0252602R)
 **Spike Testing (Artillery)**
 - `tests/spike/getOrders.spike.yml` — Spike test for `GET /api/v1/auth/orders` (50 concurrent users)

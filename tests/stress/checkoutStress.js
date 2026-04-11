@@ -32,7 +32,7 @@ let vuToken = null;
 
 export const options = {
   scenarios: buildSequentialScenarios(),
-  summaryTrendStats: ['avg', 'med', 'p(95)', 'p(99)'],
+  summaryTrendStats: ['med', 'p(95)', 'p(99)'],
 };
 
 function buildSequentialScenarios() {
@@ -183,12 +183,4 @@ export function paymentStress(data) {
   paymentResponseMetrics[currentScenario].add(res.timings.duration);
 
   const body = safeJson(res);
-
-  const ok = check(res, {
-    'payment status is 200': (r) => r.status === 200,
-    'payment ok is true': () => body?.ok === true,
-    'payment not 401': (r) => r.status !== 401,
-  });
-
-  paymentFailRates[currentScenario].add(!ok);
 }

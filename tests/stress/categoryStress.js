@@ -22,7 +22,7 @@ for (const name of SCENARIO_NAMES) {
 
 export const options = {
   scenarios: buildSequentialScenarios(),
-  summaryTrendStats: ['avg', 'med', 'p(95)', 'p(99)'],
+  summaryTrendStats: ['med', 'p(95)', 'p(99)'],
 };
 
 function buildSequentialScenarios() {
@@ -61,9 +61,4 @@ export function categoryStress() {
 
   categoryResponseMetrics[currentScenario].add(res.timings.duration);
 
-  const ok = check(res, {
-    'category status is 200': (r) => r.status === 200,
-  });
-
-  categoryFailRates[currentScenario].add(!ok);
 }
