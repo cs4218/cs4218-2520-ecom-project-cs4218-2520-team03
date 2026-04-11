@@ -1,3 +1,4 @@
+// Chen Peiran, A0257826R
 import http from "k6/http";
 import { check, sleep } from "k6";
 
@@ -41,21 +42,41 @@ export default function () {
         "product list page 2 status 200": (r) => r.status === 200,
     });
 
-    const filterPayload = JSON.stringify({
-        checked: [],
-        radio: [0, 100],
+    const categories = responses[0].json("category");
+    const booksCategory = categories.find((c) => c.name === "Books");
+
+    const categoryFilterPayload = JSON.stringify({
+        checked: [booksCategory._id],
+        radio: [],
     });
 
-    const filterRes = http.post(
+    const categoryFilterRes = http.post(
         `${BASE_URL}/api/v1/product/product-filters`,
-        filterPayload,
+        categoryFilterPayload,
         {
             headers: { "Content-Type": "application/json" },
         }
     );
 
-    check(filterRes, {
-        "product filter status 200": (r) => r.status === 200,
+    check(categoryFilterRes, {
+        "category filter status 200": (r) => r.status === 200,
+    });
+
+    const priceFilterPayload = JSON.stringify({
+        checked: [],
+        radio: [0, 19],
+    });
+
+    const priceFilterRes = http.post(
+        `${BASE_URL}/api/v1/product/product-filters`,
+        priceFilterPayload,
+        {
+            headers: { "Content-Type": "application/json" },
+        }
+    );
+
+    check(priceFilterRes, {
+        "price filter status 200": (r) => r.status === 200,
     });
 
     sleep(1);
