@@ -1,0 +1,25 @@
+# Seah Yi Xun Ryo, A0252602R
+# Story 2: Spike test for GET /api/v1/auth/all-orders (admin endpoint)
+# Requires admin JWT token (role=1)
+# Usage: JWT_TOKEN=<admin_token> artillery run getAllOrders.spike.yml
+
+config:
+  target: "http://localhost:6060"
+  phases:
+    - duration: 10
+      arrivalRate: 2
+      name: "Warm up"
+    - duration: 20
+      arrivalRate: 20
+      name: "Spike — 20 concurrent admin users"
+  defaults:
+    headers:
+      Authorization: "{{ $processEnvironment.JWT_TOKEN }}"
+
+scenarios:
+  - name: "GET /api/v1/auth/all-orders"
+    flow:
+      - get:
+          url: "/api/v1/auth/all-orders"
+          expect:
+            - statusCode: 200

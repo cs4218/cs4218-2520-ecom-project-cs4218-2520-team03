@@ -244,10 +244,39 @@ Test the integrations between:
 - `tests/e2e/userRegistrationConflict.spec.js` — Identity Collision Handling: Ensures that attempting to re-register with existing credentials triggers the correct error state and does not impede subsequent valid logins (1 test).
 - `tests/e2e/profileSync.spec.js` — State Persistence Lifecycle: Verifies that updates made within the Profile are immediately reflected across the User Dashboard and Navigation Bar without a manual page refresh
 
-## 6. Task Allocation (MS1)
-1. Chen Peiran
-2. Chen Zhiruo
+## 8. Task Allocation (MS3)
+### Chen Peiran (A0257826R)
+### Chen Zhiruo (A0256855N)
 Wrote stress tests for login, homepage, categories, product and checkout.
-3. Seah Yi Xun, Ryo
-4. Sun Zihan
-5. Trinh Hoai Song Thu
+### Seah Yi Xun, Ryo (A0252602R)
+**Spike Testing (Artillery)**
+- `tests/spike/getOrders.spike.yml` — Spike test for `GET /api/v1/auth/orders` (50 concurrent users)
+- `tests/spike/getAllOrders.spike.yml` — Spike test for `GET /api/v1/auth/all-orders` (admin, 20 concurrent users)
+- `tests/spike/orderStatus.spike.yml` — Spike test for `PUT /api/v1/auth/order-status/:orderId` (30 concurrent writes)
+- `tests/spike/braintreeToken.spike.yml` — Spike test for `GET /api/v1/product/braintree/token` (60 requests over 60s)
+- `tests/spike/combinedLoad.spike.yml` — Combined sustained load test (orders + Braintree, 2 minutes)
+
+**Performance Tests (Jest)**
+- `client/src/pages/CartPage.perf.test.js` — Frontend performance test for `totalPrice()` function scaling
+
+**Backend Optimizations**
+- Added MongoDB index on `orderModel.buyer` field for faster order queries
+- Implemented in-memory caching for `braintreeTokenController` (24h TTL)
+
+**Unit Tests**
+- `controllers/paymentController.test.js` — Unit tests for `braintreeTokenController` and `brainTreePaymentController` including cache path coverage
+
+### Sun Zihan (A0259581R)
+
+**Automated Security Testing**
+- `tests/security/accessControl.test.js` — Privilege escalation and horizontal/vertical access control auditing
+- `tests/security/bruteForce.test.js` — Rate limiting and brute force resilience testing for /login
+- `tests/security/dataIntegrity.test.js` — Response auditing for PII stripping and Bcrypt hashing verification
+- `tests/security/injection.test.js` — NoSQL operator injection and XSS sanitization hardening
+- `tests/security/jwtIntegrity.test.js` — JWT signature tampering, "none" algorithm, and expiration testing
+
+**Dynamic Analysis Security Testing (DAST)**
+- Automated Active Scans using OWASP ZAP across 5 endpoints, `/login`, `/register`, `/profile`, `/user-auth`, `/admin-auth`
+- Manual fuzzing of input fields to identify and remediate unhandled server crashes
+
+### Trinh Hoai Song Thu (A0266248W)

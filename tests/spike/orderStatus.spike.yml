@@ -1,0 +1,33 @@
+# Seah Yi Xun Ryo, A0252602R
+# Story 3: Spike test for PUT /api/v1/auth/order-status/:orderId
+# Tests concurrent write operations on order documents
+# Requires admin JWT token
+# Usage: JWT_TOKEN=<admin_token> artillery run orderStatus.spike.yml
+
+config:
+  target: "http://localhost:6060"
+  phases:
+    - duration: 10
+      arrivalRate: 3
+      name: "Warm up"
+    - duration: 20
+      arrivalRate: 30
+      name: "Spike — 30 concurrent admin writes"
+  defaults:
+    headers:
+      Authorization: "{{ $processEnvironment.JWT_TOKEN }}"
+  payload:
+    path: "orderIds.csv"
+    fields:
+      - "orderId"
+    skipHeader: true
+
+scenarios:
+  - name: "PUT /api/v1/auth/order-status/:orderId"
+    flow:
+      - put:
+          url: "/api/v1/auth/order-status/{{ orderId }}"
+          json:
+            status: "Processing"
+          expect:
+            - statusCode: 200

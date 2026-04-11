@@ -1,0 +1,1059 @@
+{
+  "aggregate": {
+    "counters": {
+      "vusers.created_by_name.GET /api/v1/product/braintree/token": 60,
+      "vusers.created": 60,
+      "http.requests": 60,
+      "http.codes.200": 60,
+      "http.responses": 60,
+      "http.downloaded_bytes": 142950,
+      "plugins.metrics-by-endpoint./api/v1/product/braintree/token.codes.200": 60,
+      "vusers.failed": 0,
+      "vusers.completed": 60
+    },
+    "rates": {
+      "http.request_rate": 1
+    },
+    "firstCounterAt": 1775896322461,
+    "firstHistogramAt": 1775896324242,
+    "lastCounterAt": 1775896381461,
+    "lastHistogramAt": 1775896381461,
+    "firstMetricAt": 1775896322461,
+    "lastMetricAt": 1775896381461,
+    "period": 1775896380000,
+    "summaries": {
+      "http.response_time": {
+        "min": 0,
+        "max": 1759,
+        "count": 60,
+        "mean": 43.6,
+        "p50": 1,
+        "median": 1,
+        "p75": 1,
+        "p90": 1,
+        "p95": 1,
+        "p99": 820.7,
+        "p999": 820.7
+      },
+      "http.response_time.2xx": {
+        "min": 0,
+        "max": 1759,
+        "count": 60,
+        "mean": 43.6,
+        "p50": 1,
+        "median": 1,
+        "p75": 1,
+        "p90": 1,
+        "p95": 1,
+        "p99": 820.7,
+        "p999": 820.7
+      },
+      "plugins.metrics-by-endpoint.response_time./api/v1/product/braintree/token": {
+        "min": 0,
+        "max": 1759,
+        "count": 60,
+        "mean": 43.6,
+        "p50": 1,
+        "median": 1,
+        "p75": 1,
+        "p90": 1,
+        "p95": 1,
+        "p99": 820.7,
+        "p999": 820.7
+      },
+      "vusers.session_length": {
+        "min": 2.1,
+        "max": 1782.9,
+        "count": 60,
+        "mean": 46.1,
+        "p50": 2.8,
+        "median": 2.8,
+        "p75": 3,
+        "p90": 3.4,
+        "p95": 3.6,
+        "p99": 820.7,
+        "p999": 820.7
+      }
+    },
+    "histograms": {
+      "http.response_time": {
+        "min": 0,
+        "max": 1759,
+        "count": 60,
+        "mean": 43.6,
+        "p50": 1,
+        "median": 1,
+        "p75": 1,
+        "p90": 1,
+        "p95": 1,
+        "p99": 820.7,
+        "p999": 820.7
+      },
+      "http.response_time.2xx": {
+        "min": 0,
+        "max": 1759,
+        "count": 60,
+        "mean": 43.6,
+        "p50": 1,
+        "median": 1,
+        "p75": 1,
+        "p90": 1,
+        "p95": 1,
+        "p99": 820.7,
+        "p999": 820.7
+      },
+      "plugins.metrics-by-endpoint.response_time./api/v1/product/braintree/token": {
+        "min": 0,
+        "max": 1759,
+        "count": 60,
+        "mean": 43.6,
+        "p50": 1,
+        "median": 1,
+        "p75": 1,
+        "p90": 1,
+        "p95": 1,
+        "p99": 820.7,
+        "p999": 820.7
+      },
+      "vusers.session_length": {
+        "min": 2.1,
+        "max": 1782.9,
+        "count": 60,
+        "mean": 46.1,
+        "p50": 2.8,
+        "median": 2.8,
+        "p75": 3,
+        "p90": 3.4,
+        "p95": 3.6,
+        "p99": 820.7,
+        "p999": 820.7
+      }
+    }
+  },
+  "intermediate": [
+    {
+      "counters": {
+        "vusers.created_by_name.GET /api/v1/product/braintree/token": 8,
+        "vusers.created": 8,
+        "http.requests": 8,
+        "http.codes.200": 8,
+        "http.responses": 8,
+        "http.downloaded_bytes": 19086,
+        "plugins.metrics-by-endpoint./api/v1/product/braintree/token.codes.200": 8,
+        "vusers.failed": 0,
+        "vusers.completed": 8
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1775896322461,
+      "firstHistogramAt": 1775896324242,
+      "lastCounterAt": 1775896329463,
+      "lastHistogramAt": 1775896329463,
+      "firstMetricAt": 1775896322461,
+      "lastMetricAt": 1775896329463,
+      "period": "1775896320000",
+      "summaries": {
+        "http.response_time": {
+          "min": 1,
+          "max": 1759,
+          "count": 8,
+          "mean": 322.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 820.7,
+          "p95": 820.7,
+          "p99": 820.7,
+          "p999": 820.7
+        },
+        "http.response_time.2xx": {
+          "min": 1,
+          "max": 1759,
+          "count": 8,
+          "mean": 322.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 820.7,
+          "p95": 820.7,
+          "p99": 820.7,
+          "p999": 820.7
+        },
+        "plugins.metrics-by-endpoint.response_time./api/v1/product/braintree/token": {
+          "min": 1,
+          "max": 1759,
+          "count": 8,
+          "mean": 322.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 820.7,
+          "p95": 820.7,
+          "p99": 820.7,
+          "p999": 820.7
+        },
+        "vusers.session_length": {
+          "min": 2.8,
+          "max": 1782.9,
+          "count": 8,
+          "mean": 327.7,
+          "p50": 3,
+          "median": 3,
+          "p75": 3.5,
+          "p90": 820.7,
+          "p95": 820.7,
+          "p99": 820.7,
+          "p999": 820.7
+        }
+      },
+      "histograms": {
+        "http.response_time": {
+          "min": 1,
+          "max": 1759,
+          "count": 8,
+          "mean": 322.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 820.7,
+          "p95": 820.7,
+          "p99": 820.7,
+          "p999": 820.7
+        },
+        "http.response_time.2xx": {
+          "min": 1,
+          "max": 1759,
+          "count": 8,
+          "mean": 322.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 820.7,
+          "p95": 820.7,
+          "p99": 820.7,
+          "p999": 820.7
+        },
+        "plugins.metrics-by-endpoint.response_time./api/v1/product/braintree/token": {
+          "min": 1,
+          "max": 1759,
+          "count": 8,
+          "mean": 322.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 820.7,
+          "p95": 820.7,
+          "p99": 820.7,
+          "p999": 820.7
+        },
+        "vusers.session_length": {
+          "min": 2.8,
+          "max": 1782.9,
+          "count": 8,
+          "mean": 327.7,
+          "p50": 3,
+          "median": 3,
+          "p75": 3.5,
+          "p90": 820.7,
+          "p95": 820.7,
+          "p99": 820.7,
+          "p999": 820.7
+        }
+      }
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.GET /api/v1/product/braintree/token": 10,
+        "vusers.created": 10,
+        "http.requests": 10,
+        "http.codes.200": 10,
+        "http.responses": 10,
+        "http.downloaded_bytes": 23820,
+        "plugins.metrics-by-endpoint./api/v1/product/braintree/token.codes.200": 10,
+        "vusers.failed": 0,
+        "vusers.completed": 10
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1775896330460,
+      "firstHistogramAt": 1775896330463,
+      "lastCounterAt": 1775896339462,
+      "lastHistogramAt": 1775896339462,
+      "firstMetricAt": 1775896330460,
+      "lastMetricAt": 1775896339462,
+      "period": "1775896330000",
+      "summaries": {
+        "http.response_time": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "http.response_time.2xx": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "plugins.metrics-by-endpoint.response_time./api/v1/product/braintree/token": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "vusers.session_length": {
+          "min": 2.1,
+          "max": 3.7,
+          "count": 10,
+          "mean": 2.8,
+          "p50": 2.7,
+          "median": 2.7,
+          "p75": 2.8,
+          "p90": 3.4,
+          "p95": 3.4,
+          "p99": 3.4,
+          "p999": 3.4
+        }
+      },
+      "histograms": {
+        "http.response_time": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "http.response_time.2xx": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "plugins.metrics-by-endpoint.response_time./api/v1/product/braintree/token": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "vusers.session_length": {
+          "min": 2.1,
+          "max": 3.7,
+          "count": 10,
+          "mean": 2.8,
+          "p50": 2.7,
+          "median": 2.7,
+          "p75": 2.8,
+          "p90": 3.4,
+          "p95": 3.4,
+          "p99": 3.4,
+          "p999": 3.4
+        }
+      }
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.GET /api/v1/product/braintree/token": 10,
+        "vusers.created": 10,
+        "http.requests": 10,
+        "http.codes.200": 10,
+        "http.responses": 10,
+        "http.downloaded_bytes": 23820,
+        "plugins.metrics-by-endpoint./api/v1/product/braintree/token.codes.200": 10,
+        "vusers.failed": 0,
+        "vusers.completed": 10
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1775896340460,
+      "firstHistogramAt": 1775896340462,
+      "lastCounterAt": 1775896349462,
+      "lastHistogramAt": 1775896349462,
+      "firstMetricAt": 1775896340460,
+      "lastMetricAt": 1775896349462,
+      "period": "1775896340000",
+      "summaries": {
+        "http.response_time": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "http.response_time.2xx": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "plugins.metrics-by-endpoint.response_time./api/v1/product/braintree/token": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "vusers.session_length": {
+          "min": 2.3,
+          "max": 3.4,
+          "count": 10,
+          "mean": 2.9,
+          "p50": 2.8,
+          "median": 2.8,
+          "p75": 3.2,
+          "p90": 3.4,
+          "p95": 3.4,
+          "p99": 3.4,
+          "p999": 3.4
+        }
+      },
+      "histograms": {
+        "http.response_time": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "http.response_time.2xx": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "plugins.metrics-by-endpoint.response_time./api/v1/product/braintree/token": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.6,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "vusers.session_length": {
+          "min": 2.3,
+          "max": 3.4,
+          "count": 10,
+          "mean": 2.9,
+          "p50": 2.8,
+          "median": 2.8,
+          "p75": 3.2,
+          "p90": 3.4,
+          "p95": 3.4,
+          "p99": 3.4,
+          "p999": 3.4
+        }
+      }
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.GET /api/v1/product/braintree/token": 10,
+        "vusers.created": 10,
+        "http.requests": 10,
+        "http.codes.200": 10,
+        "http.responses": 10,
+        "http.downloaded_bytes": 23820,
+        "plugins.metrics-by-endpoint./api/v1/product/braintree/token.codes.200": 10,
+        "vusers.failed": 0,
+        "vusers.completed": 10
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1775896350460,
+      "firstHistogramAt": 1775896350462,
+      "lastCounterAt": 1775896359462,
+      "lastHistogramAt": 1775896359462,
+      "firstMetricAt": 1775896350460,
+      "lastMetricAt": 1775896359462,
+      "period": "1775896350000",
+      "summaries": {
+        "http.response_time": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.8,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "http.response_time.2xx": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.8,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "plugins.metrics-by-endpoint.response_time./api/v1/product/braintree/token": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.8,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "vusers.session_length": {
+          "min": 2.2,
+          "max": 2.9,
+          "count": 10,
+          "mean": 2.6,
+          "p50": 2.6,
+          "median": 2.6,
+          "p75": 2.7,
+          "p90": 2.9,
+          "p95": 2.9,
+          "p99": 2.9,
+          "p999": 2.9
+        }
+      },
+      "histograms": {
+        "http.response_time": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.8,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "http.response_time.2xx": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.8,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "plugins.metrics-by-endpoint.response_time./api/v1/product/braintree/token": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.8,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "vusers.session_length": {
+          "min": 2.2,
+          "max": 2.9,
+          "count": 10,
+          "mean": 2.6,
+          "p50": 2.6,
+          "median": 2.6,
+          "p75": 2.7,
+          "p90": 2.9,
+          "p95": 2.9,
+          "p99": 2.9,
+          "p999": 2.9
+        }
+      }
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.GET /api/v1/product/braintree/token": 10,
+        "vusers.created": 10,
+        "http.requests": 10,
+        "http.codes.200": 10,
+        "http.responses": 10,
+        "http.downloaded_bytes": 23820,
+        "plugins.metrics-by-endpoint./api/v1/product/braintree/token.codes.200": 10,
+        "vusers.failed": 0,
+        "vusers.completed": 10
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1775896360459,
+      "firstHistogramAt": 1775896360461,
+      "lastCounterAt": 1775896369462,
+      "lastHistogramAt": 1775896369462,
+      "firstMetricAt": 1775896360459,
+      "lastMetricAt": 1775896369462,
+      "period": "1775896360000",
+      "summaries": {
+        "http.response_time": {
+          "min": 0,
+          "max": 2,
+          "count": 10,
+          "mean": 0.8,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "http.response_time.2xx": {
+          "min": 0,
+          "max": 2,
+          "count": 10,
+          "mean": 0.8,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "plugins.metrics-by-endpoint.response_time./api/v1/product/braintree/token": {
+          "min": 0,
+          "max": 2,
+          "count": 10,
+          "mean": 0.8,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "vusers.session_length": {
+          "min": 2.1,
+          "max": 4.7,
+          "count": 10,
+          "mean": 2.8,
+          "p50": 2.5,
+          "median": 2.5,
+          "p75": 2.8,
+          "p90": 3.1,
+          "p95": 3.1,
+          "p99": 3.1,
+          "p999": 3.1
+        }
+      },
+      "histograms": {
+        "http.response_time": {
+          "min": 0,
+          "max": 2,
+          "count": 10,
+          "mean": 0.8,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "http.response_time.2xx": {
+          "min": 0,
+          "max": 2,
+          "count": 10,
+          "mean": 0.8,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "plugins.metrics-by-endpoint.response_time./api/v1/product/braintree/token": {
+          "min": 0,
+          "max": 2,
+          "count": 10,
+          "mean": 0.8,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "vusers.session_length": {
+          "min": 2.1,
+          "max": 4.7,
+          "count": 10,
+          "mean": 2.8,
+          "p50": 2.5,
+          "median": 2.5,
+          "p75": 2.8,
+          "p90": 3.1,
+          "p95": 3.1,
+          "p99": 3.1,
+          "p999": 3.1
+        }
+      }
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.GET /api/v1/product/braintree/token": 10,
+        "vusers.created": 10,
+        "http.requests": 10,
+        "http.codes.200": 10,
+        "http.responses": 10,
+        "http.downloaded_bytes": 23820,
+        "plugins.metrics-by-endpoint./api/v1/product/braintree/token.codes.200": 10,
+        "vusers.failed": 0,
+        "vusers.completed": 10
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1775896370459,
+      "firstHistogramAt": 1775896370462,
+      "lastCounterAt": 1775896379461,
+      "lastHistogramAt": 1775896379461,
+      "firstMetricAt": 1775896370459,
+      "lastMetricAt": 1775896379461,
+      "period": "1775896370000",
+      "summaries": {
+        "http.response_time": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.7,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "http.response_time.2xx": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.7,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "plugins.metrics-by-endpoint.response_time./api/v1/product/braintree/token": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.7,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "vusers.session_length": {
+          "min": 2.1,
+          "max": 3.3,
+          "count": 10,
+          "mean": 2.8,
+          "p50": 2.9,
+          "median": 2.9,
+          "p75": 3,
+          "p90": 3.2,
+          "p95": 3.2,
+          "p99": 3.2,
+          "p999": 3.2
+        }
+      },
+      "histograms": {
+        "http.response_time": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.7,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "http.response_time.2xx": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.7,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "plugins.metrics-by-endpoint.response_time./api/v1/product/braintree/token": {
+          "min": 0,
+          "max": 1,
+          "count": 10,
+          "mean": 0.7,
+          "p50": 1,
+          "median": 1,
+          "p75": 1,
+          "p90": 1,
+          "p95": 1,
+          "p99": 1,
+          "p999": 1
+        },
+        "vusers.session_length": {
+          "min": 2.1,
+          "max": 3.3,
+          "count": 10,
+          "mean": 2.8,
+          "p50": 2.9,
+          "median": 2.9,
+          "p75": 3,
+          "p90": 3.2,
+          "p95": 3.2,
+          "p99": 3.2,
+          "p999": 3.2
+        }
+      }
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.GET /api/v1/product/braintree/token": 2,
+        "vusers.created": 2,
+        "http.requests": 2,
+        "http.codes.200": 2,
+        "http.responses": 2,
+        "http.downloaded_bytes": 4764,
+        "plugins.metrics-by-endpoint./api/v1/product/braintree/token.codes.200": 2,
+        "vusers.failed": 0,
+        "vusers.completed": 2
+      },
+      "rates": {
+        "http.request_rate": 2
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1775896380459,
+      "firstHistogramAt": 1775896380461,
+      "lastCounterAt": 1775896381461,
+      "lastHistogramAt": 1775896381461,
+      "firstMetricAt": 1775896380459,
+      "lastMetricAt": 1775896381461,
+      "period": "1775896380000",
+      "summaries": {
+        "http.response_time": {
+          "min": 0,
+          "max": 0,
+          "count": 2,
+          "mean": 0,
+          "p50": 0,
+          "median": 0,
+          "p75": 0,
+          "p90": 0,
+          "p95": 0,
+          "p99": 0,
+          "p999": 0
+        },
+        "http.response_time.2xx": {
+          "min": 0,
+          "max": 0,
+          "count": 2,
+          "mean": 0,
+          "p50": 0,
+          "median": 0,
+          "p75": 0,
+          "p90": 0,
+          "p95": 0,
+          "p99": 0,
+          "p999": 0
+        },
+        "plugins.metrics-by-endpoint.response_time./api/v1/product/braintree/token": {
+          "min": 0,
+          "max": 0,
+          "count": 2,
+          "mean": 0,
+          "p50": 0,
+          "median": 0,
+          "p75": 0,
+          "p90": 0,
+          "p95": 0,
+          "p99": 0,
+          "p999": 0
+        },
+        "vusers.session_length": {
+          "min": 2.2,
+          "max": 2.3,
+          "count": 2,
+          "mean": 2.3,
+          "p50": 2.2,
+          "median": 2.2,
+          "p75": 2.2,
+          "p90": 2.2,
+          "p95": 2.2,
+          "p99": 2.2,
+          "p999": 2.2
+        }
+      },
+      "histograms": {
+        "http.response_time": {
+          "min": 0,
+          "max": 0,
+          "count": 2,
+          "mean": 0,
+          "p50": 0,
+          "median": 0,
+          "p75": 0,
+          "p90": 0,
+          "p95": 0,
+          "p99": 0,
+          "p999": 0
+        },
+        "http.response_time.2xx": {
+          "min": 0,
+          "max": 0,
+          "count": 2,
+          "mean": 0,
+          "p50": 0,
+          "median": 0,
+          "p75": 0,
+          "p90": 0,
+          "p95": 0,
+          "p99": 0,
+          "p999": 0
+        },
+        "plugins.metrics-by-endpoint.response_time./api/v1/product/braintree/token": {
+          "min": 0,
+          "max": 0,
+          "count": 2,
+          "mean": 0,
+          "p50": 0,
+          "median": 0,
+          "p75": 0,
+          "p90": 0,
+          "p95": 0,
+          "p99": 0,
+          "p999": 0
+        },
+        "vusers.session_length": {
+          "min": 2.2,
+          "max": 2.3,
+          "count": 2,
+          "mean": 2.3,
+          "p50": 2.2,
+          "median": 2.2,
+          "p75": 2.2,
+          "p90": 2.2,
+          "p95": 2.2,
+          "p99": 2.2,
+          "p999": 2.2
+        }
+      }
+    }
+  ]
+}

@@ -2,7 +2,12 @@
 // Unit tests for paymentController: braintreeTokenController and brainTreePaymentController.
 
 
-import { braintreeTokenController, brainTreePaymentController } from "./paymentController.js";
+import {
+  braintreeTokenController,
+  brainTreePaymentController,
+  __resetTokenCache,
+  __setTokenCacheForTesting,
+} from "./paymentController.js";
 import orderModel from "../models/orderModel.js";
 import productModel from "../models/productModel.js";
 
@@ -45,6 +50,7 @@ describe("braintreeTokenController", () => {
     req = {};
     res = mockRes();
     jest.clearAllMocks();
+    __resetTokenCache();
   });
 
   it("calls gateway.clientToken.generate and sends the response on success", async () => {
@@ -66,6 +72,35 @@ describe("braintreeTokenController", () => {
 
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.send).toHaveBeenCalledWith(fakeError);
+  });
+
+  // Seah Yi Xun Ryo, A0252602R
+  it("returns cached token without calling gateway on second request", async () => {
+    const fakeResponse = { clientToken: "cached-token" };
+    mockGenerate.mockImplementation((opts, cb) => cb(null, fakeResponse));
+
+    await braintreeTokenController(req, res);
+    expect(mockGenerate).toHaveBeenCalledTimes(1);
+
+    mockGenerate.mockClear();
+    const res2 = mockRes();
+    await braintreeTokenController(req, res2);
+
+    expect(mockGenerate).not.toHaveBeenCalled();
+    expect(res2.send).toHaveBeenCalledWith({ clientToken: "cached-token" });
+  });
+
+  // Seah Yi Xun Ryo, A0252602R
+  it("refreshes token when cache has expired", async () => {
+    __setTokenCacheForTesting("old-token", Date.now() - 1);
+
+    const fakeResponse = { clientToken: "new-token" };
+    mockGenerate.mockImplementation((opts, cb) => cb(null, fakeResponse));
+
+    await braintreeTokenController(req, res);
+
+    expect(mockGenerate).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledWith(fakeResponse);
   });
 });
 
