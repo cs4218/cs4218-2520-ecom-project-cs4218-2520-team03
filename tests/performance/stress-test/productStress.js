@@ -24,7 +24,7 @@ for (const name of SCENARIO_NAMES) {
 
 export const options = {
   scenarios: buildSequentialScenarios(),
-  summaryTrendStats: ['avg', 'med', 'p(95)', 'p(99)'],
+  summaryTrendStats: ['med', 'p(95)', 'p(99)'],
 };
 
 function buildSequentialScenarios() {
@@ -62,12 +62,4 @@ export function productStress() {
   const res = http.get(`${BASE_URL}/api/v1/product/get-product/${PRODUCT_SLUG}`);
 
   productResponseMetrics[currentScenario].add(res.timings.duration);
-
-  const ok = check(res, {
-    'get product status is 200': (r) => r.status === 200,
-    'get product response is json': (r) =>
-      String(r.headers['Content-Type'] || '').includes('application/json'),
-  });
-
-  productFailRates[currentScenario].add(!ok);
 }

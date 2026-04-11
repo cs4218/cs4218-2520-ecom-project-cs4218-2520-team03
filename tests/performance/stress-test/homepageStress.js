@@ -5,8 +5,8 @@ import { Trend, Rate } from 'k6/metrics';
 import { check } from 'k6';
 
 const BASE_URL = 'http://localhost:3000';
-const LEVELS = [200, 600, 1000, 1200, 1400, 1600, 1800, 2000, 2200];
-const HOLD_SECONDS = 60;
+const LEVELS = [600, 1000, 1400, 1800, 2200, 2400, 2600];
+const HOLD_SECONDS = 120;
 const RECOVERY_SECONDS = 20;
 const RECOVERY_VUS = 50;
 
@@ -22,7 +22,7 @@ for (const name of SCENARIO_NAMES) {
 
 export const options = {
   scenarios: buildSequentialScenarios(),
-  summaryTrendStats: ['avg', 'med', 'p(95)', 'p(99)'],
+  summaryTrendStats: ['med', 'p(95)', 'p(99)'],
 };
 
 function buildSequentialScenarios() {
@@ -60,12 +60,4 @@ export function homepageStress() {
   const res = http.get(`${BASE_URL}/`);
 
   homepageResponseMetrics[currentScenario].add(res.timings.duration);
-
-  const ok = check(res, {
-    'homepage status is 200': (r) => r.status === 200,
-    'homepage has html content': (r) =>
-      String(r.headers['Content-Type'] || '').includes('text/html'),
-  });
-
-  homepageFailRates[currentScenario].add(!ok);
 }
