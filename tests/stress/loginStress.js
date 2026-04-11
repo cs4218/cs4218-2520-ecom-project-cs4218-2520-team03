@@ -8,8 +8,8 @@ const BASE_URL = 'http://localhost:3000';
 const USER_EMAIL = 'user@gmail.com';
 const USER_PASSWORD = '123456';
 
-const LEVELS = [800, 1000, 1300, 1350, 1380, 1390, 1395];
-const HOLD_SECONDS = 120;
+const LEVELS = [400, 700, 1000, 1300, 1350, 1380];
+const HOLD_SECONDS = 150;
 const RECOVERY_SECONDS = 60;
 const RECOVERY_VUS = 50;
 const GRACEFUL_STOP = '45s';
@@ -84,6 +84,11 @@ export function loginStress() {
   } catch (e) {
     token = null;
   }
+  const ok = check(res, {
+    'login status is 200': (r) => r.status === 200,
+    'login returns token': () => !!token,
+  });
 
   loginMetrics[scenarioName].add(res.timings.duration);
+  loginFailRates[scenarioName].add(!ok);
 }

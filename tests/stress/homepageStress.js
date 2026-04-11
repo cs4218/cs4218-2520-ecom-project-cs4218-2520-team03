@@ -58,6 +58,12 @@ export function homepageStress() {
   const currentScenario = exec.scenario.name;
 
   const res = http.get(`${BASE_URL}/`);
+  const ok = check(res, {
+    'homepage status is 200': (r) => r.status === 200,
+    'homepage has html content': (r) =>
+      String(r.headers['Content-Type'] || '').includes('text/html'),
+  });
 
+  homepageFailRates[currentScenario].add(!ok);
   homepageResponseMetrics[currentScenario].add(res.timings.duration);
 }

@@ -7,7 +7,7 @@ import { check } from 'k6';
 const BASE_URL = 'http://localhost:6060';
 const PRODUCT_SLUG = 'expensive-laptop';
 
-const LEVELS = [2800, 2900, 2950, 2980, 3000];
+const LEVELS = [1000, 2000, 2800, 2900, 2950, 2980, 3000];
 const HOLD_SECONDS = 150;
 const RECOVERY_SECONDS = 45;
 const RECOVERY_VUS = 50;
@@ -62,4 +62,11 @@ export function productStress() {
   const res = http.get(`${BASE_URL}/api/v1/product/get-product/${PRODUCT_SLUG}`);
 
   productResponseMetrics[currentScenario].add(res.timings.duration);
+  const ok = check(res, {
+    'get product status is 200': (r) => r.status === 200,
+    'get product response is json': (r) =>
+      String(r.headers['Content-Type'] || '').includes('application/json'),
+  });
+
+  productFailRates[currentScenario].add(!ok);
 }

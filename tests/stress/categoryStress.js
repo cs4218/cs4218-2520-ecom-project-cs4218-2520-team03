@@ -5,7 +5,7 @@ import { Trend, Rate } from 'k6/metrics';
 import { check } from 'k6';
 
 const BASE_URL = 'http://localhost:6060';
-const LEVELS = [4600, 5000, 5200, 5300, 5400];
+const LEVELS = [2000, 3000, 4000, 4600, 5000, 5200, 5300, 5400];
 const HOLD_SECONDS = 180;
 const RECOVERY_SECONDS = 45;
 const RECOVERY_VUS = 100;
@@ -60,5 +60,9 @@ export function categoryStress() {
   const res = http.get(`${BASE_URL}/api/v1/category/get-category`);
 
   categoryResponseMetrics[currentScenario].add(res.timings.duration);
+  const ok = check(res, {
+    'category status is 200': (r) => r.status === 200,
+  });
 
+  categoryFailRates[currentScenario].add(!ok);
 }
