@@ -248,6 +248,23 @@ Test the integrations between:
 1. Chen Peiran
 2. Chen Zhiruo
 Wrote stress tests for login, homepage, categories, product and checkout.
-3. Seah Yi Xun, Ryo
+3. Seah Yi Xun, Ryo (A0252602R)
+**Spike Testing (Artillery)**
+- `tests/spike/getOrders.spike.yml` — Spike test for `GET /api/v1/auth/orders` (50 concurrent users)
+- `tests/spike/getAllOrders.spike.yml` — Spike test for `GET /api/v1/auth/all-orders` (admin, 20 concurrent users)
+- `tests/spike/orderStatus.spike.yml` — Spike test for `PUT /api/v1/auth/order-status/:orderId` (30 concurrent writes)
+- `tests/spike/braintreeToken.spike.yml` — Spike test for `GET /api/v1/product/braintree/token` (60 requests over 60s)
+- `tests/spike/combinedLoad.spike.yml` — Combined sustained load test (orders + Braintree, 2 minutes)
+
+**Performance Tests (Jest)**
+- `client/src/pages/CartPage.perf.test.js` — Frontend performance test for `totalPrice()` function scaling
+
+**Backend Optimizations**
+- Added MongoDB index on `orderModel.buyer` field for faster order queries
+- Implemented in-memory caching for `braintreeTokenController` (24h TTL)
+
+**Unit Tests**
+- `controllers/paymentController.test.js` — Unit tests for `braintreeTokenController` and `brainTreePaymentController` including cache path coverage
+
 4. Sun Zihan
 5. Trinh Hoai Song Thu

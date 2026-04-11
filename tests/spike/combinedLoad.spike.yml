@@ -1,0 +1,35 @@
+# Seah Yi Xun Ryo, A0252602R
+# Story 6: Combined sustained load — orders + Braintree token endpoints
+# Simulates realistic checkout spike: users polling orders + requesting payment tokens
+# Usage: JWT_TOKEN=<your_token> artillery run combinedLoad.spike.yml
+
+config:
+  target: "http://localhost:6060"
+  phases:
+    - duration: 120
+      arrivalRate: 1
+      name: "Sustained load — 2 minutes"
+  defaults:
+    headers:
+      Authorization: "{{ $processEnvironment.JWT_TOKEN }}"
+
+scenarios:
+  # Scenario 1: User polling their orders (simulates order history page)
+  - name: "Orders polling (every 2s for 20s)"
+    weight: 2
+    flow:
+      - loop:
+        - get:
+            url: "/api/v1/auth/orders"
+        - think: 2
+        count: 10
+
+  # Scenario 2: User requesting Braintree token (simulates checkout page load)
+  - name: "Braintree token request (every 5s for 20s)"
+    weight: 1
+    flow:
+      - loop:
+        - get:
+            url: "/api/v1/product/braintree/token"
+        - think: 5
+        count: 4
