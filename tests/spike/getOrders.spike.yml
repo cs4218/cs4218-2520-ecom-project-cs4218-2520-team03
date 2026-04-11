@@ -1,0 +1,24 @@
+# Seah Yi Xun Ryo, A0252602R
+# Story 1: Spike test for GET /api/v1/auth/orders
+# Usage: JWT_TOKEN=<your_token> artillery run getOrders.spike.yml
+
+config:
+  target: "http://localhost:6060"
+  phases:
+    - duration: 10
+      arrivalRate: 5
+      name: "Warm up"
+    - duration: 20
+      arrivalRate: 50
+      name: "Spike — 50 concurrent users"
+  defaults:
+    headers:
+      Authorization: "{{ $processEnvironment.JWT_TOKEN }}"
+
+scenarios:
+  - name: "GET /api/v1/auth/orders"
+    flow:
+      - get:
+          url: "/api/v1/auth/orders"
+          expect:
+            - statusCode: 200
