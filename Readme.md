@@ -243,3 +243,11 @@ Test the integrations between:
 - `tests/e2e/cartProfileFlow.spec.js` — Cross-Component Synchronization: Validates that a user can add items to the cart, update their shipping address in the Profile, and see those changes reflect reactively in the Cart summary
 - `tests/e2e/userRegistrationConflict.spec.js` — Identity Collision Handling: Ensures that attempting to re-register with existing credentials triggers the correct error state and does not impede subsequent valid logins (1 test).
 - `tests/e2e/profileSync.spec.js` — State Persistence Lifecycle: Verifies that updates made within the Profile are immediately reflected across the User Dashboard and Navigation Bar without a manual page refresh
+
+## 6. Task Allocation (MS1)
+1. Chen Peiran
+2. Chen Zhiruo
+Wrote stress tests for login, homepage, categories, product and checkout.
+3. Seah Yi Xun, Ryo
+4. Sun Zihan
+5. Trinh Hoai Song Thu
