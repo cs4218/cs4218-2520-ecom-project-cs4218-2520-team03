@@ -246,6 +246,12 @@ Test the integrations between:
 
 ## 8. Task Allocation (MS3)
 ### Chen Peiran (A0257826R)
+- `tests/load/adminCategory.js` — Load test for admin category management (add, update, delete categories)
+- `tests/load/checkoutPayment.js` — Load test for checkout and payment
+- `tests/load/registerLogin.js` — Load test for register and login
+- `tests/load/searchDiscovery.js` — Load test for search and product discovery
+- `tests/load/userBrowsing.js` — Load test for user product browsing
+
 ### Chen Zhiruo (A0256855N)
 - `tests/stress/loginStress.js` — Stress test for Login `/api/v1/auth/login` 
 - `tests/stress/homepageStress.js` — Stress test for Homepage `/`
