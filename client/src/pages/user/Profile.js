@@ -44,23 +44,50 @@ const Profile = () => {
 
   const validate = () => {
     let tempErrors = {};
-    if (!name.trim()) tempErrors.name = "Name is required";
-    if (!address.trim()) tempErrors.address = "Address is required";
-    
-    const phoneRegex = /^\d+$/; 
+
+    const nameRegex = /^[a-zA-Z0-9 ]+$/;
+    if (!name || !name.trim()) {
+      tempErrors.name = "Name is required";
+    } else if (name.length > 50) {
+      tempErrors.name = "Name cannot exceed 50 characters";
+    } else if (!nameRegex.test(name)) {
+      tempErrors.name = "Name can only contain letters and numbers";
+    }
+
+    const stringentEmailRegex = /^(?![._-])(?!.*[._-]{2})[a-zA-Z0-9._-]+(?<![._-])@(?![.-])(?:[a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,63}$/;
+    if (!email) {
+      tempErrors.email = "Email is required";
+    } else if (email.length > 320) {
+      tempErrors.email = "Email is too long";
+    } else if (!stringentEmailRegex.test(email)) {
+      tempErrors.email = "Please enter a valid email address (eg. name@example.com)";
+    }
+
+    if (password) {
+      const isWhitespaceOnly = password.trim().length === 0;
+      if (isWhitespaceOnly || password.length < 6 || password.length > 64) {
+        tempErrors.password = "Password must be 6-64 characters";
+      }
+      if (password !== confirmPassword) {
+        tempErrors.confirmPassword = "Passwords do not match";
+      }
+    }
+
+    const phoneRegex = /^\d+$/;
     if (!phone) {
       tempErrors.phone = "Phone number is required";
-    } else if (!phoneRegex.test(phone) || phone.length !== 8) {
-      tempErrors.phone = phoneRegex.test(phone) 
-        ? "Phone number must be 8 digits long" 
-        : "Phone number must contain only digits";
+    } else if (!phoneRegex.test(phone)) {
+      tempErrors.phone = "Phone number must contain only digits";
+    } else if (phone.length !== 8) {
+      tempErrors.phone = "Phone number must be 8 digits long";
     }
-  
-    if (password) {
-      if (password.length < 6) tempErrors.password = "Password must be at least 6 characters long";
-      if (password !== confirmPassword) tempErrors.confirmPassword = "Passwords do not match";
+
+    if (!address || !address.trim()) {
+      tempErrors.address = "Address is required";
+    } else if (address.length > 100) {
+      tempErrors.address = "Address too long (Max 100)";
     }
-  
+
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };

@@ -38,9 +38,11 @@ test.describe('Cross-Component Cart and Address Integration', () => {
 
   test.beforeEach(async () => {
     const uniqueId = Date.now();
+    const randomSuffix = Math.random().toString(36).replace(/[^a-z]+/g, '').substring(0, 5);
+    
     testUser = {
-      name: `User_${uniqueId}`,
-      email: `user_${uniqueId}@test.com`,
+      name: `TestUser${randomSuffix}`, 
+      email: `user${uniqueId}@test.com`,
       password: 'password123',
       phone: '91234567',
       address: '123 Initial Street'

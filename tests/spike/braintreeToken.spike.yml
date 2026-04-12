@@ -1,0 +1,22 @@
+# Seah Yi Xun Ryo, A0252602R
+# Story 4: Spike test for GET /api/v1/product/braintree/token
+# Tests Braintree external API call performance with caching
+# Usage: JWT_TOKEN=<your_token> artillery run braintreeToken.spike.yml
+
+config:
+  target: "http://localhost:6060"
+  phases:
+    - duration: 60
+      arrivalRate: 1
+      name: "Steady load — 1 request/sec for 60s"
+  defaults:
+    headers:
+      Authorization: "{{ $processEnvironment.JWT_TOKEN }}"
+
+scenarios:
+  - name: "GET /api/v1/product/braintree/token"
+    flow:
+      - get:
+          url: "/api/v1/product/braintree/token"
+          expect:
+            - statusCode: 200

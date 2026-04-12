@@ -31,9 +31,11 @@ test.describe('Dashboard and Profile Synchronization Lifecycle', () => {
 
   test.beforeEach(async ({ page }) => {
     const uniqueId = Date.now();
+    const randomNameSuffix = Math.random().toString(36).replace(/[^a-z]+/g, '').substring(0, 6);
+
     currentTestUser = {
-      name: `SyncUser_${uniqueId}`,
-      email: `sync_${uniqueId}@test.com`,
+      name: `SyncUser${randomNameSuffix}`, 
+      email: `sync${uniqueId}@test.com`,
       password: 'password123',
       phone: '87654321',
       address: '123 Testing Lane'

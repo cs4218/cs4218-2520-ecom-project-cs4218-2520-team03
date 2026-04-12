@@ -12,6 +12,8 @@ const orderSchema = new mongoose.Schema(
     buyer: {
       type: mongoose.ObjectId,
       ref: "users",
+      // Seah Yi Xun Ryo, A0252602R, add index to buyer field to improve query performance
+      index: true,
     },
     status: {
       type: String,
