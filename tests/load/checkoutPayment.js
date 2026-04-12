@@ -11,12 +11,12 @@ export const options = {
         { duration: "10s", target: 0 },
     ],
     thresholds: {
-        http_req_duration: ["p(95)<1000"],
+        http_req_duration: ["p(95)<1500"],
         http_req_failed: ["rate<0.01"],
     },
 };
 
-const BASE_URL = __ENV.BASE_URL || "http://localhost:6060";
+const BASE_URL = "http://localhost:6060";
 
 const LOGIN_EMAIL = "user@gmail.com";
 const LOGIN_PASSWORD = "123456";

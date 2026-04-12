@@ -16,7 +16,7 @@ export const options = {
     },
 };
 
-const BASE_URL = __ENV.BASE_URL || "http://localhost:6060";
+const BASE_URL = "http://localhost:6060";
 const ADMIN_EMAIL = "admin@gmail.com";
 const ADMIN_PASSWORD = "123456";
 
