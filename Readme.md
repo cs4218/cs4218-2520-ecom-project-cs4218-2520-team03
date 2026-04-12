@@ -291,3 +291,9 @@ Test the integrations between:
 - Manual fuzzing of input fields to identify and remediate unhandled server crashes
 
 ### Trinh Hoai Song Thu (A0266248W)
+Capacity Testing (k6)
+- tests/capacity/homePageCapacity.js — Capacity test for Homepage /
+- tests/capacity/productPageCapacity.js — Capacity test for Product Page /api/v1/product/product-list/:page
+- tests/capacity/loginCapacity.js — Capacity test for Login /api/v1/auth/login
+- tests/capacity/registerCapacity.js — Capacity test for Register /api/v1/auth/register
+- tests/capacity/checkoutCapacity.js — Capacity test for Checkout /api/v1/product/braintree/payment
